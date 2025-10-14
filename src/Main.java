@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        String art = """
+        final String welcome = """
                 **************************************************************
                 ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗   \s
                 ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝   \s
@@ -31,7 +31,24 @@ public class Main {
                 ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝        ╚═╝ 
                 ******************************************************************""";
 
-        System.out.println("\033[1;32m" + art + "\033[0m");
+        /*
+        * Ascii Art for the writing of "Group Members" and our
+        * names will be added. For now, this is an outline.
+        * */
 
+        final String members;
+
+        final String burak;
+        final String suhan;
+        final String ramazan;
+        final String elif;
+
+        System.out.println("\033[1;32m" + welcome + "\033[0m");
+        System.out.printf("%n%n%n");
+        System.out.println("\033[1;36m" + members + "\033[0m");
+        System.out.println("\033[1;36m" + burak + "\033[0m");
+        System.out.println("\033[1;36m" + suhan + "\033[0m");
+        System.out.println("\033[1;36m" + ramazan + "\033[0m");
+        System.out.println("\033[1;36m" + elif + "\033[0m");
     }
 }
