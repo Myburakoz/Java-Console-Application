@@ -25,7 +25,10 @@ bin/
 
 ### VS Code ###
 .vscode/
+
+### Others ###
 .idea/
+JavaConsoleApp.iml
 
 ### Mac OS ###
 .DS_Store
