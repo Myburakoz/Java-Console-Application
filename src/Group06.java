@@ -2,15 +2,11 @@ import java.util.Scanner;
 
 public class Group06 {
     public static void main(String[] args) {
+        final Scanner input = new Scanner(System.in);
         welcome();
-        waitToClearScreen();
-
-        boolean isNotTerminated = true;
-
-        do {
-            displayOptions();
-        }while(isNotTerminated);
-
+        waitToClearScreen(input);
+        makeWait();
+        mainMenu(input);
     }
 
     public static void welcome(){
@@ -85,9 +81,7 @@ public class Group06 {
         System.out.printf("%n%n%n");
     }
 
-    public static void waitToClearScreen(){
-        Scanner input = new Scanner(System.in);
-
+    public static void waitToClearScreen(Scanner input){
         final String pressEnter = """
                  ___ _                                           ___     _             _            _                _   _                                   \s
                 | _ \\ |___ __ _ ___ ___     _ __ _ _ ___ ______ | __|_ _| |_ ___ _ _  | |_ ___   __| |___ __ _ _ _  | |_| |_  ___   ___ __ _ _ ___ ___ _ _   \s
@@ -105,7 +99,75 @@ public class Group06 {
         System.out.flush();
     }
 
-    private static void displayOptions() {
+    public static void makeWait(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println("Interruption cut: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+    }
 
+    private static void mainMenu(Scanner input) {
+        boolean isNotTerminated = true;
+
+        do {
+            System.out.println("**********************************");
+            System.out.println("Select an option:");
+            System.out.println("[A] Primary School");
+            System.out.println("[B] Secondary School");
+            System.out.println("[C] High School");
+            System.out.println("[D] University");
+            System.out.println("[E] Terminate");
+            System.out.println("**********************************");
+            System.out.print("Your choice: ");
+
+            String choice;
+
+            try {
+                if (!input.hasNextLine()) {
+                    System.out.println("\nInput closed.");
+                    input = new Scanner(System.in);
+                    continue;
+                }
+
+                choice = input.nextLine().trim().toUpperCase();
+            } catch (java.util.NoSuchElementException e) {
+                System.out.println("No input available!");
+                input = new Scanner(System.in);
+                continue;
+            } catch (IllegalStateException e) {
+                System.out.println("Scanner is closed.");
+                input = new Scanner(System.in);
+                continue;
+            }
+
+            switch (choice){
+                case "A":
+                    clearScreen();
+                    //primarySchoolMenu();
+                    break;
+                case "B":
+                    clearScreen();
+                    //secondrarySchoolMenu();
+                    break;
+                case "C":
+                    clearScreen();
+                    //highSchoolMenu();
+                    break;
+                case "D":
+                    clearScreen();
+                    //universityMenu();
+                    break;
+                case "E":
+                    clearScreen();
+                    //goodbye();
+                    isNotTerminated = false;
+                    break;
+                default:
+                    System.out.println("Please enter a valid value [A-E]: ");
+                    break;
+            }
+        }while(isNotTerminated);
     }
 }
