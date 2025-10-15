@@ -30,6 +30,7 @@ bin/
 .idea/
 JavaConsoleApp.iml
 src/Main.class
+src/Group06.class
 
 ### Mac OS ###
 .DS_Store

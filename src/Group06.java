@@ -1,5 +1,19 @@
+import java.util.Scanner;
+
 public class Group06 {
     public static void main(String[] args) {
+        welcome();
+        waitToClearScreen();
+
+        boolean isNotTerminated = true;
+
+        do {
+            displayOptions();
+        }while(isNotTerminated);
+
+    }
+
+    public static void welcome(){
         final String welcome = """
                 ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗    ████████╗ ██████╗                                             \s
                 ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝    ╚══██╔══╝██╔═══██╗                                            \s
@@ -16,8 +30,8 @@ public class Group06 {
                  ╚═════╝╚═╝     ╚═╝╚═╝     ╚══════╝╚═════╝      ╚═╝╚═════╝     ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝        ╚═╝ """;
 
         /*
-        * Ascii art is temporary for now. It can be changed.
-        * */
+         * Ascii art is temporary for now. It can be changed.
+         * */
 
         final String members = """
                    ______                            __  ___               __                 \s
@@ -52,13 +66,46 @@ public class Group06 {
                  / /___/ / / __/  / /__/  __/ /_/ / / / /  __/ /_/ /    / / / /_/ / / /_/ / /_/ /\s
                 /_____/_/_/_/    /____/\\___/\\__, /_/ /_/\\___/ .___/    /_/  \\__,_/_/\\__,_/\\__, / \s
                                            /____/          /_/                           /____/  \s""";
+        final String pressEnter = """
+                 ___ _                                           ___     _             _            _                _   _                                   \s
+                | _ \\ |___ __ _ ___ ___     _ __ _ _ ___ ______ | __|_ _| |_ ___ _ _  | |_ ___   __| |___ __ _ _ _  | |_| |_  ___   ___ __ _ _ ___ ___ _ _   \s
+                |  _/ / -_) _` (_-</ -_)_  | '_ \\ '_/ -_|_-<_-< | _|| ' \\  _/ -_) '_| |  _/ _ \\ / _| / -_) _` | '_| |  _| ' \\/ -_) (_-</ _| '_/ -_) -_) ' \\ _\s
+                |_| |_\\___\\__,_/__/\\___( ) | .__/_| \\___/__/__/ |___|_||_\\__\\___|_|    \\__\\___/ \\__|_\\___\\__,_|_|    \\__|_||_\\___| /__/\\__|_| \\___\\___|_||_(_)
+                                       |/  |_|                                                                                                               \s""";
 
         System.out.println("\033[1;32m" + welcome + "\033[0m");
         System.out.printf("%n%n%n");
+
         System.out.println("\033[1;33m" + members + "\033[0m");
         System.out.println("\033[1;31m" + burak + "\033[0m");
         System.out.println("\033[1;31m" + suhan + "\033[0m");
         System.out.println("\033[1;31m" + ramazan + "\033[0m");
         System.out.println("\033[1;31m" + elif + "\033[0m");
+
+        System.out.printf("%n%n%n");
+    }
+
+    public static void waitToClearScreen(){
+        Scanner input = new Scanner(System.in);
+
+        final String pressEnter = """
+                 ___ _                                           ___     _             _            _                _   _                                   \s
+                | _ \\ |___ __ _ ___ ___     _ __ _ _ ___ ______ | __|_ _| |_ ___ _ _  | |_ ___   __| |___ __ _ _ _  | |_| |_  ___   ___ __ _ _ ___ ___ _ _   \s
+                |  _/ / -_) _` (_-</ -_)_  | '_ \\ '_/ -_|_-<_-< | _|| ' \\  _/ -_) '_| |  _/ _ \\ / _| / -_) _` | '_| |  _| ' \\/ -_) (_-</ _| '_/ -_) -_) ' \\ _\s
+                |_| |_\\___\\__,_/__/\\___( ) | .__/_| \\___/__/__/ |___|_||_\\__\\___|_|    \\__\\___/ \\__|_\\___\\__,_|_|    \\__|_||_\\___| /__/\\__|_| \\___\\___|_||_(_)
+                                       |/  |_|                                                                                                               \s""";
+
+        System.out.println("\033[1;39m" + pressEnter + "\033[0m");
+        input.nextLine();
+        clearScreen();
+    }
+
+    public static void clearScreen(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    private static void displayOptions() {
+
     }
 }
