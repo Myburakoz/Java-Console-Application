@@ -1,6 +1,4 @@
-import java.util.Scanner;
-
-public class Main {
+public class Group06 {
     public static void main(String[] args) {
         final String welcome = """
                 ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗    ████████╗ ██████╗                                             \s
