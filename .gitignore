@@ -29,6 +29,7 @@ bin/
 ### Others ###
 .idea/
 JavaConsoleApp.iml
+src/Main.class
 
 ### Mac OS ###
 .DS_Store

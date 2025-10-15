@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         final String welcome = """
@@ -45,10 +47,10 @@ public class Main {
 
         System.out.println("\033[1;32m" + welcome + "\033[0m");
         System.out.printf("%n%n%n");
-        System.out.println("\033[1;36m" + members + "\033[0m");
-        System.out.println("\033[1;36m" + burak + "\033[0m");
-        System.out.println("\033[1;36m" + suhan + "\033[0m");
-        System.out.println("\033[1;36m" + ramazan + "\033[0m");
-        System.out.println("\033[1;36m" + elif + "\033[0m");
+        //System.out.println("\033[1;36m" + members + "\033[0m");
+        //System.out.println("\033[1;36m" + burak + "\033[0m");
+        //System.out.println("\033[1;36m" + suhan + "\033[0m");
+        //System.out.println("\033[1;36m" + ramazan + "\033[0m");
+        //System.out.println("\033[1;36m" + elif + "\033[0m");
     }
 }
