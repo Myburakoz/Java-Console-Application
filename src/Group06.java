@@ -126,18 +126,18 @@ public class Group06 {
 
             try {
                 if (!input.hasNextLine()) {
-                    System.out.println("\nInput closed.");
+                    System.out.println("\nInput closed. Please enter valid value [A-E]: ");
                     input = new Scanner(System.in);
                     continue;
                 }
 
                 choice = input.nextLine().trim().toUpperCase();
             } catch (java.util.NoSuchElementException e) {
-                System.out.println("No input available!");
+                System.out.println("No input available! Please try again!");
                 input = new Scanner(System.in);
                 continue;
             } catch (IllegalStateException e) {
-                System.out.println("Scanner is closed.");
+                System.out.println("Scanner is closed. Please try again!");
                 input = new Scanner(System.in);
                 continue;
             }
@@ -165,6 +165,7 @@ public class Group06 {
                     isNotTerminated = false;
                     break;
                 default:
+                    clearScreen();
                     System.out.println("Please enter a valid value [A-E]: ");
                     break;
             }
