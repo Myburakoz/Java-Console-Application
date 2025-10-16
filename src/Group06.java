@@ -9,6 +9,10 @@ public class Group06 {
         mainMenu(input);
     }
 
+    /*
+    * Terminal
+    * */
+
     public static void welcome(){
         final String welcome = """
                 ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗    ████████╗ ██████╗                                             \s
@@ -25,9 +29,9 @@ public class Group06 {
                 ╚██████╗██║ ╚═╝ ██║██║     ███████╗██████╔╝     ██║██████╔╝    ██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗╚██████╗   ██║        ██║
                  ╚═════╝╚═╝     ╚═╝╚═╝     ╚══════╝╚═════╝      ╚═╝╚═════╝     ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝        ╚═╝ """;
 
-        /*
-         * Ascii art is temporary for now. It can be changed.
-         * */
+
+        //Ascii art is temporary for now. It can be changed.
+
 
         final String members = """
                    ______                            __  ___               __                 \s
@@ -116,7 +120,7 @@ public class Group06 {
         }
     }
 
-    private static void mainMenu(Scanner input) {
+    public static void mainMenu(Scanner input) {
         input = new Scanner(System.in);
 
         boolean isNotTerminated = true;
@@ -195,7 +199,7 @@ public class Group06 {
         }while(isNotTerminated);
     }
 
-    private static void primarySchoolMenu(Scanner input){
+    public static void primarySchoolMenu(Scanner input){
 
         boolean isReturningMainMenu = false;
         boolean isInputValid = true;
@@ -240,12 +244,12 @@ public class Group06 {
                 case "A":
                     clearScreen();
                     isInputValid = true;
-                    //ageZodiacDetectorMenu();
+                    ageZodiacDetectorMenu(input);
                     break;
                 case "B":
                     clearScreen();
                     isInputValid = true;
-                    //wordReverserMenu();
+                    wordReverserMenu(input);
                     break;
                 case "C":
                     clearScreen();
@@ -261,7 +265,7 @@ public class Group06 {
         }while(!isReturningMainMenu);
     }
 
-    private static void secondrarySchoolMenu(Scanner input){
+    public static void secondrarySchoolMenu(Scanner input){
 
         boolean isReturningMainMenu = false;
         boolean isInputValid = true;
@@ -306,12 +310,12 @@ public class Group06 {
                 case "A":
                     clearScreen();
                     isInputValid = true;
-                    //primeNumbersMenu();
+                    primeNumbersMenu(input);
                     break;
                 case "B":
                     clearScreen();
                     isInputValid = true;
-                    //evalauteExpressionMenu();
+                    evalauteExpressionMenu(input);
                     break;
                 case "C":
                     clearScreen();
@@ -327,7 +331,7 @@ public class Group06 {
         }while(!isReturningMainMenu);
     }
 
-    private static void highSchoolMenu(Scanner input){
+    public static void highSchoolMenu(Scanner input){
 
         boolean isReturningMainMenu = false;
         boolean isInputValid = true;
@@ -372,12 +376,12 @@ public class Group06 {
                 case "A":
                     clearScreen();
                     isInputValid = true;
-                    //statisticalInfoArrayMenu();
+                    statisticalInfoArrayMenu(input);
                     break;
                 case "B":
                     clearScreen();
                     isInputValid = true;
-                    //distanceArrayMenu();
+                    distanceArrayMenu(input);
                     break;
                 case "C":
                     clearScreen();
@@ -391,5 +395,71 @@ public class Group06 {
             }
 
         }while(!isReturningMainMenu);
+    }
+
+    /*
+        Age Zodiac Sign Detection
+
+        NOTE: If you want add an extra function. You can of course add. These are just menus.
+     */
+
+    public static void ageZodiacDetectorMenu(Scanner input)
+    {
+
+    }
+
+    /*
+        Reverse the Words
+
+        NOTE: If you want add an extra function. You can of course add. These are just menus.
+     */
+
+    public static void wordReverserMenu(Scanner input)
+    {
+
+    }
+
+    /*
+        Prime Numbers
+
+        NOTE: If you want add an extra function. You can of course add. These are just menus.
+     */
+
+    public static void primeNumbersMenu(Scanner input)
+    {
+
+    }
+
+    /*
+        Step by step Evaluation of Expression
+
+        NOTE: If you want add an extra function. You can of course add. These are just menus.
+     */
+
+    public static void evalauteExpressionMenu(Scanner input)
+    {
+
+    }
+
+    /*
+        Statistical Information about an Array
+
+        NOTE: If you want add an extra function. You can of course add. These are just menus.
+     */
+
+    public static void statisticalInfoArrayMenu(Scanner input)
+    {
+
+    }
+
+    /*
+        Distance between Two Arrays
+
+        NOTE: If you want add an extra function. You can of course add. These are just menus.
+     */
+
+    public static void distanceArrayMenu(Scanner input)
+    {
+
     }
 }
