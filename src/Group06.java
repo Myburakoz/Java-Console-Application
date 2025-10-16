@@ -174,7 +174,7 @@ public class Group06 {
                 case "C":
                     clearScreen();
                     isInputValid = true;
-                    //highSchoolMenu();
+                    highSchoolMenu(input);
                     break;
                 case "D":
                     clearScreen();
@@ -312,6 +312,72 @@ public class Group06 {
                     clearScreen();
                     isInputValid = true;
                     //evalauteExpressionMenu();
+                    break;
+                case "C":
+                    clearScreen();
+                    isInputValid = true;
+                    isReturningMainMenu = true;
+                    break;
+                default:
+                    clearScreen();
+                    isInputValid = false;
+                    break;
+            }
+
+        }while(!isReturningMainMenu);
+    }
+
+    private static void highSchoolMenu(Scanner input){
+
+        boolean isReturningMainMenu = false;
+        boolean isInputValid = true;
+
+        do {
+            System.out.printf("%n**********************************%n");
+            System.out.println("Select an option:");
+            System.out.println("[A] Statistical Information about an Array");
+            System.out.println("[B] Distance between Two Arrays");
+            System.out.println("[C] Return to Main Menu");
+            System.out.println("**********************************");
+
+            if(isInputValid)
+                System.out.print("Your choice: ");
+            else
+                System.out.print("Please enter valid value [A-C]: ");
+
+            String choice;
+
+            try {
+                if (!input.hasNextLine()) {
+                    input = new Scanner(System.in);
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                choice = input.nextLine().trim().toUpperCase();
+            } catch (java.util.NoSuchElementException e) {
+                input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+                continue;
+            } catch (IllegalStateException e) {
+                input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+                continue;
+            }
+
+            switch (choice){
+                case "A":
+                    clearScreen();
+                    isInputValid = true;
+                    //statisticalInfoArrayMenu();
+                    break;
+                case "B":
+                    clearScreen();
+                    isInputValid = true;
+                    //distanceArrayMenu();
                     break;
                 case "C":
                     clearScreen();
