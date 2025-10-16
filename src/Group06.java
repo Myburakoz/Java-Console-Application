@@ -164,7 +164,7 @@ public class Group06 {
                 case "A":
                     clearScreen();
                     isInputValid = true;
-                    //primarySchoolMenu();
+                    primarySchoolMenu(input);
                     break;
                 case "B":
                     clearScreen();
@@ -193,5 +193,71 @@ public class Group06 {
                     break;
             }
         }while(isNotTerminated);
+    }
+
+    private static void primarySchoolMenu(Scanner input){
+
+        boolean isReturningMainMenu = false;
+        boolean isInputValid = true;
+
+        do {
+            System.out.printf("%n**********************************%n");
+            System.out.println("Select an option:");
+            System.out.println("[A] Age and Zodiac Sign Detection");
+            System.out.println("[B] Reverse the Words");
+            System.out.println("[C] Return to Main Menu");
+            System.out.println("**********************************");
+
+            if(isInputValid)
+                System.out.print("Your choice: ");
+            else
+                System.out.print("Please enter valid value [A-C]: ");
+
+            String choice;
+
+            try {
+                if (!input.hasNextLine()) {
+                    input = new Scanner(System.in);
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                choice = input.nextLine().trim().toUpperCase();
+            } catch (java.util.NoSuchElementException e) {
+                input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+                continue;
+            } catch (IllegalStateException e) {
+                input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+                continue;
+            }
+
+            switch (choice){
+                case "A":
+                    clearScreen();
+                    isInputValid = true;
+                    //ageZodiacDetector();
+                    break;
+                case "B":
+                    clearScreen();
+                    isInputValid = true;
+                    //wordReverser();
+                    break;
+                case "C":
+                    clearScreen();
+                    isInputValid = true;
+                    isReturningMainMenu = true;
+                    break;
+                default:
+                    clearScreen();
+                    isInputValid = false;
+                    break;
+            }
+
+        }while(!isReturningMainMenu);
     }
 }
