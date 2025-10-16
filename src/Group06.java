@@ -90,6 +90,14 @@ public class Group06 {
                                        |/  |_|                                                                                                               \s""";
 
         System.out.println("\033[1;39m" + pressEnter + "\033[0m");
+
+        while (!input.hasNextLine())
+        {
+            input = new Scanner(System.in);
+            clearScreen();
+            System.out.println("\033[1;39m" + pressEnter + "\033[0m");
+        }
+
         input.nextLine();
         clearScreen();
     }
@@ -109,10 +117,13 @@ public class Group06 {
     }
 
     private static void mainMenu(Scanner input) {
+        input = new Scanner(System.in);
+
         boolean isNotTerminated = true;
+        boolean isInputValid = true;
 
         do {
-            System.out.println("**********************************");
+            System.out.printf("%n**********************************%n");
             System.out.println("Select an option:");
             System.out.println("[A] Primary School");
             System.out.println("[B] Secondary School");
@@ -120,53 +131,65 @@ public class Group06 {
             System.out.println("[D] University");
             System.out.println("[E] Terminate");
             System.out.println("**********************************");
-            System.out.print("Your choice: ");
+
+            if(isInputValid)
+                System.out.print("Your choice: ");
+            else
+                System.out.print("Please enter valid value [A-E]: ");
 
             String choice;
 
             try {
                 if (!input.hasNextLine()) {
-                    System.out.println("\nInput closed. Please enter valid value [A-E]: ");
                     input = new Scanner(System.in);
+                    isInputValid = false;
+                    clearScreen();
                     continue;
                 }
 
                 choice = input.nextLine().trim().toUpperCase();
             } catch (java.util.NoSuchElementException e) {
-                System.out.println("No input available! Please try again!");
                 input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
                 continue;
             } catch (IllegalStateException e) {
-                System.out.println("Scanner is closed. Please try again!");
                 input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
                 continue;
             }
 
             switch (choice){
                 case "A":
                     clearScreen();
+                    isInputValid = true;
                     //primarySchoolMenu();
                     break;
                 case "B":
                     clearScreen();
+                    isInputValid = true;
                     //secondrarySchoolMenu();
                     break;
                 case "C":
                     clearScreen();
+                    isInputValid = true;
                     //highSchoolMenu();
                     break;
                 case "D":
                     clearScreen();
+                    isInputValid = true;
                     //universityMenu();
                     break;
                 case "E":
                     clearScreen();
+                    isInputValid = true;
                     //goodbye();
                     isNotTerminated = false;
                     break;
                 default:
                     clearScreen();
-                    System.out.println("Please enter a valid value [A-E]: ");
+                    isInputValid = false;
                     break;
             }
         }while(isNotTerminated);
