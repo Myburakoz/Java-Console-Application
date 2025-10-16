@@ -169,7 +169,7 @@ public class Group06 {
                 case "B":
                     clearScreen();
                     isInputValid = true;
-                    //secondrarySchoolMenu();
+                    secondrarySchoolMenu(input);
                     break;
                 case "C":
                     clearScreen();
@@ -240,12 +240,78 @@ public class Group06 {
                 case "A":
                     clearScreen();
                     isInputValid = true;
-                    //ageZodiacDetector();
+                    //ageZodiacDetectorMenu();
                     break;
                 case "B":
                     clearScreen();
                     isInputValid = true;
-                    //wordReverser();
+                    //wordReverserMenu();
+                    break;
+                case "C":
+                    clearScreen();
+                    isInputValid = true;
+                    isReturningMainMenu = true;
+                    break;
+                default:
+                    clearScreen();
+                    isInputValid = false;
+                    break;
+            }
+
+        }while(!isReturningMainMenu);
+    }
+
+    private static void secondrarySchoolMenu(Scanner input){
+
+        boolean isReturningMainMenu = false;
+        boolean isInputValid = true;
+
+        do {
+            System.out.printf("%n**********************************%n");
+            System.out.println("Select an option:");
+            System.out.println("[A] Prime Numbers");
+            System.out.println("[B] Step-by-step Evaluation of Expression");
+            System.out.println("[C] Return to Main Menu");
+            System.out.println("**********************************");
+
+            if(isInputValid)
+                System.out.print("Your choice: ");
+            else
+                System.out.print("Please enter valid value [A-C]: ");
+
+            String choice;
+
+            try {
+                if (!input.hasNextLine()) {
+                    input = new Scanner(System.in);
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                choice = input.nextLine().trim().toUpperCase();
+            } catch (java.util.NoSuchElementException e) {
+                input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+                continue;
+            } catch (IllegalStateException e) {
+                input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+                continue;
+            }
+
+            switch (choice){
+                case "A":
+                    clearScreen();
+                    isInputValid = true;
+                    //primeNumbersMenu();
+                    break;
+                case "B":
+                    clearScreen();
+                    isInputValid = true;
+                    //evalauteExpressionMenu();
                     break;
                 case "C":
                     clearScreen();
