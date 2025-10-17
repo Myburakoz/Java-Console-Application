@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class Group06 {
     public static void main(String[] args) {
@@ -460,6 +462,69 @@ public class Group06 {
 
     public static void distanceArrayMenu(Scanner input)
     {
-        //Test
+        System.out.println("=== Distance between Two Arrays ===");
+        System.out.println();
+
+        int dimension = checkDimension(input, "Enter the dimension of the arrays: ");
+    }
+
+    public static int checkDimension(Scanner input, String prompt){
+        int dimension = 0;
+        boolean isInputValid = true;
+
+        clearScreen();
+
+            do {
+            System.out.println("=== Distance between Two Arrays ===");
+            System.out.println();
+
+            if (isInputValid)
+                System.out.print(prompt);
+            else
+                System.out.print("Enter a valid value: ");
+
+
+            try {
+                if (!input.hasNextLine()) {
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                if (!input.hasNextInt()) {
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                dimension = input.nextInt();
+                String remains = input.nextLine().trim();
+
+                if(!remains.isEmpty())
+                {
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                if(dimension < 1) {
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                isInputValid = true;
+
+            } catch (java.util.NoSuchElementException e) {
+                isInputValid = false;
+                clearScreen();
+            } catch (IllegalStateException e) {
+                isInputValid = false;
+                clearScreen();
+            }
+
+        }while(!isInputValid);
+
+        return dimension;
     }
 }
