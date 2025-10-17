@@ -460,6 +460,6 @@ public class Group06 {
 
     public static void distanceArrayMenu(Scanner input)
     {
-
+        //Test
     }
 }
