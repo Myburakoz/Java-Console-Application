@@ -442,6 +442,14 @@ public class Group06 {
 
         do {
             System.out.print("Enter a mathematical expression: ");
+
+            if (!input.hasNextLine()) {
+                System.out.printf("%nRe-enter a valid expression.%n");
+                input = new Scanner(System.in);
+                isInputValid = false;
+                continue;
+            }
+
             String expression = input.nextLine().replace(" ", "");
 
             try {
