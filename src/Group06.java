@@ -1,4 +1,7 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class Group06 {
     public static void main(String[] args) {
@@ -405,8 +408,204 @@ public class Group06 {
 
     public static void ageZodiacDetectorMenu(Scanner input)
     {
+        // Get the current date from the system clock in the specified timezone.
+        LocalDate today = LocalDate.now(ZoneId.of("Europe/Istanbul"));
+        int currentYear = today.getYear();
+        int currentMonth = today.getMonthValue();
+        int currentDay = today.getDayOfMonth();
 
+        System.out.println("--- Age and Zodiac Sign Detector ---");
+        System.out.printf("Note: The current date is set to %04d-%02d-%02d.%n", currentYear, currentMonth, currentDay);
+
+        int birthYear, birthMonth, birthDay;
+
+        // Loop until a valid date of birth is entered.
+        while (true) {
+            // --- Try block---
+            try {
+                // --- Get User Input ---
+                System.out.print("Enter your birth year (e.g., 1999): ");
+                birthYear = input.nextInt();
+
+                System.out.print("Enter your birth month (1-12): ");
+                birthMonth = input.nextInt();
+
+                System.out.print("Enter your birth day (1-31): ");
+                birthDay = input.nextInt();
+
+                // --- Validate Input ---
+                if (isValidDate(birthDay, birthMonth, birthYear, currentDay, currentMonth, currentYear)) {
+                    break; // Exit the loop if the date is valid.
+                } else {
+                    System.out.println("\nError: The date of birth entered is not valid. Please try again.");
+                }
+            }
+            // --- Catch block ---
+            catch (InputMismatchException e) {
+                System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
+                // Wrong input is cleared from the scanner buffer.
+                // This prevents an infinite loop of exceptions.
+                input.nextLine();
+            }
+        }
+
+        // --- Perform Calculations ---
+        int[] age = calculateAge(birthDay, birthMonth, birthYear, currentDay, currentMonth, currentYear);
+        String zodiacSign = getZodiacSign(birthDay, birthMonth);
+
+        // --- Display Results ---
+        System.out.println("\n--------------------");
+        System.out.println("      RESULTS       ");
+        System.out.println("--------------------");
+        System.out.printf("You are %d years, %d months, and %d days old.%n", age[0], age[1], age[2]);
+        System.out.printf("Your Zodiac Sign is: %s%n", zodiacSign);
+        System.out.println("--------------------");
     }
+
+    /**
+     * Calculates the age in years, months, and days with detailed, step-by-step logic.
+     * @param birthDay   The day of birth.
+     * @param birthMonth The month of birth.
+     * @param birthYear  The year of birth.
+     * @param currentDay The current day.
+     * @param currentMonth The current month.
+     * @param currentYear The current year.
+     * @return An integer array containing {years, months, days}.
+     */
+    public static int[] calculateAge(int birthDay, int birthMonth, int birthYear, int currentDay, int currentMonth, int currentYear) {
+        // --- Step 1: Initialize calculation variables from the current date ---
+        // We will modify these variables if we need to "borrow" time from a larger unit.
+        int calculatedYear = currentYear;
+        int calculatedMonth = currentMonth;
+        int calculatedDay = currentDay;
+
+        // --- Step 2: Adjust for days ---
+        // If the birth day is later in the month than the current day, we can't subtract directly.
+        // We need to "borrow" a month's worth of days.
+        if (birthDay > calculatedDay) {
+            // We go back one month.
+            calculatedMonth--;
+
+            // If going back one month puts us before January (i.e., month becomes 0),
+            // it means we need to go back to December of the previous year.
+            if (calculatedMonth < 1) {
+                calculatedMonth = 12; // Month is now December
+                calculatedYear--;   // And the year is one less
+            }
+
+            // Now, we add the number of days of the month we borrowed from to our current days.
+            // We must determine the correct number of days for that specific month and year.
+            int daysInBorrowedMonth;
+            if (calculatedMonth == 2) { // The borrowed month was February
+                // We must check if the year of THAT February was a leap year.
+                daysInBorrowedMonth = isLeapYear(calculatedYear) ? 29 : 28;
+            } else if (calculatedMonth == 4 || calculatedMonth == 6 || calculatedMonth == 9 || calculatedMonth == 11) {
+                // April, June, September, November have 30 days.
+                daysInBorrowedMonth = 30;
+            } else {
+                // All other months have 31 days.
+                daysInBorrowedMonth = 31;
+            }
+            calculatedDay += daysInBorrowedMonth;
+        }
+
+        // --- Step 3: Adjust for months ---
+        // Similarly, if the birth month is later in the year than the current month (after our day adjustment),
+        // we need to "borrow" a year's worth of months.
+        if (birthMonth > calculatedMonth) {
+            // We go back one year.
+            calculatedYear--;
+            // We add 12 to our month count, representing the borrowed year.
+            calculatedMonth += 12;
+        }
+
+        // --- Step 4: Perform the final subtraction ---
+        // After all the adjustments and borrowing, we can now perform a simple subtraction
+        // to find the final age components.
+        int finalYears = calculatedYear - birthYear;
+        int finalMonths = calculatedMonth - birthMonth;
+        int finalDays = calculatedDay - birthDay;
+
+        // Return the result as an array.
+        return new int[]{finalYears, finalMonths, finalDays};
+    }
+
+    /**
+     * Determines the zodiac sign based on the day and month.
+     * @param day   The day of birth.
+     * @param month The month of birth.
+     * @return A string representing the Zodiac sign.
+     */
+    public static String getZodiacSign(int day, int month) {
+        if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "Aries";
+        if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "Taurus";
+        if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "Gemini";
+        if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return "Cancer";
+        if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "Leo";
+        if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "Virgo";
+        if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "Libra";
+        if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "Scorpio";
+        if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "Sagittarius";
+        if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return "Capricorn";
+        if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "Aquarius";
+        if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return "Pisces";
+        return "Unknown";
+    }
+
+    /**
+     * Checks if a given year is a leap year.
+     * A year is a leap year if it is divisible by 4, except for end-of-century years,
+     * which must be divisible by 400.
+     * @param year The year to check.
+     * @return true if the year is a leap year, false otherwise.
+     */
+    public static boolean isLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
+    /**
+     * A simple validation for the entered date.
+     * @param day   The day of the month.
+     * @param month The month of the year.
+     * @param year  The year.
+     * @param currentDay The current day.
+     * @param currentMonth The current month.
+     * @param currentYear The current year.
+     * @return true if the date is plausible, false otherwise.
+     */
+    public static boolean isValidDate(int day, int month, int year, int currentDay, int currentMonth, int currentYear) {
+        if (year > currentYear || year < 1900)
+            return false;
+        if (month < 1 || month > 12)
+            return false;
+        if (day < 1 || day > 31)
+            return false;
+
+        if (month == 2) {
+            if (isLeapYear(year)) {
+                return day <= 29;
+            } else {
+                return day <= 28;
+            }
+        }
+
+        if (month == 4 || month == 6 || month == 9 || month == 11) {
+            return day <= 30;
+        }
+
+        // Check if the birth date is in the future relative to the current date
+        if (year == currentYear) {
+            if (month > currentMonth) {
+                return false;
+            }
+            if (month == currentMonth && day > currentDay) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     /*
         Reverse the Words
