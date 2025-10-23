@@ -448,7 +448,7 @@ public class Group06 {
                 System.out.print("Enter your birth month (1-12): ");
                 birthMonth = Integer.parseInt(input.nextLine().trim());
 
-                if(!isValidMonth(birthMonth)){
+                if(!isValidMonth(birthMonth, currentMonth, birthYear, currentYear)){
                     isInputInvalid = true;
                     System.out.println("You entered invalid month. Try again!");
                     continue;
@@ -643,8 +643,15 @@ public class Group06 {
         return !(year > currentYear || year < 1900);
     }
 
-    public static boolean isValidMonth(int month){
-        return !(month < 1 || month > 12);
+    public static boolean isValidMonth(int month, int currentMonth, int year, int currentYear){
+        if(month < 1 || month > 12)
+            return false;
+
+        if(year == currentYear){
+            return month <= currentMonth;
+        }
+
+        return true;
     }
 
     public static String findTheSymbolOfZodiacSign(String zodiac){
