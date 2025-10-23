@@ -480,6 +480,10 @@ public class Group06 {
         double cosine = getCosineSimilarity(arr1, arr2);
 
         System.out.println("=== Results ===");
+
+        printArray(arr1);
+        printArray(arr2);
+
         System.out.println("Manhattan Distance: " + manhattan);
         System.out.println("Euclidean Distance: " + euclidean);
         System.out.println("Cosine Similarity: " + cosine);
@@ -649,5 +653,18 @@ public class Group06 {
         lengthOfSecond = Math.sqrt(lengthOfSecond);
 
         return dotProduct/(lengthOfFirst * lengthOfSecond);
+    }
+
+    public static void printArray(ArrayList<Integer> arr){
+        System.out.print("[");
+
+        for(int i = 0; i < arr.size(); i++){
+            if(i != arr.size() - 1)
+                System.out.print(arr.get(i) + ", ");
+            else
+                System.out.print(arr.get(i));
+        }
+
+        System.out.println("]");
     }
 }
