@@ -498,6 +498,7 @@ public class Group06 {
         System.out.println("--------------------");
         System.out.printf("You are %d years, %d months, and %d days old.%n", age[0], age[1], age[2]);
         System.out.printf("Your Zodiac Sign is: %s%n", zodiacSign);
+        System.out.println(findTheSymbolOfZodiacSign(zodiacSign));
         System.out.println("--------------------");
     }
 
@@ -519,7 +520,7 @@ public class Group06 {
         int calculatedDay = currentDay;
 
         // --- Step 2: Adjust for days ---
-        // If the birth day is later in the month than the current day, we can't subtract directly.
+        // If the birthday is later in the month than the current day, we can't subtract directly.
         // We need to "borrow" a month's worth of days.
         if (birthDay > calculatedDay) {
             // We go back one month.
@@ -583,7 +584,7 @@ public class Group06 {
         if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "Leo";
         if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "Virgo";
         if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "Libra";
-        if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "Scorpio";
+        if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "Scorpius";
         if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "Sagittarius";
         if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return "Capricorn";
         if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "Aquarius";
@@ -644,6 +645,106 @@ public class Group06 {
 
     public static boolean isValidMonth(int month){
         return !(month < 1 || month > 12);
+    }
+
+    public static String findTheSymbolOfZodiacSign(String zodiac){
+        switch (zodiac){
+            case "Aries":
+                return """
+                           .-.   .-.
+                          (_  \\ / _)
+                               |
+                               |
+                        """;
+            case "Taurus":
+                return """
+                            .     .
+                            '.___.'
+                            .'   `.
+                           :       :
+                           :       :
+                            `.___.'
+                        """;
+            case "Gemini":
+                return """
+                            ._____.
+                              | |
+                              | |
+                             _|_|_
+                            '     '
+                        """;
+            case "Cancer":
+                return """
+                              .--.
+                             /   _`.
+                            (_) ( )
+                           '.    /
+                             `--'
+                        """;
+            case "Leo":
+                return """
+                              .--.
+                             (    )
+                            (_)  /
+                                (_,
+                        """;
+            case "Virgo":
+                return """
+                          _
+                           '`:--.--.
+                             |  |  |_ 
+                             |  |  | )
+                             |  |  |/
+                                  (J
+                        """;
+            case "Libra":
+                return """
+                                __
+                           ___.'  '.___
+                           ____________
+                        
+                        """;
+            case "Scorpius":
+                return """
+                           _
+                          ' `:--.--.
+                             |  |  |
+                             |  |  |
+                             |  |  |  ..,
+                                   `---':
+                        """;
+            case "Sagittarius":
+                return """
+                                  ...
+                                  .':
+                                .'
+                            `..'
+                            .'`.
+                        """;
+            case "Capricorn":
+                return """
+                                  _
+                            \\      /_)
+                             \\    /`.
+                              \\  /   ;
+                               \\/ __.'
+                        """;
+            case "Aquarius":
+                return """
+                        .-"-._.-"-._.-
+                        .-"-._.-"-._.-
+                        """;
+            case "Pisces":
+                return """
+                        `-.    .-'
+                           :  :
+                         --:--:--
+                           :  :
+                        .-'    `-.
+                        """;
+            default:
+                return "";
+        }
     }
 
 
