@@ -1,4 +1,5 @@
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -414,9 +415,6 @@ public class Group06 {
         int currentMonth = today.getMonthValue();
         int currentDay = today.getDayOfMonth();
 
-        System.out.println("--- Age and Zodiac Sign Detector ---");
-        System.out.printf("Note: The current date is set to %04d-%02d-%02d.%n", currentYear, currentMonth, currentDay);
-
         int birthYear = 0, birthMonth = 0, birthDay = 0;
 
         boolean isInputInvalid = false;
@@ -425,9 +423,21 @@ public class Group06 {
         do {
             // --- Try block---
             try {
-                // --- Get User Input ---
-                System.out.print("Enter your birth year (1900-2025): ");
-                birthYear = Integer.parseInt(input.nextLine());
+                // --- Gent(input.nextLt User Input ---
+                System.out.println("--- Age and Zodiac Sign Detector ---");
+                System.out.printf("Note: The current date is set to %04d-%02d-%02d.%n", currentYear, currentMonth, currentDay);
+
+                System.out.print("Enter your birth year (1900-" + currentYear + "): ");
+
+                if(!input.hasNextLine())
+                {
+                    isInputInvalid = true;
+                    input = new Scanner(System.in);
+                    clearScreen();
+                    continue;
+                }
+
+                birthYear = Integer.parseInt(input.nextLine().trim());
 
                 if(!isValidYear(birthYear, currentYear)){
                     isInputInvalid = true;
@@ -436,9 +446,9 @@ public class Group06 {
                 }
 
                 System.out.print("Enter your birth month (1-12): ");
-                birthMonth = Integer.parseInt(input.nextLine());
+                birthMonth = Integer.parseInt(input.nextLine().trim());
 
-                if(!isValidMonth(birthYear, currentYear, birthMonth, currentMonth)){
+                if(!isValidMonth(birthMonth)){
                     isInputInvalid = true;
                     System.out.println("You entered invalid month. Try again!");
                     continue;
@@ -446,7 +456,7 @@ public class Group06 {
 
 
                 System.out.print("Enter your birth day (1-31): ");
-                birthDay = Integer.parseInt(input.nextLine());
+                birthDay = Integer.parseInt(input.nextLine().trim());
 
                 if(!isValidDate(birthDay, birthMonth, birthYear, currentDay, currentMonth, currentYear)){
                     isInputInvalid = true;
@@ -458,15 +468,23 @@ public class Group06 {
             }
             // --- Catch block ---
             catch (InputMismatchException e) {
+                clearScreen();
                 System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
-                // Wrong input is cleared from the scanner buffer.
-                // This prevents an infinite loop of exceptions.
                 isInputInvalid = true;
+                clearScreen();
             }
 
             catch (NumberFormatException e){
+                clearScreen();
                 System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
                 isInputInvalid = true;
+            }
+
+            catch (NoSuchElementException e){
+                clearScreen();
+                System.out.println("EOF detected!");
+                isInputInvalid = true;
+                input = new Scanner(System.in);
             }
         }while(isInputInvalid);
 
@@ -624,7 +642,7 @@ public class Group06 {
         return !(year > currentYear || year < 1900);
     }
 
-    public static boolean isValidMonth(int year,  int currentYear, int month, int currentMonth){
+    public static boolean isValidMonth(int month){
         return !(month < 1 || month > 12);
     }
 
