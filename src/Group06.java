@@ -417,37 +417,58 @@ public class Group06 {
         System.out.println("--- Age and Zodiac Sign Detector ---");
         System.out.printf("Note: The current date is set to %04d-%02d-%02d.%n", currentYear, currentMonth, currentDay);
 
-        int birthYear, birthMonth, birthDay;
+        int birthYear = 0, birthMonth = 0, birthDay = 0;
+
+        boolean isInputInvalid = false;
 
         // Loop until a valid date of birth is entered.
-        while (true) {
+        do {
             // --- Try block---
             try {
                 // --- Get User Input ---
-                System.out.print("Enter your birth year (e.g., 1999): ");
-                birthYear = input.nextInt();
+                System.out.print("Enter your birth year (1900-2025): ");
+                birthYear = Integer.parseInt(input.nextLine());
+
+                if(!isValidYear(birthYear, currentYear)){
+                    isInputInvalid = true;
+                    System.out.println("You entered invalid year. Try again!");
+                    continue;
+                }
 
                 System.out.print("Enter your birth month (1-12): ");
-                birthMonth = input.nextInt();
+                birthMonth = Integer.parseInt(input.nextLine());
+
+                if(!isValidMonth(birthYear, currentYear, birthMonth, currentMonth)){
+                    isInputInvalid = true;
+                    System.out.println("You entered invalid month. Try again!");
+                    continue;
+                }
+
 
                 System.out.print("Enter your birth day (1-31): ");
-                birthDay = input.nextInt();
+                birthDay = Integer.parseInt(input.nextLine());
 
-                // --- Validate Input ---
-                if (isValidDate(birthDay, birthMonth, birthYear, currentDay, currentMonth, currentYear)) {
-                    break; // Exit the loop if the date is valid.
-                } else {
-                    System.out.println("\nError: The date of birth entered is not valid. Please try again.");
+                if(!isValidDate(birthDay, birthMonth, birthYear, currentDay, currentMonth, currentYear)){
+                    isInputInvalid = true;
+                    System.out.println("You entered invalid date. Try again!");
+                    continue;
                 }
+
+                isInputInvalid = false;
             }
             // --- Catch block ---
             catch (InputMismatchException e) {
                 System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
                 // Wrong input is cleared from the scanner buffer.
                 // This prevents an infinite loop of exceptions.
-                input.nextLine();
+                isInputInvalid = true;
             }
-        }
+
+            catch (NumberFormatException e){
+                System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
+                isInputInvalid = true;
+            }
+        }while(isInputInvalid);
 
         // --- Perform Calculations ---
         int[] age = calculateAge(birthDay, birthMonth, birthYear, currentDay, currentMonth, currentYear);
@@ -574,10 +595,6 @@ public class Group06 {
      * @return true if the date is plausible, false otherwise.
      */
     public static boolean isValidDate(int day, int month, int year, int currentDay, int currentMonth, int currentYear) {
-        if (year > currentYear || year < 1900)
-            return false;
-        if (month < 1 || month > 12)
-            return false;
         if (day < 1 || day > 31)
             return false;
 
@@ -589,21 +606,26 @@ public class Group06 {
             }
         }
 
-        if (month == 4 || month == 6 || month == 9 || month == 11) {
+        if (month == 4 || month == 6 || month == 9 || month == 11)
             return day <= 30;
-        }
 
-        // Check if the birth date is in the future relative to the current date
+        // Check if the birthdate is in the future relative to the current date
         if (year == currentYear) {
             if (month > currentMonth) {
                 return false;
             }
-            if (month == currentMonth && day > currentDay) {
-                return false;
-            }
+            return month != currentMonth || day <= currentDay;
         }
 
         return true;
+    }
+
+    public static boolean isValidYear(int year, int currentYear){
+        return !(year > currentYear || year < 1900);
+    }
+
+    public static boolean isValidMonth(int year,  int currentYear, int month, int currentMonth){
+        return !(month < 1 || month > 12);
     }
 
 
