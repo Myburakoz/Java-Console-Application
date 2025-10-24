@@ -449,7 +449,7 @@ public class Group06 {
 
     public static void statisticalInfoArrayMenu(Scanner input)
     {
-
+        //Test
     }
 
     /*
