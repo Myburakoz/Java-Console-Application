@@ -419,16 +419,53 @@ public class Group06 {
         //Test
     }
 
+
+    public class ReverseWordsRecursive {
+        public static void main(String[] args) {
+            try (Scanner sc = new Scanner(System.in, "UTF-8")) {
+                String input = sc.useDelimiter("\\Z").next();
+                System.out.println(process(input));
+            }
+        }
+
+        public static String process(String text) {
+            StringBuilder result = new StringBuilder();
+            int i = 0;
+            while (i < text.length()) {
+                char c = text.charAt(i);
+                if (Character.isLetter(c)) {
+                    int start = i;
+                    while (i < text.length() && Character.isLetter(text.charAt(i))) {
+                        i++;
+                    }
+                    String word = text.substring(start, i);
+                    if (word.length() >= 2)
+                        result.append(reverseRec(word));
+                    else
+                        result.append(word);
+                } else {
+                    result.append(c);
+                    i++;
+                }
+
+            }
+            return result.toString();
+        }
+        private static String reverseRec(String s) {
+            if(s.length() <= 1)
+                return s;
+            return reverseRec(s.substring(1)) + s.charAt(0);
+        }
+    }
     /*
         Prime Numbers
 
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void primeNumbersMenu(Scanner input)
-    {
+        public static void primeNumbersMenu(Scanner input) {
 
-    }
+        }
 
     /*
         Step by step Evaluation of Expression
@@ -436,10 +473,9 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void evalauteExpressionMenu(Scanner input)
-    {
+        public static void evalauteExpressionMenu(Scanner input) {
 
-    }
+        }
 
     /*
         Statistical Information about an Array
@@ -447,10 +483,9 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void statisticalInfoArrayMenu(Scanner input)
-    {
+        public static void statisticalInfoArrayMenu(Scanner input) {
 
-    }
+        }
 
     /*
         Distance between Two Arrays
@@ -458,8 +493,7 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void distanceArrayMenu(Scanner input)
-    {
+        public static void distanceArrayMenu(Scanner input) {
 
+        }
     }
-}
