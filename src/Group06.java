@@ -494,6 +494,7 @@ public class Group06 {
 
     /**
      * Calculates the age in years, months, and days with detailed, step-by-step logic.
+     * @author Suhan Arda Öner
      * @param birthDay   The day of birth.
      * @param birthMonth The month of birth.
      * @param birthYear  The year of birth.
@@ -562,6 +563,7 @@ public class Group06 {
 
     /**
      * Determines the zodiac sign based on the day and month.
+     * @author Suhan Arda Öner
      * @param day   The day of birth.
      * @param month The month of birth.
      * @return A string representing the Zodiac sign.
@@ -586,6 +588,7 @@ public class Group06 {
      * Checks if a given year is a leap year.
      * A year is a leap year if it is divisible by 4, except for end-of-century years,
      * which must be divisible by 400.
+     * @author Suhan Arda Öner
      * @param year The year to check.
      * @return true if the year is a leap year, false otherwise.
      */
@@ -595,6 +598,7 @@ public class Group06 {
 
     /**
      * A simple validation for the entered date.
+     * @author Suhan Arda Öner and Burak Özevin
      * @param day   The day of the month.
      * @param month The month of the year.
      * @param year  The year.
@@ -629,10 +633,26 @@ public class Group06 {
         return true;
     }
 
+    /**
+     * A simple validation for the year.
+     * @author Burak Özevin
+     * @param year  The year.
+     * @param currentYear The current year.
+     * @return true if the year is plausible, false otherwise.
+     */
     public static boolean isValidYear(int year, int currentYear){
         return !(year > currentYear || year < 1900);
     }
 
+    /**
+     * A simple validation for the month.
+     * @author Burak Özevin
+     * @param month The month.
+     * @param currentMonth The current month.
+     * @param year  The year.
+     * @param currentYear The current year.
+     * @return true if the month is plausible, false otherwise.
+     */
     public static boolean isValidMonth(int month, int currentMonth, int year, int currentYear){
         if(month < 1 || month > 12)
             return false;
@@ -644,6 +664,12 @@ public class Group06 {
         return true;
     }
 
+    /**
+     * A function that shows ascii art according zodiac sign.
+     * @author Burak Özevin
+     * @param zodiac The zodiac sign
+     * @return Ascii art of zodiac sign in string.
+     */
     public static String findTheSymbolOfZodiacSign(String zodiac){
         switch (zodiac){
             case "Aries":
