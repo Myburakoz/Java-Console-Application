@@ -409,6 +409,60 @@ public class Group06 {
 
     public static void ageZodiacDetectorMenu(Scanner input)
     {
+        final String zodiacSigns = """
+                          ████      ████      ██             ██        ███████████        ██████████               \s
+                        ██    ██  ██    ██      ████    █████             ██  ██          ██    ██  ████           \s
+                        ██      ██      ██          ████                  ██  ██          ██    ██      ██         \s
+                         ██     ██    ██          ██    ██                ██  ██          ████████                 \s
+                          █     ██     █          ██     ██               ██  ██          ████████                 \s
+                                ██              ██        ███             ██  ██                    ████████       \s
+                                ██              ██        ███             ██  ██            ██      ██     █       \s
+                                ██                ██    ██                ██  ██              ████  ██    ██       \s
+                                ██                  ████                ██████████                ██████████       \s
+                
+                
+                
+                
+                
+                
+                                ██            ██████████                  █████           ██████████               \s
+                               ████           ██████████                  ██████          ██████████               \s
+                             ██    ██           ██  ██  ██             ███      ██          ██  ██  ██             \s
+                             ██    ██           ██  ██  ██             ███      ██          ██  ██  ██             \s
+                             ██    ██           ██  ██  █████          ███      ██          ██  ██  ██             \s
+                           ████    ██           ██  ██  ██   ██           ██  ██            ██  ██  ██             \s
+                         ██    ██  ██           ██  ██  ██   ██    ███████      ██████      ██  ██  ██             \s
+                         ██    ██  ██  ██       ██  ██    ███                               ██  ██  ██     █       \s
+                           ████    ████                  █   █      ██████████████████      ██  ██    █████        \s
+                
+                
+                
+                
+                
+                
+                
+                                 ████████   ██                     ███      ██      ██      ██          ███        \s
+                                     ████     ██  ████                █   ██  ██  ██      ██  ██      ██  ██       \s
+                                   ██  ██       ██    ██               ███      ██              ██  ██             \s
+                                 ██    ██       ██    ██   ███                                ██  ██  ██           \s
+                             ████               ██    ████     █                              ██  ██  ██           \s
+                             ████               ██      ██     ██   █       █        █          ██  ███            \s
+                             ████               ██      ██     █    ██      ██      ██          ██  ██             \s
+                           ██                   ██    ██   ███        ██  ██  ██  ██      ██  ██      ██  ██       \s
+                         ██                         ██                 ███      ██          ██          ███        \s
+                """;
+
+        final String menuAsciiArt = """
+                  ___                                                                                                                                                                \s
+                 -   -_,                                |\\         _-___        |\\                         -_-/                       -_____            ,               ,            \s
+                (  ~/||    _                 _           \\\\            /         \\\\   '   _               (_ /    '   _                 ' | -,         ||              ||            \s
+                (  / ||   / \\\\  _-_         < \\, \\\\/\\\\  / \\\\          /   /'\\\\  / \\\\ \\\\  < \\,  _-_       (_ --_  \\\\  / \\\\ \\\\/\\\\        /| |  |`  _-_  =||=  _-_   _-_ =||=  /'\\\\ ,._-_
+                 \\/==||  || || || \\\\        /-|| || || || ||        =/=  || || || || ||  /-|| ||           --_ ) || || || || ||        || |==|| || \\\\  ||  || \\\\ ||    ||  || ||  || \s
+                 /_ _||  || || ||/         (( || || || || ||        /    || || || || || (( || ||          _/  )) || || || || ||       ~|| |  |, ||/    ||  ||/   ||    ||  || ||  || \s
+                (  - \\\\, \\\\_-| \\\\,/         \\/\\\\ \\\\ \\\\  \\\\/        /-__- \\\\,/   \\\\/  \\\\  \\/\\\\ \\\\,/       (_-_-   \\\\ \\\\_-| \\\\ \\\\        ~-____,  \\\\,/   \\\\, \\\\,/  \\\\,/  \\\\, \\\\,/   \\\\,\s
+                          /  \\                                                                                       /  \\             (                                              \s
+                         '----`                                                                                     '----`                                                           \s""";
+
         // Get the current date from the system clock in the specified timezone.
         LocalDate today = LocalDate.now(ZoneId.of("Europe/Istanbul"));
         int currentYear = today.getYear();
@@ -418,22 +472,27 @@ public class Group06 {
         int birthYear = 0, birthMonth = 0, birthDay = 0;
 
         boolean isInputInvalid = false;
+        String message = "";
 
         // Loop until a valid date of birth is entered.
         do {
             // --- Try block---
             try {
                 // --- Gent(input.nextLt User Input ---
-                System.out.println("--- Age and Zodiac Sign Detector ---");
+                System.out.println(menuAsciiArt);
+                System.out.println(zodiacSigns);
+                System.out.printf("%n%n%n");
                 System.out.printf("Note: The current date is set to %04d-%02d-%02d.%n", currentYear, currentMonth, currentDay);
 
+                System.out.printf(message);
                 System.out.print("Enter your birth year (1900-" + currentYear + "): ");
 
                 birthYear = Integer.parseInt(input.nextLine().trim());
 
                 if(!isValidYear(birthYear, currentYear)){
                     isInputInvalid = true;
-                    System.out.println("You entered invalid year. Try again!");
+                    message = "You entered invalid year. Try again!%n";
+                    clearScreen();
                     continue;
                 }
 
@@ -442,7 +501,8 @@ public class Group06 {
 
                 if(!isValidMonth(birthMonth, currentMonth, birthYear, currentYear)){
                     isInputInvalid = true;
-                    System.out.println("You entered invalid month. Try again!");
+                    message = "You entered invalid month. Try again!%n";
+                    clearScreen();
                     continue;
                 }
 
@@ -452,7 +512,8 @@ public class Group06 {
 
                 if(!isValidDate(birthDay, birthMonth, birthYear, currentDay, currentMonth, currentYear)){
                     isInputInvalid = true;
-                    System.out.println("You entered invalid date. Try again!");
+                    message = "You entered invalid date. Try again!%n";
+                    clearScreen();
                     continue;
                 }
 
@@ -461,13 +522,11 @@ public class Group06 {
             // --- Catch block ---
             catch (InputMismatchException e) {
                 clearScreen();
-                System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
                 isInputInvalid = true;
-                clearScreen();
             }
             catch (NumberFormatException e){
                 clearScreen();
-                System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
+                message = "Error: Invalid input. Please enter numbers only. Try again.%n";
                 isInputInvalid = true;
             }
             catch (NoSuchElementException e){
@@ -478,6 +537,8 @@ public class Group06 {
             }
         }while(isInputInvalid);
 
+        clearScreen();
+
         // --- Perform Calculations ---
         int[] age = calculateAge(birthDay, birthMonth, birthYear, currentDay, currentMonth, currentYear);
         String zodiacSign = getZodiacSign(birthDay, birthMonth);
@@ -487,9 +548,9 @@ public class Group06 {
         System.out.println("      RESULTS       ");
         System.out.println("--------------------");
         System.out.printf("You are %d years, %d months, and %d days old.%n", age[0], age[1], age[2]);
-        System.out.printf("Your Zodiac Sign is: %s%n", zodiacSign);
+        System.out.printf("Your Zodiac Sign is: %s%n%n", zodiacSign);
         System.out.println(findTheSymbolOfZodiacSign(zodiacSign));
-        System.out.println("--------------------");
+        System.out.printf("%n--------------------%n");
     }
 
     /**
