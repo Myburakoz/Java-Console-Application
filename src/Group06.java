@@ -1,3 +1,4 @@
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Group06 {
@@ -416,8 +417,31 @@ public class Group06 {
 
     public static void wordReverserMenu(Scanner input)
     {
-        System.out.print("Enter a string: ");
-        String str = input.nextLine();
+        boolean isInputValid = false;
+        String str = "";
+        String message = "Enter a string: ";
+
+        do {
+            try {
+                System.out.print(message);
+                str = input.nextLine().trim();
+
+                isInputValid = true;
+
+                if(str.isEmpty()){
+                    isInputValid = false;
+                    message = "You entered an empty string or just spaces. Enter a valid string: ";
+                }
+            } catch (NoSuchElementException e) {
+                clearScreen();
+                System.out.println("EOF detected! Returning to the menu...");
+                makeWait();
+                clearScreen();
+                return;
+            }
+        }while (!isInputValid);
+
+        System.out.print("The result: ");
         System.out.println(process(str));
     }
 
