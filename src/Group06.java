@@ -430,7 +430,7 @@ public class Group06 {
 
     public static void primeNumbersMenu(Scanner input)
     {
-        boolean isInputValid = false;
+        boolean isInputValid = true;
         int n = 0;
 
         do {
@@ -441,6 +441,7 @@ public class Group06 {
                 System.out.print("Please enter a number: ");
 
                 if(!input.hasNextLine()){
+                    System.out.println("EOF detected!");
                     input = new Scanner(System.in);
                     isInputValid = false;
                     clearScreen();
@@ -451,23 +452,27 @@ public class Group06 {
 
                 if(n < 12)
                 {
-                    System.out.println("Please enter a number bigger than 12.");
+                    System.out.println("Please enter a number bigger than 12!");
                     isInputValid = false;
                     continue;
                 }
-
-                isInputValid = true;
 
             } catch (NumberFormatException e){
                 System.out.println("Please enter a number!");
                 input = new Scanner(System.in);
                 isInputValid = false;
+                clearScreen();
+                continue;
 
             } catch (NoSuchElementException e){
                 System.out.println("EOF detected!");
                 input = new Scanner(System.in);
                 isInputValid = false;
+                clearScreen();
+                continue;
             }
+
+            isInputValid = true;
 
         }while (!isInputValid);
 
