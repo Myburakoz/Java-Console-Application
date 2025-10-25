@@ -416,47 +416,40 @@ public class Group06 {
 
     public static void wordReverserMenu(Scanner input)
     {
-        //Test
+        System.out.print("Enter a string: ");
+        String str = input.nextLine();
+        System.out.println(process(str));
     }
 
-
-     public class ReverseWordsRecursive {
-        public static void main(String[] args) {
-            try (Scanner sc = new Scanner(System.in, "UTF-8")) {
-                String input = sc.useDelimiter("\\Z").next();
-                System.out.println(process(input));
-            }
-        }
-
-        public static String process(String text) {
-            StringBuilder result = new StringBuilder();
-            int i = 0;
-            while (i < text.length()) {
-                char c = text.charAt(i);
-                if (Character.isLetter(c)) {
-                    int start = i;
-                    while (i < text.length() && Character.isLetter(text.charAt(i))) {
-                        i++;
-                    }
-                    String word = text.substring(start, i);
-                    if (word.length() >= 2)
-                        result.append(reverseRec(word));
-                    else
-                        result.append(word);
-                } else {
-                    result.append(c);
+    public static String process(String text) {
+        StringBuilder result = new StringBuilder();
+        int i = 0;
+        while (i < text.length()) {
+            char c = text.charAt(i);
+            if (Character.isLetter(c)) {
+                int start = i;
+                while (i < text.length() && Character.isLetter(text.charAt(i))) {
                     i++;
                 }
-
+                String word = text.substring(start, i);
+                if (word.length() >= 2)
+                    result.append(reverseRec(word));
+                else
+                    result.append(word);
+            } else {
+                result.append(c);
+                i++;
             }
-            return result.toString();
+
         }
-        private static String reverseRec(String s) {
-            if(s.length() <= 1)
-                return s;
-            return reverseRec(s.substring(1)) + s.charAt(0);
-        }
+        return result.toString();
     }
+    private static String reverseRec(String s) {
+        if(s.length() <= 1)
+            return s;
+        return reverseRec(s.substring(1)) + s.charAt(0);
+    }
+
     /*
         Prime Numbers
 
