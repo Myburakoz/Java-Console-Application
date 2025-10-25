@@ -429,14 +429,6 @@ public class Group06 {
 
                 System.out.print("Enter your birth year (1900-" + currentYear + "): ");
 
-                if(!input.hasNextLine())
-                {
-                    isInputInvalid = true;
-                    input = new Scanner(System.in);
-                    clearScreen();
-                    continue;
-                }
-
                 birthYear = Integer.parseInt(input.nextLine().trim());
 
                 if(!isValidYear(birthYear, currentYear)){
@@ -473,18 +465,16 @@ public class Group06 {
                 isInputInvalid = true;
                 clearScreen();
             }
-
             catch (NumberFormatException e){
                 clearScreen();
                 System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
                 isInputInvalid = true;
             }
-
             catch (NoSuchElementException e){
                 clearScreen();
                 System.out.println("EOF detected!");
-                isInputInvalid = true;
-                input = new Scanner(System.in);
+                makeWait();
+                return;
             }
         }while(isInputInvalid);
 
