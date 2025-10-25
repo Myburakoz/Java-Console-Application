@@ -420,7 +420,7 @@ public class Group06 {
     }
 
 
-    public class ReverseWordsRecursive {
+     public class ReverseWordsRecursive {
         public static void main(String[] args) {
             try (Scanner sc = new Scanner(System.in, "UTF-8")) {
                 String input = sc.useDelimiter("\\Z").next();
