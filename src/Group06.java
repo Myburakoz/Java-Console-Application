@@ -656,32 +656,124 @@ public class Group06 {
      * @author Suhan Arda Öner
      * @param board The 2D char array representing the game board.
      */
+//    public static void printBoard(char[][] board) {
+//        int rows = board.length;
+//        int cols = board[0].length;
+//
+//        System.out.println();
+//        // Print column headers
+//        for (int c = 0; c < cols; c++) {
+//            System.out.print(" " + (c + 1) + " ");
+//        }
+//        System.out.println();
+//        for (int i = 0; i < cols * 3; i++) {
+//            System.out.print("-");
+//        }
+//        System.out.println();  // Divider
+//
+//        // Print board content
+//        for (int r = 0; r < rows; r++) {
+//            for (int c = 0; c < cols; c++) {
+//                System.out.print("|" + board[r][c] + "|");
+//            }
+//            System.out.println();
+//        }
+//        for (int i = 0; i < cols * 3; i++) {
+//            System.out.print("-");
+//        }
+//        System.out.println();  // Divider
+//    }
+
     public static void printBoard(char[][] board) {
         int rows = board.length;
         int cols = board[0].length;
 
-        System.out.println();
-        // Print column headers
-        for (int c = 0; c < cols; c++) {
-            System.out.print(" " + (c + 1) + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < cols * 3; i++) {
-            System.out.print("-");
-        }
-        System.out.println();  // Divider
+        final String reset = "\033[0m";
+        final String red = "\033[91m";
+        final String blue = "\033[94m";
+        final String cyan = "\033[96m";
+        final String yellow = "\033[93m";
+        final String bold = "\033[1m";
 
-        // Print board content
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                System.out.print("|" + board[r][c] + "|");
+        System.out.println();
+
+        // Column numbers
+        System.out.print("  ");
+        for (int j = 1; j <= cols; j++) {
+            System.out.print(bold + yellow + "   " + j + "    " + reset);
+        }
+        System.out.println();
+
+        // Top border
+        System.out.print(cyan + "╔═══════");
+        for (int j = 1; j < cols; j++) {
+            System.out.print("╦═══════");
+        }
+        System.out.println("╗" + reset);
+
+        // Board rows
+        for (int i = 0; i < rows; i++) {
+            // Line 1 of cell
+            System.out.print(cyan + "║" + reset);
+            for (int j = 0; j < cols; j++) {
+                char token = board[i][j];
+                if (token == PLAYER_ONE_DISC) {
+                    System.out.print(red + "  ▄▄▄  " + reset);
+                } else if (token == PLAYER_TWO_DISC) {
+                    System.out.print(blue + "  ▄▄▄  " + reset);
+                } else {
+                    System.out.print("       ");
+                }
+                System.out.print(cyan + "║" + reset);
             }
             System.out.println();
+
+            // Line 2 of cell
+            System.out.print(cyan + "║" + reset);
+            for (int j = 0; j < cols; j++) {
+                char token = board[i][j];
+                if (token == PLAYER_ONE_DISC) {
+                    System.out.print(red + " ▐   ▌ " + reset);
+                } else if (token == PLAYER_TWO_DISC) {
+                    System.out.print(blue + " ▐   ▌ " + reset);
+                } else {
+                    System.out.print("       ");
+                }
+                System.out.print(cyan + "║" + reset);
+            }
+            System.out.println();
+
+            // Line 3 of cell
+            System.out.print(cyan + "║" + reset);
+            for (int j = 0; j < cols; j++) {
+                char token = board[i][j];
+                if (token == PLAYER_ONE_DISC) {
+                    System.out.print(red + "  ▀▀▀  " + reset);
+                } else if (token == PLAYER_TWO_DISC) {
+                    System.out.print(blue + "  ▀▀▀  " + reset);
+                } else {
+                    System.out.print("       ");
+                }
+                System.out.print(cyan + "║" + reset);
+            }
+            System.out.println();
+
+            // Middle divider (except after last row)
+            if (i < rows - 1) {
+                System.out.print(cyan + "╠═══════");
+                for (int j = 1; j < cols; j++) {
+                    System.out.print("╬═══════");
+                }
+                System.out.println("╣" + reset);
+            }
         }
-        for (int i = 0; i < cols * 3; i++) {
-            System.out.print("-");
+
+        // Bottom border
+        System.out.print(cyan + "╚═══════");
+        for (int j = 1; j < cols; j++) {
+            System.out.print("╩═══════");
         }
-        System.out.println();  // Divider
+        System.out.println("╝" + reset);
     }
 
     /**

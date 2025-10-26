@@ -29,6 +29,7 @@ bin/
 ### Others ###
 .idea/
 JavaConsoleApp.iml
+Java-Console-Application.iml
 src/Main.class
 src/Group06.class
 
