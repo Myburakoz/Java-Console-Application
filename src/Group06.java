@@ -1003,14 +1003,14 @@ public class Group06 {
         if(AIcount == 4)
             return 10000;
         if (AIcount == 3 && emptyCount == 1)
-            return 100;
+            return 500;
         if (AIcount == 2 && emptyCount == 2)
             return 10;
 
         if (playerCount == 4)
             return -10000;
         if (playerCount == 3 && emptyCount == 1)
-            return -120;
+            return -550;
         if (playerCount == 2 && emptyCount == 2)
             return -12;
 
@@ -1026,9 +1026,9 @@ public class Group06 {
 
         for(int r = 0; r < rows; r++){
             if(board[r][centerCol] == AIDisc)
-                score += 3;
+                score += 10;
             else if(board[r][centerCol] == playerDisc)
-                score -= 3;
+                score -= 10;
         }
 
         for (int r = 0; r < rows; r++) {
@@ -1135,7 +1135,7 @@ public class Group06 {
         int bestScore = Integer.MIN_VALUE;
         int alpha = Integer.MIN_VALUE, beta = Integer.MAX_VALUE;
 
-        for(int i = 0; i < validCols.size() - 1; i++){
+        for(int i = 0; i < validCols.size(); i++){
             dropDisc(board, validCols.get(i), AIDisc);
             int score = minimax(board, depth - 1, false, alpha, beta, AIDisc, playerDisc);
             undo(board, validCols.get(i));
