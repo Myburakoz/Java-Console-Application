@@ -1,4 +1,4 @@
-import java.util.InputMismatchException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -185,7 +185,7 @@ public class Group06 {
                 case "D":
                     clearScreen();
                     isInputValid = true;
-                    //universityMenu();
+                    connect4(input);
                     break;
                 case "E":
                     clearScreen();
@@ -479,7 +479,7 @@ public class Group06 {
      * @author Suhan Arda Öner
      * @param input The scanner object for user input.
      */
-    public static void Connect4(Scanner input)
+    public static void connect4(Scanner input)
     {
         System.out.println("--- Welcome to Connect4 Game ---");
 
@@ -506,11 +506,11 @@ public class Group06 {
 
 
         // --- Start the selected game loop ---
-        if (gameMode.equals("PVP")) {
+        if (gameMode.equals("PVP"))
             startGamePVP(rows, cols, input);
-        } else if (gameMode.equals("AI") && difficulty.equals("Easy")) {
-            startGameEasyAI(rows, cols, input);
-        }
+
+        else if (gameMode.equals("AI"))
+            startGameAI(rows, cols, difficulty, input);
     }
 
     /**
@@ -563,11 +563,12 @@ public class Group06 {
      * @param cols The number of columns in the game board.
      * @param input The scanner object for user input.
      */
-    public static void startGameEasyAI(int rows, int cols, Scanner input) {
+    public static void startGameAI(int rows, int cols, String difficulty, Scanner input) {
         char[][] board = initializeBoard(rows, cols);
         boolean isPlayerTurn = true; // Player 1 is 'X', AI is 'O'
 
         while (true) {
+            clearScreen();
             printBoard(board);
 
             if (isPlayerTurn) {
@@ -576,6 +577,7 @@ public class Group06 {
                 placeDisc(board, col, PLAYER_ONE_DISC);
 
                 if (checkWin(board, PLAYER_ONE_DISC)) {
+                    clearScreen();
                     printBoard(board);
                     System.out.println("\n--- GAME OVER ---");
                     System.out.println("Player 1 (" + PLAYER_ONE_DISC + ") wins!");
@@ -584,10 +586,34 @@ public class Group06 {
             } else {
                 // --- AI's Turn ---
                 System.out.println("Computer's turn (" + PLAYER_TWO_DISC + ")...");
-                int col = getEasyAIMove(board);
+
+                int col = 0;
+
+                switch (difficulty) {
+                    case "Easy" -> col = getEasyAIMove(board);
+                    case "Normal" -> {
+                        System.out.println("Computer is thinking right now...");
+                        int depth = 4;
+                        col = bestMove(board, depth, PLAYER_TWO_DISC, PLAYER_ONE_DISC);
+                    }
+                    case "Hard" -> {
+                        System.out.println("Computer is thinking right now...");
+                        int depth = 6;
+                        col = bestMove(board, depth, PLAYER_TWO_DISC, PLAYER_ONE_DISC);
+                    }
+                    default -> {
+                        System.out.println("Computer is thinking right now...");
+                        int depth = 8;
+                        col = bestMove(board, depth, PLAYER_TWO_DISC, PLAYER_ONE_DISC);
+                    }
+                }
+
+
                 placeDisc(board, col, PLAYER_TWO_DISC);
 
                 if (checkWin(board, PLAYER_TWO_DISC)) {
+                    makeWait();
+                    clearScreen();
                     printBoard(board);
                     System.out.println("\n--- GAME OVER ---");
                     System.out.println("Computer (" + PLAYER_TWO_DISC + ") wins!");
@@ -899,20 +925,23 @@ public class Group06 {
             try {
                 System.out.println("\nPlease select the difficulty of the game:");
                 System.out.println("1. Easy (Random moves)");
-                System.out.println("2. Medium (Minimax)");
-                System.out.println("3. Hard (Alpha-Beta Pruning)");
+                System.out.println("2. Medium (4 Move Depth)");
+                System.out.println("3. Hard (6 Move Depth)");
+                System.out.println("4. Extra Hard (8 Move Depth)");
                 System.out.print("Your choice: ");
 
                 choice = Integer.parseInt(input.nextLine().trim());
 
-                if (choice >= 1 && choice <= 3) {
+                if (choice >= 1 && choice <= 4) {
                     isInputValid = true;
                     if (choice == 1) {
                         difficulty = "Easy";
                     } else if (choice == 2) {
                         difficulty = "Medium";
-                    } else { // choice == 3
+                    } else if (choice == 3){ // choice == 3
                         difficulty = "Hard";
+                    } else {
+                        difficulty = "Extra Hard";
                     }
                 } else {
                     System.out.println("\nError: Invalid choice. Please enter 1, 2, or 3.");
@@ -923,5 +952,234 @@ public class Group06 {
         } while (!isInputValid);
 
         return difficulty;
+    }
+
+    public static ArrayList<Integer> getValidColumns(char[][] board){
+        ArrayList<Integer> validCols = new ArrayList<>();
+
+        for(int c = 0; c < board[0].length; c++)
+            if(board[0][c] == EMPTY_CELL)
+                validCols.add(c);
+
+        return validCols;
+    }
+
+    public static int getOpenRowOfValidColumn(char[][] board, int c){
+        for(int r = board.length - 1; r >= 0; r--)
+            if(board[r][c] == EMPTY_CELL)
+                return r;
+
+        return -1;
+    }
+
+    public static void dropDisc(char[][] board, int col, char disc){
+        int row = getOpenRowOfValidColumn(board, col);
+
+        if(row != -1)
+            board[row][col] = disc;
+    }
+
+    public static void undo(char[][] board, int col){
+        for(int row = 0; row < board.length; row++){
+            if(board[row][col] != EMPTY_CELL){
+                board[row][col] = EMPTY_CELL;
+                return;
+            }
+        }
+    }
+
+    public static int evaluateWindow(char[] window, char AIDisc, char playerDisc){
+        int AIcount = 0, playerCount = 0, emptyCount = 0;
+
+        for(int i = 0; i < window.length; i++){
+            if(window[i] == AIDisc)
+                AIcount++;
+            else if(window[i] == playerDisc)
+                playerCount++;
+            else
+                emptyCount++;
+        }
+
+        if(AIcount == 4)
+            return 10000;
+        if (AIcount == 3 && emptyCount == 1)
+            return 100;
+        if (AIcount == 2 && emptyCount == 2)
+            return 10;
+
+        if (playerCount == 4)
+            return -10000;
+        if (playerCount == 3 && emptyCount == 1)
+            return -120;
+        if (playerCount == 2 && emptyCount == 2)
+            return -12;
+
+        return 0;
+    }
+
+    public static int evaluateBoard(char[][] board, char AIDisc, char playerDisc){
+        int score = 0;
+        int rows = board.length;
+        int cols = board[0].length;
+
+        int centerCol = cols / 2;
+
+        for(int r = 0; r < rows; r++){
+            if(board[r][centerCol] == AIDisc)
+                score += 3;
+            else if(board[r][centerCol] == playerDisc)
+                score -= 3;
+        }
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c <= cols - 4; c++) {
+                char[] window = {board[r][c], board[r][c+1], board[r][c+2], board[r][c+3]};
+                score += evaluateWindow(window, AIDisc, playerDisc);
+            }
+        }
+
+        for (int c = 0; c < cols; c++) {
+            for (int r = 0; r <= rows - 4; r++) {
+                char[] window = {board[r][c], board[r+1][c], board[r+2][c], board[r+3][c]};
+                score += evaluateWindow(window, AIDisc, playerDisc);
+            }
+        }
+
+        // Diagonal \
+        for (int r = 0; r <= rows - 4; r++) {
+            for (int c = 0; c <= cols - 4; c++) {
+                char[] window = {board[r][c], board[r+1][c+1], board[r+2][c+2], board[r+3][c+3]};
+                score += evaluateWindow(window, AIDisc, playerDisc);
+            }
+        }
+
+        // Diagonal /
+        for (int r = 3; r < rows; r++) {
+            for (int c = 0; c <= cols - 4; c++) {
+                char[] window = {board[r][c], board[r-1][c+1], board[r-2][c+2], board[r-3][c+3]};
+                score += evaluateWindow(window, AIDisc, playerDisc);
+            }
+        }
+
+        return score;
+    }
+
+    public static boolean isTerminalNode(char[][] board){
+        return checkWin(board, PLAYER_ONE_DISC) || checkWin(board, PLAYER_TWO_DISC) || isBoardFull(board);
+    }
+
+    public static int minimax(char[][] board, int depth, boolean maximizing, int alpha, int beta, char AIDisc, char playerDisc){
+        if(isTerminalNode(board) || depth == 0){
+            if(checkWin(board, AIDisc))
+                return 10000;
+            if(checkWin(board, playerDisc))
+                return -10000;
+            if(isBoardFull(board))
+                return 0;
+
+            return evaluateBoard(board, AIDisc, playerDisc);
+        }
+
+        ArrayList<Integer> validCols = getValidColumns(board);
+        int center = board[0].length / 2;
+        quickSortByCenter(validCols, 0, validCols.size() - 1, center);
+
+        if(maximizing){
+            int value = Integer.MIN_VALUE;
+
+            for(int i = 0; i < validCols.size(); i++){
+                dropDisc(board, validCols.get(i), AIDisc);
+                int score = minimax(board, depth - 1, false, alpha, beta, AIDisc, playerDisc);
+                undo(board, validCols.get(i));
+
+                if(score > value)
+                    value = score;
+                if(value > alpha)
+                    alpha = value;
+                if(alpha >= beta)
+                    break;
+            }
+
+            return value;
+        } else {
+            int value = Integer.MAX_VALUE;
+
+            for (int i = 0; i < validCols.size(); i++) {
+                dropDisc(board, validCols.get(i), playerDisc);
+                int score = minimax(board, depth - 1, true, alpha, beta, AIDisc, playerDisc);
+                undo(board, validCols.get(i));
+
+                if (score < value)
+                    value = score;
+
+                if (value < beta)
+                    beta = value;
+
+                if (alpha >= beta)
+                    break;
+            }
+            return value;
+        }
+    }
+
+    public static int bestMove(char[][] board, int depth, char AIDisc, char playerDisc){
+        ArrayList<Integer> validCols = getValidColumns(board);
+
+        if(validCols.isEmpty())
+            return -1;
+
+        int center = board[0].length;
+        quickSortByCenter(validCols, 0, validCols.size() - 1, center);
+
+        int bestCol = validCols.get(0);
+        int bestScore = Integer.MIN_VALUE;
+        int alpha = Integer.MIN_VALUE, beta = Integer.MAX_VALUE;
+
+        for(int i = 0; i < validCols.size() - 1; i++){
+            dropDisc(board, validCols.get(i), AIDisc);
+            int score = minimax(board, depth - 1, false, alpha, beta, AIDisc, playerDisc);
+            undo(board, validCols.get(i));
+
+            if(score > bestScore){
+                bestScore = score;
+                bestCol = validCols.get(i);
+            }
+
+            if(score > alpha)
+                alpha = score;
+
+            if(alpha >= beta)
+                break;
+        }
+        return bestCol;
+    }
+
+    public static void quickSortByCenter(ArrayList<Integer> arr, int low, int high, int center){
+        if(low < high){
+            int pi = partition(arr, low, high, center);
+            quickSortByCenter(arr, low, pi - 1, center);
+            quickSortByCenter(arr, pi + 1, high, center);
+        }
+    }
+
+    public static int partition(ArrayList<Integer> list, int low, int high, int center){
+        int pivot = list.get(high);
+        int pivotDist = Math.abs(pivot - center);
+        int i = (low - 1);
+
+        for (int j = low; j < high; j++) {
+            if (Math.abs(list.get(j) - center) <= pivotDist) {
+                i++;
+                int temp = list.get(i);
+                list.set(i, list.get(j));
+                list.set(j, temp);
+            }
+        }
+
+        int temp = list.get(i + 1);
+        list.set(i + 1, list.get(high));
+        list.set(high, temp);
+
+        return i + 1;
     }
 }
