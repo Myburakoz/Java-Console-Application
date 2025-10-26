@@ -447,10 +447,58 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void statisticalInfoArrayMenu(Scanner input)
-    {
-        //Test
+    public static void statisticalInfoArrayMenu(Scanner input) {
+
+        input.useLocale(java.util.Locale.US);
+        clearScreen();
+        System.out.println("== Statistical Information about an Array ==");
+
+        System.out.print("Enter array size (>=1): ");
+        int n = input.nextInt();
+        input.nextLine();
+
+        double[] arr = new double[n];
+        for (int i = 0; i < n; i++) {
+            System.out.print("a[" + i + "] = ");
+            arr[i] = input.nextDouble();
+        }
+        input.nextLine();
+
+        Arrays.sort(arr);
+
+        double median;
+        if (n % 2 == 0)
+            median = (arr[n / 2 - 1] + arr[n / 2]) / 2.0;
+        else
+            median = arr[n / 2];
+
+        double sum = 0;
+        double product = 1;
+        for (double v : arr) {
+            sum += v;
+            product *= v;
+        }
+
+        double arithmeticMean = sum / n;
+        double geometricMean = Math.pow(product, 1.0 / n);
+        double harmonicMean = n / recursiveHarmonicSum(arr, 0);
+
+        System.out.println("\nSorted Array: " + Arrays.toString(arr));
+        System.out.println("Median: " + median);
+        System.out.println("Arithmetic Mean: " + arithmeticMean);
+        System.out.println("Geometric Mean: " + geometricMean);
+        System.out.println("Harmonic Mean: " + harmonicMean);
+
+        System.out.print("\nPress Enter to return to submenu...");
+        input.nextLine();
     }
+
+    public static double recursiveHarmonicSum(double[] arr, int index) {
+        if (index == arr.length) return 0;
+        return (1 / arr[index]) + recursiveHarmonicSum(arr, index + 1);
+    }
+
+
 
     /*
         Distance between Two Arrays
