@@ -1,4 +1,6 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Group06 {
     public static void main(String[] args) {
@@ -461,5 +463,465 @@ public class Group06 {
     public static void distanceArrayMenu(Scanner input)
     {
 
+    }
+
+    /*
+        Connect4
+
+        NOTE: If you want add an extra function. You can of course add. These are just menus.
+     */
+    public static final char PLAYER_ONE_DISC = 'X';
+    public static final char PLAYER_TWO_DISC = 'O';
+    public static final char EMPTY_CELL = ' ';
+
+    /**
+     * Main controller method for setting up the Connect Four game.
+     * @author Suhan Arda Öner
+     * @param input The scanner object for user input.
+     */
+    public static void Connect4(Scanner input)
+    {
+        System.out.println("--- Welcome to Connect4 Game ---");
+
+        // 1. Get Game Mode
+        String gameMode = getGameMode(input);
+
+        // 2. Get Board Size
+        int[] boardSize = getBoardSize(input);
+        int rows = boardSize[0];
+        int cols = boardSize[1];
+
+        // 3. Get Difficulty (only if playing against AI)
+        String difficulty = "N/A"; // Default for two-player
+        if (gameMode.equals("AI")) {
+            difficulty = getDifficulty(input);
+        }
+
+        // --- Summary of Choices ---
+        System.out.println("\n--- Game Settings Confirmed ---");
+        System.out.println("Game Mode: " + (gameMode.equals("AI") ? "Single-Player (vs. AI)" : "Two-Player"));
+        System.out.println("Board Size: " + rows + " rows x " + cols + " columns");
+        System.out.println("Difficulty: " + difficulty);
+        System.out.println("\nLet's start the game!");
+
+
+        // --- Start the selected game loop ---
+        if (gameMode.equals("PVP")) {
+            startGamePVP(rows, cols, input);
+        } else if (gameMode.equals("AI") && difficulty.equals("Easy")) {
+            startGameEasyAI(rows, cols, input);
+        }
+    }
+
+    /**
+     * Starts the game loop for a two-player (PVP) game.
+     * @author Suhan Arda Öner
+     * @param rows The number of rows in the game board.
+     * @param cols The number of columns in the game board.
+     * @param input The scanner object for user input.
+     */
+    public static void startGamePVP(int rows, int cols, Scanner input) {
+        char[][] board = initializeBoard(rows, cols);
+        boolean isPlayer1Turn = true;
+
+        while (true) {
+            printBoard(board);
+            char currentPlayerDisc = (isPlayer1Turn) ? PLAYER_ONE_DISC : PLAYER_TWO_DISC;
+            String playerName = (isPlayer1Turn) ? "Player 1" : "Player 2";
+
+            // 1. Get move
+            int col = getPlayerMove(input, board, playerName, currentPlayerDisc);
+
+            // 2. Place disc
+            placeDisc(board, col, currentPlayerDisc);
+
+            // 3. Check for win
+            if (checkWin(board, currentPlayerDisc)) {
+                printBoard(board);
+                System.out.println("\n--- GAME OVER ---");
+                System.out.println(playerName + " (" + currentPlayerDisc + ") wins!");
+                break;
+            }
+
+            // 4. Check for draw
+            if (isBoardFull(board)) {
+                printBoard(board);
+                System.out.println("\n--- GAME OVER ---");
+                System.out.println("It's a draw!");
+                break;
+            }
+
+            // 5. Switch turns
+            isPlayer1Turn = !isPlayer1Turn;
+        }
+    }
+
+    /**
+     * Starts the game loop for a single-player (vs. Easy AI) game.
+     * @author Suhan Arda Öner
+     * @param rows The number of rows in the game board.
+     * @param cols The number of columns in the game board.
+     * @param input The scanner object for user input.
+     */
+    public static void startGameEasyAI(int rows, int cols, Scanner input) {
+        char[][] board = initializeBoard(rows, cols);
+        boolean isPlayerTurn = true; // Player 1 is 'X', AI is 'O'
+
+        while (true) {
+            printBoard(board);
+
+            if (isPlayerTurn) {
+                // --- Player's Turn ---
+                int col = getPlayerMove(input, board, "Player 1", PLAYER_ONE_DISC);
+                placeDisc(board, col, PLAYER_ONE_DISC);
+
+                if (checkWin(board, PLAYER_ONE_DISC)) {
+                    printBoard(board);
+                    System.out.println("\n--- GAME OVER ---");
+                    System.out.println("Player 1 (" + PLAYER_ONE_DISC + ") wins!");
+                    break;
+                }
+            } else {
+                // --- AI's Turn ---
+                System.out.println("Computer's turn (" + PLAYER_TWO_DISC + ")...");
+                int col = getEasyAIMove(board);
+                placeDisc(board, col, PLAYER_TWO_DISC);
+
+                if (checkWin(board, PLAYER_TWO_DISC)) {
+                    printBoard(board);
+                    System.out.println("\n--- GAME OVER ---");
+                    System.out.println("Computer (" + PLAYER_TWO_DISC + ") wins!");
+                    break;
+                }
+            }
+
+            // Check for draw (after either turn)
+            if (isBoardFull(board)) {
+                printBoard(board);
+                System.out.println("\n--- GAME OVER ---");
+                System.out.println("It's a draw!");
+                break;
+            }
+
+            // Switch turns
+            isPlayerTurn = !isPlayerTurn;
+        }
+    }
+
+    /**
+     * Creates a new empty board.
+     * @author Suhan Arda Öner
+     * @param rows The number of rows to create.
+     * @param cols The number of columns to create.
+     * @return A 2D char array filled with EMPTY_CELL.
+     */
+    public static char[][] initializeBoard(int rows, int cols) {
+        char[][] board = new char[rows][cols];
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                board[r][c] = EMPTY_CELL;
+            }
+        }
+        return board;
+    }
+
+    /**
+     * Prints the current state of the board to the console.
+     * @author Suhan Arda Öner
+     * @param board The 2D char array representing the game board.
+     */
+    public static void printBoard(char[][] board) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        System.out.println();
+        // Print column headers
+        for (int c = 0; c < cols; c++) {
+            System.out.print(" " + (c + 1) + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < cols * 3; i++) {
+            System.out.print("-");
+        }
+        System.out.println();  // Divider
+
+        // Print board content
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                System.out.print("|" + board[r][c] + "|");
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < cols * 3; i++) {
+            System.out.print("-");
+        }
+        System.out.println();  // Divider
+    }
+
+    /**
+     * Gets a valid column move from the human player.
+     * Keeps asking until a valid, non-full column is chosen.
+     * @author Suhan Arda Öner
+     * @param input The scanner object for user input.
+     * @param board The current game board (for checking full columns).
+     * @param playerName The name of the current player (e.g., "Player 1").
+     * @param playerDisc The disc character of the current player (e.g., 'X').
+     * @return A 0-based integer for the chosen column.
+     */
+    public static int getPlayerMove(Scanner input, char[][] board, String playerName, char playerDisc) {
+        int cols = board[0].length;
+        int col = -1;
+        boolean isValidMove = false;
+
+        do {
+            System.out.print("\n" + playerName + " (" + playerDisc + "), enter column (1-" + cols + "): ");
+            try {
+                String line = input.nextLine().trim();
+                col = Integer.parseInt(line);
+
+                // Check 1: Is it a valid column number?
+                if (col >= 1 && col <= cols) {
+                    // Check 2: Is the column full? (Check top-most cell)
+                    if (board[0][col - 1] == EMPTY_CELL) {
+                        isValidMove = true;
+                    } else {
+                        System.out.println("Error: Column " + col + " is full. Try again.");
+                    }
+                } else {
+                    System.out.println("Error: Please enter a number between 1 and " + cols + ".");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Invalid input. Please enter a number.");
+            }
+        } while (!isValidMove);
+
+        return col - 1; // Return 0-based index
+    }
+
+    /**
+     * Generates a random, valid move for the "Easy" AI.
+     * @author Suhan Arda Öner
+     * @param board The current game board (for checking full columns).
+     * @return A 0-based integer for the chosen column.
+     */
+    public static int getEasyAIMove(char[][] board) {
+        int cols = board[0].length;
+        Random rand = new Random();
+        int col;
+
+        do {
+            col = rand.nextInt(cols); // Generates a random number from 0 to (cols-1)
+        } while (board[0][col] != EMPTY_CELL); // Keep trying if the top cell is full
+
+        System.out.println("Computer chose column: " + (col + 1));
+        return col; // Already 0-based
+    }
+
+    /**
+     * Places the player's disc in the lowest available spot in the chosen column.
+     * @author Suhan Arda Öner
+     * @param board The game board to modify.
+     * @param col The 0-based column index to place the disc in.
+     * @param playerDisc The disc character ('X' or 'O') to place.
+     */
+    public static void placeDisc(char[][] board, int col, char playerDisc) {
+        int rows = board.length;
+        for (int r = rows - 1; r >= 0; r--) { // Start from the bottom row and go up
+            if (board[r][col] == EMPTY_CELL) {
+                board[r][col] = playerDisc;
+                return; // Disc placed, exit method
+            }
+        }
+    }
+
+    /**
+     * Checks if the board is completely full (a draw).
+     * @author Suhan Arda Öner
+     * @param board The game board to check.
+     * @return true if the board is full, false otherwise.
+     */
+    public static boolean isBoardFull(char[][] board) {
+        int cols = board[0].length;
+        for (int c = 0; c < cols; c++) {
+            if (board[0][c] == EMPTY_CELL) { // If *any* top cell is empty
+                return false; // Board is not full
+            }
+        }
+        return true; // All top cells are full
+    }
+
+    /**
+     * Checks the entire board for a 4-in-a-row win for the given player.
+     * @author Suhan Arda Öner
+     * @param board The game board to check.
+     * @param playerDisc The disc character ('X' or 'O') to check for a win.
+     * @return true if a 4-in-a-row is found, false otherwise.
+     */
+    public static boolean checkWin(char[][] board, char playerDisc) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // Check for 4 in a row horizontally
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c <= cols - 4; c++) {
+                if (board[r][c] == playerDisc &&
+                        board[r][c+1] == playerDisc &&
+                        board[r][c+2] == playerDisc &&
+                        board[r][c+3] == playerDisc) {
+                    return true;
+                }
+            }
+        }
+
+        // Check for 4 in a row vertically
+        for (int r = 0; r <= rows - 4; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (board[r][c] == playerDisc &&
+                        board[r+1][c] == playerDisc &&
+                        board[r+2][c] == playerDisc &&
+                        board[r+3][c] == playerDisc) {
+                    return true;
+                }
+            }
+        }
+
+        // Check for 4 in a row (diagonal /)
+        for (int r = 3; r < rows; r++) { // Start from row 3 (0-indexed)
+            for (int c = 0; c <= cols - 4; c++) {
+                if (board[r][c] == playerDisc &&
+                        board[r-1][c+1] == playerDisc &&
+                        board[r-2][c+2] == playerDisc &&
+                        board[r-3][c+3] == playerDisc) {
+                    return true;
+                }
+            }
+        }
+
+        // Check for 4 in a row (diagonal \)
+        for (int r = 0; r <= rows - 4; r++) {
+            for (int c = 0; c <= cols - 4; c++) {
+                if (board[r][c] == playerDisc &&
+                        board[r+1][c+1] == playerDisc &&
+                        board[r+2][c+2] == playerDisc &&
+                        board[r+3][c+3] == playerDisc) {
+                    return true;
+                }
+            }
+        }
+
+        return false; // No win found
+    }
+
+    /**
+     * Asks the user to select the game mode.
+     * @author Suhan Arda Öner
+     * @param input The scanner object for user input.
+     * @return "PVP" for two-player or "AI" for single-player.
+     */
+    public static String getGameMode(Scanner input) {
+        boolean isInputValid = false;
+        int choice = 0;
+        do {
+            try {
+                System.out.println("\nPlease select the game mode:");
+                System.out.println("1. Two-Players");
+                System.out.println("2. Single-Player (vs. Computer)");
+                System.out.print("Your choice: ");
+
+                choice = Integer.parseInt(input.nextLine().trim());
+
+                if (choice == 1 || choice == 2) {
+                    isInputValid = true;
+                } else {
+                    System.out.println("\nError: Invalid choice. Please enter 1 or 2.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
+            }
+        } while (!isInputValid);
+
+        return (choice == 1) ? "PVP" : "AI";
+    }
+
+    /**
+     * Asks the user to select the board size.
+     * @author Suhan Arda Öner
+     * @param input The scanner object.
+     * @return An integer array [rows, cols].
+     */
+    public static int[] getBoardSize(Scanner input) {
+        boolean isInputValid = false;
+        int choice = 0;
+        int[] size = new int[2]; // [rows, cols]
+
+        do {
+            try {
+                System.out.println("\nPlease select the board size:");
+                System.out.println("1. Small (5x4)");  // 5 rows, 4 columns
+                System.out.println("2. Medium (6x5)"); // 6 rows, 5 columns
+                System.out.println("3. Large (7x6)");  // 7 rows, 6 columns
+                System.out.print("Your choice: ");
+
+                choice = Integer.parseInt(input.nextLine().trim());
+
+                if (choice >= 1 && choice <= 3) {
+                    isInputValid = true;
+                    if (choice == 1) {
+                        size = new int[]{5, 4};
+                    } else if (choice == 2) {
+                        size = new int[]{6, 5};
+                    } else { // choice == 3
+                        size = new int[]{7, 6};
+                    }
+                } else {
+                    System.out.println("\nError: Invalid choice. Please enter 1, 2, or 3.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
+            }
+        } while (!isInputValid);
+
+        return size;
+    }
+
+    /**
+     * Asks the user to select the AI difficulty.
+     * @author Suhan Arda Öner
+     * @param input The scanner object.
+     * @return "Easy", "Medium", or "Hard".
+     */
+    public static String getDifficulty(Scanner input) {
+        boolean isInputValid = false;
+        int choice = 0;
+        String difficulty = "";
+
+        do {
+            try {
+                System.out.println("\nPlease select the difficulty of the game:");
+                System.out.println("1. Easy (Random moves)");
+                System.out.println("2. Medium (Minimax)");
+                System.out.println("3. Hard (Alpha-Beta Pruning)");
+                System.out.print("Your choice: ");
+
+                choice = Integer.parseInt(input.nextLine().trim());
+
+                if (choice >= 1 && choice <= 3) {
+                    isInputValid = true;
+                    if (choice == 1) {
+                        difficulty = "Easy";
+                    } else if (choice == 2) {
+                        difficulty = "Medium";
+                    } else { // choice == 3
+                        difficulty = "Hard";
+                    }
+                } else {
+                    System.out.println("\nError: Invalid choice. Please enter 1, 2, or 3.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
+            }
+        } while (!isInputValid);
+
+        return difficulty;
     }
 }
