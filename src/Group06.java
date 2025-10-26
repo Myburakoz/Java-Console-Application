@@ -476,30 +476,45 @@ public class Group06 {
 
         }while (!isInputValid);
 
-        long start = System.nanoTime();
-        ArrayList<Integer> eratosthenes = sieveOfEratosthenes(n);
-        long end = System.nanoTime();
-        System.out.println("First 3 primes -------> " + eratosthenes.getFirst() + ", " + eratosthenes.get(1) + ", " + eratosthenes.get(2));
-        System.out.println("Last 2 primes -------> " + eratosthenes.get(eratosthenes.size() - 2) + ", " + eratosthenes.getLast());
-        System.out.println("Time -------> " + (double)((end - start))/1000000000);
+        try {
+            long start = System.nanoTime();
+            ArrayList<Integer> eratosthenes = null;
+            eratosthenes = sieveOfEratosthenes(n);
+            long end = System.nanoTime();
+            System.out.println("First 3 primes -------> " + eratosthenes.getFirst() + ", " + eratosthenes.get(1) + ", " + eratosthenes.get(2));
+            System.out.println("Last 2 primes -------> " + eratosthenes.get(eratosthenes.size() - 2) + ", " + eratosthenes.getLast());
+            System.out.println("Time -------> " + (double)((end - start))/1000000000);
+        } catch (OutOfMemoryError e) {
+            System.out.println("The memory is not enough to process Eratosthenes Sieve. Returning to the menu...");
+        }
 
         System.out.printf("%n%n");
 
-        start = System.nanoTime();
-        ArrayList<Integer> sundaram = sieveOfSundaram(n);
-        end = System.nanoTime();
-        System.out.println("First 3 primes -------> " + sundaram.getFirst() + ", " + sundaram.get(1) + ", " + sundaram.get(2));
-        System.out.println("Last 2 primes -------> " + sundaram.get(sundaram.size() - 2) + ", " + sundaram.getLast());
-        System.out.println("Time -------> " + (double)((end - start))/1000000000);
+        try {
+            long start = System.nanoTime();
+            ArrayList<Integer> sundaram = null;
+            sundaram = sieveOfSundaram(n);
+            long end = System.nanoTime();
+            System.out.println("First 3 primes -------> " + sundaram.getFirst() + ", " + sundaram.get(1) + ", " + sundaram.get(2));
+            System.out.println("Last 2 primes -------> " + sundaram.get(sundaram.size() - 2) + ", " + sundaram.getLast());
+            System.out.println("Time -------> " + (double)((end - start))/1000000000);
+        } catch (OutOfMemoryError e) {
+            System.out.println("The memory is not enough to process Sundaram Sieve. Returning to the menu...");
+        }
 
         System.out.printf("%n%n");
 
-        start = System.nanoTime();
-        ArrayList<Integer> atkin = sieveOfAtkin(n);
-        end = System.nanoTime();
-        System.out.println("First 3 primes -------> " + atkin.getFirst() + ", " + atkin.get(1) + ", " + atkin.get(2));
-        System.out.println("Last 2 primes -------> " + atkin.get(atkin.size() - 2) + ", " + atkin.getLast());
-        System.out.println("Time -------> " + (double)((end - start))/1000000000);
+        try {
+            long start = System.nanoTime();
+            ArrayList<Integer> atkin = null;
+            atkin = sieveOfAtkin(n);
+            long end = System.nanoTime();
+            System.out.println("First 3 primes -------> " + atkin.getFirst() + ", " + atkin.get(1) + ", " + atkin.get(2));
+            System.out.println("Last 2 primes -------> " + atkin.get(atkin.size() - 2) + ", " + atkin.getLast());
+            System.out.println("Time -------> " + (double)((end - start))/1000000000);
+        } catch (OutOfMemoryError e) {
+            System.out.println("The memory is not enough to process Atkin Sieve. Returning to the menu...");
+        }
     }
 
     public static ArrayList<Integer> sieveOfEratosthenes(int n){
@@ -621,7 +636,7 @@ public class Group06 {
                 primes.add(merged.get(i));
 
         return primes;
-    };
+    }
 
     public static boolean isSquareFree(int element){
         for(int i = 2; i*i <= element; i++)
