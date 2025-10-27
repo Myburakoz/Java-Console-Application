@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -51,7 +50,6 @@ public class Group06 {
         }
         System.out.print("\033[2J");
 
-        // Enter kontrolü için thread başlat
         Thread inputThread = new Thread(new Runnable() {
             public void run() {
                 scanner.nextLine();
@@ -137,7 +135,7 @@ public class Group06 {
             for (int col = 0; col < width; col++) {
                 if (random.nextInt(30) < clearStep) {
                     for (int row = 0; row < height; row++) {
-                        System.out.print(String.format("\033[%d;%dH", row + 1, col + 1));
+                        System.out.printf("\033[%d;%dH", row + 1, col + 1);
                         System.out.print(" ");
                     }
                 }
@@ -157,7 +155,7 @@ public class Group06 {
         for (String line : titleArt) {
             int startCol = Math.max(1, (width - line.length()) / 2);
             for (int j = 0; j < line.length(); j++) {
-                System.out.print(String.format("\033[%d;%dH", currentRow, startCol + j));
+                System.out.printf("\033[%d;%dH", currentRow, startCol + j);
                 System.out.print(BRIGHT_GREEN + line.charAt(j) + RESET);
                 System.out.flush();
                 try {
@@ -180,7 +178,7 @@ public class Group06 {
             for (String line : memberArt) {
                 int startCol = Math.max(1, (width - line.length()) / 2);
                 for (int j = 0; j < line.length(); j++) {
-                    System.out.print(String.format("\033[%d;%dH", currentRow, startCol + j));
+                    System.out.printf("\033[%d;%dH", currentRow, startCol + j);
                     System.out.print(BRIGHT_GREEN + line.charAt(j) + RESET);
                     System.out.flush();
                     try {
@@ -224,14 +222,14 @@ public class Group06 {
                 int row = columnPositions[col];
 
                 if (row >= 0 && row < height) {
-                    System.out.print(String.format("\033[%d;%dH", row + 1, col + 1));
+                    System.out.printf("\033[%d;%dH", row + 1, col + 1);
 
                     System.out.print(BRIGHT_GREEN + getRandomChar(random) + RESET);
 
                     for (int i = 1; i < 8; i++) {
                         int fadeRow = row - i;
                         if (fadeRow >= 0 && fadeRow < height) {
-                            System.out.print(String.format("\033[%d;%dH", fadeRow + 1, col + 1));
+                            System.out.printf("\033[%d;%dH", fadeRow + 1, col + 1);
                             System.out.print(GREEN + getRandomChar(random) + RESET);
                         }
                     }
@@ -239,7 +237,7 @@ public class Group06 {
 
                 int tailRow = row - 12;
                 if (tailRow >= 0 && tailRow < height) {
-                    System.out.print(String.format("\033[%d;%dH", tailRow + 1, col + 1));
+                    System.out.printf("\033[%d;%dH", tailRow + 1, col + 1);
                     System.out.print(" ");
                 }
 
@@ -326,7 +324,7 @@ public class Group06 {
                 case "B":
                     clearScreen();
                     isInputValid = true;
-                    secondrarySchoolMenu(input);
+                    secondarySchoolMenu(input);
                     break;
                 case "C":
                     clearScreen();
@@ -418,7 +416,7 @@ public class Group06 {
         }while(!isReturningMainMenu);
     }
 
-    public static void secondrarySchoolMenu(Scanner input){
+    public static void secondarySchoolMenu(Scanner input){
 
         boolean isReturningMainMenu = false;
         boolean isInputValid = true;
@@ -1793,6 +1791,11 @@ public class Group06 {
             mean += arr.get(i) / n;
         }
 
+        double tolerance = 1e-9;
+        mean = Math.round(mean * 1e9) / 1e9;
+        if (Math.abs(mean - Math.round(mean * 10) / 10.0) < tolerance)
+            mean = Math.round(mean * 10) / 10.0;
+
         return mean;
     }
 
@@ -1806,6 +1809,11 @@ public class Group06 {
 
             mean *= Math.pow(arr.get(i), 1.0 / n);
         }
+
+        double tolerance = 1e-9;
+        mean = Math.round(mean * 1e9) / 1e9;
+        if (Math.abs(mean - Math.round(mean * 10) / 10.0) < tolerance)
+            mean = Math.round(mean * 10) / 10.0;
 
         return mean;
     }
@@ -1827,7 +1835,16 @@ public class Group06 {
         if (value < 0) {
             throw new IllegalArgumentException("Harmonic mean undefined for negative numbers.");
         }
-        return (1 / value) + recursiveHarmonicSum(arr, index + 1);
+
+        double mean = (1 / value) + recursiveHarmonicSum(arr, index + 1);
+
+        double tolerance = 1e-9;
+        mean = Math.round(mean * 1e9) / 1e9;
+        if (Math.abs(mean - Math.round(mean * 10) / 10.0) < tolerance)
+            mean = Math.round(mean * 10) / 10.0;
+
+
+        return mean;
     }
 
 
