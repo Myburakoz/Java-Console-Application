@@ -1,17 +1,18 @@
-import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.security.SecureRandom;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.NoSuchElementException;
+import java.util.InputMismatchException;
+import java.util.Collections;
 
 public class Group06 {
     public static void main(String[] args) {
         final Scanner input = new Scanner(System.in);
-        welcome();
-        waitToClearScreen(input);
+        runMatrixRain(input);
         makeWait();
         mainMenu(input);
     }
@@ -19,98 +20,243 @@ public class Group06 {
     /*
     * Terminal
     * */
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()";
+    private static final String RESET = "\033[0m";
+    private static final String GREEN = "\033[32m";
+    private static final String BRIGHT_GREEN = "\033[1;32m";
+    private static boolean running = true;
 
-    public static void welcome(){
-        final String welcome = """
-                ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗    ████████╗ ██████╗                                             \s
-                ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝    ╚══██╔══╝██╔═══██╗                                            \s
-                ██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗         ██║   ██║   ██║                                            \s
-                ██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝         ██║   ██║   ██║                                            \s
-                ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗       ██║   ╚██████╔╝                                            \s
-                 ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝       ╚═╝    ╚═════╝                                             \s
-                
-                 ██████╗███╗   ███╗██████╗ ███████╗██████╗ ██╗  ██╗██████╗     ██████╗ ██████╗  ██████╗      ██╗███████╗ ██████╗████████╗     ██╗
-                ██╔════╝████╗ ████║██╔══██╗██╔════╝╚════██╗██║  ██║╚════██╗    ██╔══██╗██╔══██╗██╔═══██╗     ██║██╔════╝██╔════╝╚══██╔══╝    ███║
-                ██║     ██╔████╔██║██████╔╝█████╗   █████╔╝███████║ █████╔╝    ██████╔╝██████╔╝██║   ██║     ██║█████╗  ██║        ██║       ╚██║
-                ██║     ██║╚██╔╝██║██╔═══╝ ██╔══╝   ╚═══██╗╚════██║ ╚═══██╗    ██╔═══╝ ██╔══██╗██║   ██║██   ██║██╔══╝  ██║        ██║        ██║
-                ╚██████╗██║ ╚═╝ ██║██║     ███████╗██████╔╝     ██║██████╔╝    ██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗╚██████╗   ██║        ██║
-                 ╚═════╝╚═╝     ╚═╝╚═╝     ╚══════╝╚═════╝      ╚═╝╚═════╝     ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝        ╚═╝ """;
+    private static void runMatrixRain(Scanner scanner) {
+        int width = 120;
+        int height = 40;
+        Random random = new Random();
 
+        System.out.print("\033[2J\033[?25l");
 
-        //Ascii art is temporary for now. It can be changed.
+        int[] columnPositions = new int[width];
+        float[] columnSpeeds = new float[width];
+        float[] columnProgress = new float[width];
 
-
-        final String members = """
-                   ______                            __  ___               __                 \s
-                  / ____/________  __  ______       /  |/  /__  ____ ___  / /_  ___  __________
-                 / / __/ ___/ __ \\/ / / / __ \\     / /|_/ / _ \\/ __ `__ \\/ __ \\/ _ \\/ ___/ ___/
-                / /_/ / /  / /_/ / /_/ / /_/ /    / /  / /  __/ / / / / / /_/ /  __/ /  (__  )\s
-                \\____/_/   \\____/\\__,_/ .___/    /_/  /_/\\___/_/ /_/ /_/_.___/\\___/_/  /____/ \s
-                                     /_/                                                      \s""";
-
-        final String burak = """
-                    ____                   __      ____                  _    \s
-                   / __ )__  ___________ _/ /__   / __ \\____  ___ _   __(_)___\s
-                  / __  / / / / ___/ __ `/ //_/  / / / /_  / / _ \\ | / / / __ \\
-                 / /_/ / /_/ / /  / /_/ / ,<    / /_/ / / /_/  __/ |/ / / / / /
-                /_____/\\__,_/_/   \\__,_/_/|_|   \\____/ /___/\\___/|___/_/_/ /_/\s""";
-        final String suhan = """
-                   _____       __                     ___             __         ____                \s
-                  / ___/__  __/ /_  ____ _____       /   |  _________/ /___ _   / __ \\____  ___  _____
-                  \\__ \\/ / / / __ \\/ __ `/ __ \\     / /| | / ___/ __  / __ `/  / / / / __ \\/ _ \\/ ___/
-                 ___/ / /_/ / / / / /_/ / / / /    / ___ |/ /  / /_/ / /_/ /  / /_/ / / / /  __/ /   \s
-                /____/\\__,_/_/ /_/\\__,_/_/ /_/    /_/  |_/_/   \\__,_/\\__,_/   \\____/_/ /_/\\___/_/    \s""";
-        final String ramazan = """
-                    ____                                               ____  _      __                   ____        __             __ \s
-                   / __ \\____ _____ ___  ____ _____  ____ _____       / __ )(_)____/ /______ _____      / __ \\____  / /___  _______/ /__
-                  / /_/ / __ `/ __ `__ \\/ __ `/_  / / __ `/ __ \\     / __  / / ___/ //_/ __ `/ __ \\    / / / /_  / / __/ / / / ___/ //_/
-                 / _, _/ /_/ / / / / / / /_/ / / /_/ /_/ / / / /    / /_/ / / /  / ,< / /_/ / / / /   / /_/ / / /_/ /_/ /_/ / /  / ,<  \s
-                /_/ |_|\\__,_/_/ /_/ /_/\\__,_/ /___/\\__,_/_/ /_/    /_____/_/_/  /_/|_|\\__,_/_/ /_/    \\____/ /___/\\__/\\__,_/_/  /_/|_| \s""";
-        final String elif = """
-                    _________ _________                                  ______      __          \s
-                   / ____/ (_) __/__  /  ___  __  ______  ___  ____     /_  __/___ _/ /___ ___  __
-                  / __/ / / / /_   / /  / _ \\/ / / / __ \\/ _ \\/ __ \\     / / / __ `/ / __ `/ / / /
-                 / /___/ / / __/  / /__/  __/ /_/ / / / /  __/ /_/ /    / / / /_/ / / /_/ / /_/ /\s
-                /_____/_/_/_/    /____/\\___/\\__, /_/ /_/\\___/ .___/    /_/  \\__,_/_/\\__,_/\\__, / \s
-                                           /____/          /_/                           /____/  \s""";
-        final String pressEnter = """
-                 ___ _                                           ___     _             _            _                _   _                                   \s
-                | _ \\ |___ __ _ ___ ___     _ __ _ _ ___ ______ | __|_ _| |_ ___ _ _  | |_ ___   __| |___ __ _ _ _  | |_| |_  ___   ___ __ _ _ ___ ___ _ _   \s
-                |  _/ / -_) _` (_-</ -_)_  | '_ \\ '_/ -_|_-<_-< | _|| ' \\  _/ -_) '_| |  _/ _ \\ / _| / -_) _` | '_| |  _| ' \\/ -_) (_-</ _| '_/ -_) -_) ' \\ _\s
-                |_| |_\\___\\__,_/__/\\___( ) | .__/_| \\___/__/__/ |___|_||_\\__\\___|_|    \\__\\___/ \\__|_\\___\\__,_|_|    \\__|_||_\\___| /__/\\__|_| \\___\\___|_||_(_)
-                                       |/  |_|                                                                                                               \s""";
-
-        System.out.println("\033[1;32m" + welcome + "\033[0m");
-        System.out.printf("%n%n%n");
-
-        System.out.println("\033[1;33m" + members + "\033[0m");
-        System.out.println("\033[1;31m" + burak + "\033[0m");
-        System.out.println("\033[1;31m" + suhan + "\033[0m");
-        System.out.println("\033[1;31m" + ramazan + "\033[0m");
-        System.out.println("\033[1;31m" + elif + "\033[0m");
-
-        System.out.printf("%n%n%n");
-    }
-
-    public static void waitToClearScreen(Scanner input){
-        final String pressEnter = """
-                 ___ _                                           ___     _             _            _                _   _                                   \s
-                | _ \\ |___ __ _ ___ ___     _ __ _ _ ___ ______ | __|_ _| |_ ___ _ _  | |_ ___   __| |___ __ _ _ _  | |_| |_  ___   ___ __ _ _ ___ ___ _ _   \s
-                |  _/ / -_) _` (_-</ -_)_  | '_ \\ '_/ -_|_-<_-< | _|| ' \\  _/ -_) '_| |  _/ _ \\ / _| / -_) _` | '_| |  _| ' \\/ -_) (_-</ _| '_/ -_) -_) ' \\ _\s
-                |_| |_\\___\\__,_/__/\\___( ) | .__/_| \\___/__/__/ |___|_||_\\__\\___|_|    \\__\\___/ \\__|_\\___\\__,_|_|    \\__|_||_\\___| /__/\\__|_| \\___\\___|_||_(_)
-                                       |/  |_|                                                                                                               \s""";
-
-        System.out.println("\033[1;39m" + pressEnter + "\033[0m");
-
-        while (!input.hasNextLine())
-        {
-            input = new Scanner(System.in);
-            clearScreen();
-            System.out.println("\033[1;39m" + pressEnter + "\033[0m");
+        for (int i = 0; i < width; i++) {
+            columnPositions[i] = -(random.nextInt(height));
+            columnSpeeds[i] = 0.3f + random.nextFloat() * 0.4f;
+            columnProgress[i] = 0;
         }
 
-        input.nextLine();
-        clearScreen();
+        System.out.println("\033[1;1H\033[90mPress ENTER to exit Matrix screen...\033[0m");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.print("\033[2J");
+
+        // Enter kontrolü için thread başlat
+        Thread inputThread = new Thread(new Runnable() {
+            public void run() {
+                scanner.nextLine();
+                running = false;
+            }
+        });
+        inputThread.setDaemon(true);
+        inputThread.start();
+
+        while (running) {
+            printFrame(width, height, columnPositions, columnSpeeds, columnProgress, random);
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+
+        displayEndScreen(width, height, random);
+
+        System.out.print("\033[2J\033[H\033[?25h");
+    }
+
+    private static void displayEndScreen(int width, int height, Random random) {
+        String[] titleArt = {
+                " ____ __  __ ____  _____ _____ _  _  _____   ____            _           _ ",
+                " / ___|  \\/  |  _ \\| ____|___ /| || ||___ /  |  _ \\ _ __ ___ (_) ___  ___| |_",
+                "| |   | |\\/| | |_) |  _|   |_ \\| || |_ |_ \\  | |_) | '__/ _ \\| |/ _ \\/ __| __|",
+                "| |___| |  | |  __/| |___ ___) |__   _|__) | |  __/| | | (_) | |  __/ (__| |_",
+                " \\____|_|  |_|_|   |_____|____/   |_||____/  |_|   |_|  \\___// |\\___|\\___|\\__|",
+                "                                              |__/"
+        };
+
+        String[][] memberArts = {
+                {
+                        "    ____                         _                   _           ",
+                        "  / ___|_ __ ___  _   _ _ __   | |    ___  __ _  __| | ___ _ __ ",
+                        "  | |  _| '__/ _ \\| | | | '_ \\  | |   / _ \\/ _` |/ _` |/ _ \\ '__|",
+                        " | |_| | | | (_) | |_| | |_) | | |__|  __/ (_| | (_| |  __/ |  ",
+                        " \\____|_|  \\___/ \\__,_| .__/  |_____\\___|\\__,_|\\__,_|\\___|_|  ",
+                        "                        |_|                                      "
+                },
+                {
+                        "   ____                   __      ____                  _   ",
+                        "   / __ )__  ___________ _/ /__   / __ \\____  ___ _   __(_)___",
+                        "   / __  / / / / ___/ __ `/ //_/  / / / /_  / / _ \\ | / / / __ \\",
+                        "  / /_/ / /_/ / /  / /_/ / ,<    / /_/ / / /_/  __/ |/ / / / / /",
+                        "/_____/\\__,_/_/   \\__,_/_/|_|   \\____/ /___/\\___/|___/_/_/ /_/"
+                },
+                {
+                        "  ____                         __  __                _                   ",
+                        " / ___|_ __ ___  _   _ _ __   |  \\/  | ___ _ __ ___ | |__   ___ _ __ ___ ",
+                        "| |  _| '__/ _ \\| | | | '_ \\  | |\\/| |/ _ \\ '_ ` _ \\| '_ \\ / _ \\ '__/ __|",
+                        "| |_| | | | (_) | |_| | |_) | | |  | |  __/ | | | | | |_) |  __/ |  \\__ \\",
+                        " \\____|_|  \\___/ \\__,_| .__/  |_|  |_|\\___|_| |_| |_|_.__/ \\___|_|  |___/",
+                        "                       |_|                                                 "
+                },
+                {
+                        "  _____       __                     ___             __         ____               ",
+                        "  / ___/__  __/ /_  ____ _____       /   |  _________/ /___ _   / __ \\____  ___  _____",
+                        "  \\__ \\/ / / / __ \\/ __ `/ __ \\     / /| | / ___/ __  / __ `/  / / / / __ \\/ _ \\/ ___/",
+                        " ___/ / /_/ / / / / /_/ / / / /    / ___ |/ /  / /_/ / /_/ /  / /_/ / / / /  __/ /   ",
+                        "/____/\\__,_/_/ /_/\\__,_/_/ /_/    /_/  |_/_/   \\__,_/\\__,_/   \\____/_/ /_/\\___/_/    "
+                },
+                {
+                        "    ____                                               ____  _      __                   ____        __  _   _      __",
+                        "   / __ \\____ _____ ___  ____ _____  ____ _____       / __ )(_)____/ /______ _____      / __ \\____  / /_(_) (_)____/ /__",
+                        "  / /_/ / __ `/ __ `__ \\/ __ `/_  / / __ `/ __ \\     / __  / / ___/ //_/ __ `/ __ \\    / / / /_  / / __/ / / / ___/ //_/",
+                        " / _, _/ /_/ / / / / / / /_/ / / /_/ /_/ / / / /    / /_/ / / /  / ,< / /_/ / / / /   / /_/ / / /_/ /_/ /_/ / /  / ,<  ",
+                        "/_/ |_|\\__,_/_/ /_/ /_/\\__,_/ /___/\\__,_/_/ /_/    /_____/_/_/  /_/|_|\\__,_/_/ /_/    \\____/ /___/\\__/\\__,_/_/  /_/|_| "
+                },
+                {
+                        "   _________ _________                                  ______      __         ",
+                        "   / ____/ (_) __/__  /  ___  __  ______  ___  ____     /_  __/___ _/ /___ ___  __",
+                        "  / __/ / / / /_   / /  / _ \\/ / / / __ \\/ _ \\/ __ \\     / / / __ `/ / __ `/ / / /",
+                        "/ /___/ / / __/  / /__/  __/ /_/ / / / /  __/ /_/ /    / / / /_/ / / /_/ / /_/ /",
+                        "/_____/_/_/_/    /____/\\___/\\__, /_/ /_/\\___/ .___/    /_/  \\__,_/_/\\__,_/\\__, / ",
+                        "                           /____/          /_/                           /____/  "
+                }
+        };
+
+        for (int clearStep = 0; clearStep < 30; clearStep++) {
+            for (int col = 0; col < width; col++) {
+                if (random.nextInt(30) < clearStep) {
+                    for (int row = 0; row < height; row++) {
+                        System.out.print(String.format("\033[%d;%dH", row + 1, col + 1));
+                        System.out.print(" ");
+                    }
+                }
+            }
+            System.out.flush();
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.print("\033[2J");
+
+        int currentRow = 3;
+
+        for (String line : titleArt) {
+            int startCol = Math.max(1, (width - line.length()) / 2);
+            for (int j = 0; j < line.length(); j++) {
+                System.out.print(String.format("\033[%d;%dH", currentRow, startCol + j));
+                System.out.print(BRIGHT_GREEN + line.charAt(j) + RESET);
+                System.out.flush();
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            currentRow++;
+            try {
+                Thread.sleep(80);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        currentRow += 2;
+
+        for (String[] memberArt : memberArts) {
+            for (String line : memberArt) {
+                int startCol = Math.max(1, (width - line.length()) / 2);
+                for (int j = 0; j < line.length(); j++) {
+                    System.out.print(String.format("\033[%d;%dH", currentRow, startCol + j));
+                    System.out.print(BRIGHT_GREEN + line.charAt(j) + RESET);
+                    System.out.flush();
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                currentRow++;
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            currentRow += 2;
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.print("\033[2J\033[H\033[?25h");
+        System.out.println("\n");
+    }
+
+    private static void printFrame(int width, int height, int[] columnPositions,
+                                   float[] columnSpeeds, float[] columnProgress, Random random) {
+        for (int col = 0; col < width; col++) {
+            columnProgress[col] += columnSpeeds[col];
+
+            if (columnProgress[col] >= 1.0f) {
+                columnProgress[col] -= 1.0f;
+                int row = columnPositions[col];
+
+                if (row >= 0 && row < height) {
+                    System.out.print(String.format("\033[%d;%dH", row + 1, col + 1));
+
+                    System.out.print(BRIGHT_GREEN + getRandomChar(random) + RESET);
+
+                    for (int i = 1; i < 8; i++) {
+                        int fadeRow = row - i;
+                        if (fadeRow >= 0 && fadeRow < height) {
+                            System.out.print(String.format("\033[%d;%dH", fadeRow + 1, col + 1));
+                            System.out.print(GREEN + getRandomChar(random) + RESET);
+                        }
+                    }
+                }
+
+                int tailRow = row - 12;
+                if (tailRow >= 0 && tailRow < height) {
+                    System.out.print(String.format("\033[%d;%dH", tailRow + 1, col + 1));
+                    System.out.print(" ");
+                }
+
+                columnPositions[col]++;
+
+                if (columnPositions[col] >= height + 12) {
+                    columnPositions[col] = -(random.nextInt(height / 2));
+                    columnSpeeds[col] = 0.3f + random.nextFloat() * 0.4f;
+                }
+            }
+        }
+
+        System.out.flush();
+    }
+
+    private static char getRandomChar(Random random) {
+        return CHARACTERS.charAt(random.nextInt(CHARACTERS.length()));
     }
 
     public static void clearScreen(){

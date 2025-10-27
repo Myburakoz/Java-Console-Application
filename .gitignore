@@ -31,6 +31,7 @@ bin/
 JavaConsoleApp.iml
 src/Main.class
 src/Group06.class
+src/Group06$1.class
 
 ### Mac OS ###
 .DS_Store
