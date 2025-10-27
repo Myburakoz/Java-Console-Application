@@ -319,7 +319,7 @@ public class Group06 {
                 case "B":
                     clearScreen();
                     isInputValid = true;
-                    evalauteExpressionMenu(input);
+                    evaluateExpressionMenu(input);
                     break;
                 case "C":
                     clearScreen();
@@ -932,9 +932,341 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-        public static void evalauteExpressionMenu(Scanner input) {
+    public static void evaluateExpressionMenu(Scanner input)
+    {
+        boolean isInputValid = true;
 
+        do {
+            System.out.print("Enter a mathematical expression: ");
+
+            if (!input.hasNextLine()) {
+                System.out.printf("%nRe-enter a valid expression.%n");
+                input = new Scanner(System.in);
+                isInputValid = false;
+                continue;
+            }
+
+            String expression = input.nextLine().replace(" ", "");
+
+            try {
+                if (!isValidExpression(expression)) {
+                    throw new IllegalArgumentException();
+                }
+                evaluateExpression(expression);
+                isInputValid = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Re-enter a valid expression.");
+                isInputValid = false;
+            } catch (ArithmeticException e) {
+                System.out.println("Error: Division by zero. " + e.getMessage());
+                isInputValid = true;
+            }
+
+        }while(!isInputValid);
+    }
+
+    public static boolean isValidExpression(String expression){
+        if (expression.isEmpty() || !areParenthesesBalanced(expression) || hasInvalidCharacters(expression)) {
+            return false;
         }
+
+        // Check for empty parentheses
+        if (expression.contains("()")) {
+            return false;
+        }
+
+        if (isOperator(expression.charAt(expression.length() - 1))) {
+            return false;
+        }
+
+        if ((expression.startsWith("x") || expression.startsWith(":"))) {
+            return false;
+        }
+
+        if (expression.startsWith("+")) {
+            return false;
+        }
+
+        for (int i = 0; i < expression.length() - 1; i++) {
+            char current = expression.charAt(i);
+            char next = expression.charAt(i + 1);
+
+            if (isOperator(current) && isOperator(next)) {
+                // Allow x- or :- for unary minus (but NOT --)
+                if ((current == 'x' || current == ':') && next == '-') {
+                    continue;
+                }
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean areParenthesesBalanced(String expression){
+        int balance = 0;
+
+        for(int i = 0; i < expression.length(); i++){
+            if(expression.charAt(i) == '(')
+                balance++;
+            if(expression.charAt(i) == ')')
+                balance--;
+
+            if(balance < 0)
+                return false;
+        }
+
+        return balance == 0;
+    }
+
+    private static boolean hasInvalidCharacters(String expression) {
+        for (char c : expression.toCharArray()) {
+            if (!Character.isDigit(c) && !isOperator(c) && c != '(' && c != ')') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isOperator(char c){
+        return c == '+' || c == '-' || c == 'x' || c == ':';
+    }
+
+    public static void evaluateExpression(String expression){
+        if(expression.equals("-0")) {
+            System.out.print(expression);
+            System.out.println("= 0");
+            return;
+        }
+
+        System.out.println(expression);
+
+        String current = expression;
+        String next = evaluateStep(current);
+
+        while(!next.equals(current)){
+            System.out.println("= " + next);
+            current = next;
+            next = evaluateStep(current);
+        }
+    }
+
+    public static String evaluateStep(String step){
+        int indexOfCloseParenthesis = step.indexOf(')');
+
+        if(indexOfCloseParenthesis != -1){
+            int indexOfOpenParenthesis = step.lastIndexOf('(', indexOfCloseParenthesis);
+            String subStep = step.substring(indexOfOpenParenthesis + 1, indexOfCloseParenthesis);
+
+            String evaluatedSubstep = evaluateStep(subStep);
+
+            if(evaluatedSubstep.equals(subStep)){
+                if(indexOfOpenParenthesis > 0 && step.charAt(indexOfOpenParenthesis - 1) == '-' && evaluatedSubstep.startsWith("-")) {
+                    boolean isUnary = (indexOfOpenParenthesis - 1 == 0) || isOperator(step.charAt(indexOfOpenParenthesis - 2)) || step.charAt(indexOfOpenParenthesis - 2) == '(';
+
+                    if(isUnary){
+                        int value = Integer.parseInt(evaluatedSubstep);
+                        int result = -value;
+                        String resultStr = (result == 0) ? "0" : String.valueOf(result);
+                        return step.substring(0, indexOfOpenParenthesis - 1) + resultStr + step.substring(indexOfCloseParenthesis + 1);
+                    } else {
+                        int operatorIndex = indexOfOpenParenthesis - 1;
+                        int leftEnd = operatorIndex - 1;
+                        int leftStart = findOperandStart(step, leftEnd);
+                        String leftStr = step.substring(leftStart, leftEnd + 1);
+                        int leftVal = Integer.parseInt(leftStr);
+                        int rightVal = Integer.parseInt(evaluatedSubstep);
+
+                        int result = leftVal - rightVal; // e.g. 2 - (-2) = 4
+
+                        String resultStr = String.valueOf(result);
+                        return step.substring(0, leftStart) + resultStr + step.substring(indexOfCloseParenthesis + 1);
+                    }
+                }
+
+                String normalized = evaluatedSubstep.equals("-0") ? "0" : evaluatedSubstep;
+                return step.substring(0, indexOfOpenParenthesis) + normalized + step.substring(indexOfCloseParenthesis + 1);
+            }
+
+            if (isSimpleNumber(evaluatedSubstep)) {
+                // To get the desired "-(-3)" output, we keep the parentheses if it would create "--".
+                if (indexOfOpenParenthesis > 0 && step.charAt(indexOfOpenParenthesis - 1) == '-' && evaluatedSubstep.startsWith("-")) {
+                    return step.substring(0, indexOfOpenParenthesis + 1) + evaluatedSubstep + step.substring(indexOfCloseParenthesis);
+                }
+                // Otherwise, remove them.
+                String normalized = evaluatedSubstep.equals("-0") ? "0" : evaluatedSubstep;
+                return step.substring(0, indexOfOpenParenthesis) + normalized + step.substring(indexOfCloseParenthesis + 1);
+            } else {
+                // Case 3: The content evaluated to another expression (e.g. "(5*2-3)" -> "(10-3)").
+                // Keep the parentheses and update the content.
+                return step.substring(0, indexOfOpenParenthesis + 1) + evaluatedSubstep + step.substring(indexOfCloseParenthesis);
+            }
+        }
+
+        if(step.contains("x") || step.contains(":"))
+            return performMultiplicationOrDivision(step);
+
+        if(step.contains("+") || step.contains("-"))
+            return performPlusMinus(step);
+
+        return step;
+    }
+
+    public static String performMultiplicationOrDivision(String expression){
+        int multiplyIndex = expression.indexOf('x');
+        int divIndex = expression.indexOf(':');
+
+        int operatorIndex = -1;
+        char operator = ' ';
+
+        if (multiplyIndex != -1 && (divIndex == -1 || multiplyIndex < divIndex)) {
+            operatorIndex = multiplyIndex;
+            operator = 'x';
+        } else if (divIndex != -1) {
+            operatorIndex = divIndex;
+            operator = ':';
+        }
+
+        return applyOperation(expression, operatorIndex, operator);
+    }
+
+    public static String performPlusMinus(String expression){
+        int plusIndex = expression.indexOf('+', 1);
+        int minusIndex = findNonUnaryMinus(expression);
+
+        int operatorIndex = -1;
+        char operator = ' ';
+
+        // Special case: if expression contains -- (operator followed by negative number)
+        int doubleMinus = expression.indexOf("--");
+        if (doubleMinus >= 0) {
+            return applyOperation(expression, doubleMinus, '-');
+        }
+
+        if (expression.startsWith("-"))
+            if(plusIndex == -1 && minusIndex == -1)
+                return expression;
+
+        if (plusIndex != -1 && (minusIndex == -1 || plusIndex < minusIndex)) {
+            operatorIndex = plusIndex;
+            operator = '+';
+        } else if (minusIndex != -1) {
+            operatorIndex = minusIndex;
+            operator = '-';
+        } else if (expression.indexOf('-') == 0) {
+            // Handle unary minus
+            operatorIndex = 0;
+            operator = '-';
+        }
+
+        return applyOperation(expression, operatorIndex, operator);
+    }
+
+    public static int findNonUnaryMinus(String expression){
+        return expression.indexOf('-') == 0 ? expression.indexOf('-', 1):expression.indexOf('-');
+    }
+
+    public static int findCloseParenthesis(String expression, int openParenthesesIndex){
+        int balance = 1;
+        for (int i = openParenthesesIndex + 1; i < expression.length(); i++) {
+            if (expression.charAt(i) == '(') {
+                balance++;
+            } else if (expression.charAt(i) == ')') {
+                balance--;
+                if (balance == 0) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public static boolean isSimpleNumber(String expression){
+        if(expression.isEmpty())
+            return false;
+
+        try{
+            Integer.parseInt(expression);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static String applyOperation(String expression, int operatorIndex, char operator){
+        if(operatorIndex == -1)
+            return expression;
+
+        //Unary Minus
+        if(operatorIndex == 0 && operator == '-'){
+            int rightOperandStartIndex = 1;
+            int rightOperandEndIndex = findOperandEnd(expression, rightOperandStartIndex);
+            String rightOperandStr = expression.substring(rightOperandStartIndex, rightOperandEndIndex);
+            int rightOperand = Integer.parseInt(rightOperandStr);
+            int result = -rightOperand;
+            // Normalize -0 to 0
+            String resultStr = (result == 0) ? "0" : String.valueOf(result);
+            return resultStr + expression.substring(rightOperandEndIndex);
+        }
+
+        int leftOperandEnd = operatorIndex - 1;
+        int leftOperandStart = findOperandStart(expression, leftOperandEnd);
+
+        int rightOperandStart = operatorIndex + 1;
+        int rightOperandEnd = findOperandEnd(expression, rightOperandStart);
+
+        String leftOperandStr = expression.substring(leftOperandStart, leftOperandEnd + 1);
+        String rightOperandStr = expression.substring(rightOperandStart, rightOperandEnd);
+
+        int leftOperand = Integer.parseInt(leftOperandStr);
+        int rightOperand = Integer.parseInt(rightOperandStr);
+
+        int result = 0;
+        switch (operator){
+            case 'x':
+                result = leftOperand * rightOperand;
+                break;
+            case ':':
+                if (rightOperand == 0)
+                    throw new ArithmeticException("Division by zero!");
+                result = leftOperand / rightOperand;
+                break;
+            case '+':
+                result = leftOperand + rightOperand;
+                break;
+            case '-':
+                result = leftOperand - rightOperand;
+                break;
+        }
+
+        String resultStr = (result == 0) ? "0" : String.valueOf(result);
+        if (leftOperandStart > 0 && expression.charAt(leftOperandStart - 1) == '+' && result < 0)
+            return expression.substring(0, leftOperandStart - 1) + resultStr + expression.substring(rightOperandEnd);
+
+        return expression.substring(0, leftOperandStart) + resultStr + expression.substring(rightOperandEnd);
+    }
+
+    public static int findOperandStart(String expression, int index) {
+        int start = index;
+        if(start < 0)
+            return 0;
+        while (start >= 0 && Character.isDigit(expression.charAt(start)))
+            start--;
+        if(start >= 0 && (expression.charAt(start) == '-') && (start == 0 || isOperator(expression.charAt(start - 1)) || expression.charAt(start-1) == '('))
+            start--;
+        return start + 1;
+    }
+
+    public static int findOperandEnd(String expression, int index){
+        int end = index;
+
+        if(expression.charAt(end) == '-' || expression.charAt(end) == '+')
+            end++;
+
+        while (end < expression.length() && Character.isDigit(expression.charAt(end)))
+            end++;
+        return end;
+    }
 
     /*
         Statistical Information about an Array
