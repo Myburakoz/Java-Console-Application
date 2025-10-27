@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Collections;
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Group06 {
     public static void main(String[] args) {
@@ -2260,7 +2260,7 @@ public class Group06 {
      */
     public static int getEasyAIMove(char[][] board) {
         int cols = board[0].length;
-        Random rand = new Random();
+        SecureRandom rand = new SecureRandom();
         int col;
 
         do {
