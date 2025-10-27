@@ -1497,10 +1497,193 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void statisticalInfoArrayMenu(Scanner input)
-    {
+    public static void statisticalInfoArrayMenu(Scanner input) {
 
+        System.out.println("== Statistical Information about an Array ==");
+
+        int n = getArraySize(input, "Enter the size of the array: ");
+
+        if(n == -1)
+            return;
+
+        ArrayList<Double> arr = getTheElementsOfArrayDouble(input, n);
+
+        if(arr == null)
+            return;
+
+        System.out.println("== Statistical Information about an Array ==");
+        System.out.println();
+
+        Collections.sort(arr);
+        System.out.println("\nSorted Array: " + arr.toString());
+
+
+        double median = findMedian(arr);
+        System.out.println("Median: " + median);
+
+        try {
+            double arithmeticMean = arithmeticMean(arr);
+            System.out.println("Arithmetic Mean: " + arithmeticMean);
+        } catch (ArithmeticException e) {
+            System.out.println("Overflow/Underflow happened when finding arithmetic mean.");
+        }
+
+        try {
+            double geometricMean = geometricMean(arr);
+            System.out.println("Geometric Mean: " + geometricMean);
+        } catch (ArithmeticException e) {
+            System.out.println("Overflow/Underflow happened when finding geometric mean.");
+        }
+        try {
+            double harmonicMean = recursiveHarmonicSum(arr, 0);
+            System.out.println("Harmonic Mean: " + harmonicMean);
+        } catch (ArithmeticException e) {
+            System.out.println("Division by zero or underflow risk");
+        } catch (IllegalArgumentException e){
+            System.out.println("Harmonic mean undefined for negative numbers.");
+        }
     }
+
+    public static int getArraySize(Scanner input, String message){
+        int size = 0;
+        boolean isInputValid = true;
+
+        clearScreen();
+
+        do {
+            System.out.println("== Statistical Information about an Array ==");
+            System.out.println();
+
+            if (isInputValid)
+                System.out.print(message);
+            else
+                System.out.print("Enter a valid value: ");
+
+
+            try {
+                size = Integer.parseInt(input.nextLine().trim());
+
+                if(size < 1) {
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                isInputValid = true;
+
+            } catch (java.util.NoSuchElementException e) {
+                clearScreen();
+                System.out.println("EOF Detected. Returning to the menu...");
+                return -1;
+            } catch (IllegalStateException e) {
+                input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+            } catch (NumberFormatException e){
+                isInputValid = false;
+                clearScreen();
+            }
+        }while(!isInputValid);
+
+        return size;
+    }
+
+    public static ArrayList<Double> getTheElementsOfArrayDouble(Scanner input, int size){
+        ArrayList<Double> arr = new ArrayList<>();
+        boolean isInputValid = true;
+
+        for(int i = 0; i < size; i++)
+        {
+            do {
+                clearScreen();
+                System.out.println("== Statistical Information about an Array ==");
+                System.out.println();
+
+                if (isInputValid)
+                    System.out.print("Enter a number " + (i+1) + ". element of the array: ");
+                else
+                    System.out.print("Enter a valid number: ");
+
+                try{
+                    double element = Double.parseDouble(input.nextLine().trim());
+                    arr.add(element);
+                    isInputValid = true;
+
+                }catch (java.util.NoSuchElementException e) {
+                    clearScreen();
+                    System.out.println("EOF Detected. Returning to the menu...");
+                    return null;
+                } catch (IllegalStateException e) {
+                    input = new Scanner(System.in);
+                    isInputValid = false;
+                    clearScreen();
+                } catch (NumberFormatException e){
+                    isInputValid = false;
+                    clearScreen();
+                }
+
+            }while(!isInputValid);
+        }
+
+        return arr;
+    }
+
+    public static double findMedian(ArrayList<Double> arr){
+        int n = arr.size();
+        if(n % 2 == 0)
+            return (arr.get(n/2 - 1) + arr.get(n/2)) / 2.0;
+
+        return arr.get(n/2);
+    }
+
+    public static double arithmeticMean(ArrayList<Double> arr){
+        double mean = 0;
+        int n = arr.size();
+
+        for(int i = 0; i < n; i++) {
+            if(Double.isInfinite(mean))
+                throw new ArithmeticException("Overflow/Underflow happened when finding arithmetic mean.");
+            mean += arr.get(i) / n;
+        }
+
+        return mean;
+    }
+
+    public static double geometricMean(ArrayList<Double> arr){
+        double mean = 1;
+        int n = arr.size();
+
+        for(int i = 0; i < n; i++) {
+            if(Double.isInfinite(mean))
+                throw new ArithmeticException("Overflow/Underflow happened when finding geometric mean.");
+
+            mean *= Math.pow(arr.get(i), 1.0 / n);
+        }
+
+        return mean;
+    }
+
+    public static double recursiveHarmonicSum(ArrayList<Double> arr, int index) {
+        if (index == arr.size())
+            return 0;
+
+        double value = arr.get(index);
+
+        if (value == 0.0) {
+            throw new ArithmeticException("Division by zero in harmonic mean.");
+        }
+
+        if (Math.abs(value) < 1e-308) {
+            throw new ArithmeticException("Underflow risk: value too close to zero.");
+        }
+
+        if (value < 0) {
+            throw new IllegalArgumentException("Harmonic mean undefined for negative numbers.");
+        }
+        return (1 / value) + recursiveHarmonicSum(arr, index + 1);
+    }
+
+
 
     /*
         Distance between Two Arrays
