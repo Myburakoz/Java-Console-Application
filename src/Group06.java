@@ -417,12 +417,31 @@ public class Group06 {
 
     public static void wordReverserMenu(Scanner input)
     {
+        final String wordReverser = """
+                __        __            _   ____                                  \s
+                \\ \\      / /__  _ __ __| | |  _ \\ _____   _____ _ __ ___  ___ _ __\s
+                 \\ \\ /\\ / / _ \\| '__/ _` | | |_) / _ \\ \\ / / _ \\ '__/ __|/ _ \\ '__|
+                  \\ V  V / (_) | | | (_| | |  _ <  __/\\ V /  __/ |  \\__ \\  __/ |  \s
+                   \\_/\\_/ \\___/|_|  \\__,_| |_| \\_\\___| \\_/ \\___|_|  |___/\\___|_|  \s
+                                          | |                                     \s
+                                          | |                                     \s
+                                          | |                                     \s
+                                        __| |__                                   \s
+                                        \\ \\_/ /                                   \s
+                     _        __        _\\ V /                               ____ \s
+                  __| |_ __ __\\ \\      / /\\_/ __ ___  ___ _ __ _____   _____|  _ \\\s
+                 / _` | '__/ _ \\ \\ /\\ / /  | '__/ _ \\/ __| '__/ _ \\ \\ / / _ \\ |_) |
+                | (_| | | | (_) \\ V  V /   | | |  __/\\__ \\ | |  __/\\ V /  __/  _ <\s
+                 \\__,_|_|  \\___/ \\_/\\_/    |_|  \\___||___/_|  \\___| \\_/ \\___|_| \\_\\""";
+
         boolean isInputValid = false;
         String str = "";
         String message = "Enter a string: ";
 
         do {
             try {
+                System.out.println(wordReverser);
+                System.out.printf("%n%n");
                 System.out.print(message);
                 str = input.nextLine().trim();
 
