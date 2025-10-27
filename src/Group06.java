@@ -1693,6 +1693,210 @@ public class Group06 {
 
     public static void distanceArrayMenu(Scanner input)
     {
+        System.out.println("=== Distance between Two Arrays ===");
+        System.out.println();
 
+        int dimension = checkDimension(input, "Enter the dimension of the arrays: ");
+
+        System.out.println("=== Distance between Two Arrays ===");
+        System.out.println();
+
+        ArrayList<Integer> arr1 = getElementsOfTheArray(input, dimension, "first");
+        ArrayList<Integer> arr2 = getElementsOfTheArray(input, dimension, "second");
+
+        System.out.println("=== Distance between Two Arrays ===");
+        System.out.println();
+
+        int manhattan = getManhattanDistance(arr1, arr2);
+        double euclidean = getEuclideanDistance(arr1, arr2);
+        double cosine = getCosineSimilarity(arr1, arr2);
+
+        System.out.println("=== Results ===");
+
+        printArray(arr1);
+        printArray(arr2);
+
+        System.out.println("Manhattan Distance: " + manhattan);
+        System.out.println("Euclidean Distance: " + euclidean);
+        System.out.println("Cosine Similarity: " + cosine);
+    }
+
+    public static int checkDimension(Scanner input, String prompt){
+        int dimension = 0;
+        boolean isInputValid = true;
+
+        clearScreen();
+
+            do {
+            System.out.println("=== Distance between Two Arrays ===");
+            System.out.println();
+
+            if (isInputValid)
+                System.out.print(prompt);
+            else
+                System.out.print("Enter a valid value: ");
+
+
+            try {
+                if (!input.hasNextLine()) {
+                    input = new Scanner(System.in);
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                if (!input.hasNextInt()) {
+                    input.nextLine();
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                dimension = input.nextInt();
+                String remains = input.nextLine().trim();
+
+                if(!remains.isEmpty())
+                {
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                if(dimension < 1) {
+                    isInputValid = false;
+                    clearScreen();
+                    continue;
+                }
+
+                isInputValid = true;
+
+            } catch (java.util.NoSuchElementException e) {
+                input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+            } catch (IllegalStateException e) {
+                input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+            }
+
+        }while(!isInputValid);
+
+        return dimension;
+    }
+
+    public static ArrayList<Integer> getElementsOfTheArray(Scanner input, int dimension, String arrName)
+    {
+        ArrayList<Integer> arr = new ArrayList<>();
+        boolean isInputValid = true;
+
+        for(int i = 0; i < dimension; i++)
+        {
+            do {
+                clearScreen();
+                System.out.println("=== Distance between Two Arrays ===");
+                System.out.println();
+
+                if (isInputValid)
+                    System.out.print("Enter a number [0-9] for " + (i+1) + ". element of the " + arrName + " array: ");
+                else
+                    System.out.print("Enter a valid number between 0 and 9: ");
+
+                try{
+                    if (!input.hasNextLine()) {
+                        input = new Scanner(System.in);
+                        isInputValid = false;
+                        clearScreen();
+                        continue;
+                    }
+
+                    if (!input.hasNextInt()) {
+                        input = new Scanner(System.in);
+                        isInputValid = false;
+                        clearScreen();
+                        continue;
+                    }
+
+                    int element = input.nextInt();
+                    String remains = input.nextLine().trim();
+
+                    if(!remains.isEmpty())
+                    {
+                        isInputValid = false;
+                        clearScreen();
+                        continue;
+                    }
+
+                    if(element < 0 || element > 9) {
+                        isInputValid = false;
+                        clearScreen();
+                        continue;
+                    }
+
+                    arr.add(element);
+                    isInputValid = true;
+
+                }catch (java.util.NoSuchElementException e) {
+                    input = new Scanner(System.in);
+                    isInputValid = false;
+                    clearScreen();
+                } catch (IllegalStateException e) {
+                    input = new Scanner(System.in);
+                    isInputValid = false;
+                    clearScreen();
+                }
+
+            }while(!isInputValid);
+        }
+
+        return arr;
+    }
+
+    public static int getManhattanDistance(ArrayList<Integer> arr1, ArrayList<Integer> arr2){
+        int manhattan = 0;
+
+        for(int i = 0; i < arr1.size(); i++)
+            manhattan += Math.abs(arr1.get(i) - arr2.get(i));
+
+        return manhattan;
+    }
+
+    public static double getEuclideanDistance(ArrayList<Integer> arr1, ArrayList<Integer> arr2){
+        double euclidean = 0;
+
+        for(int i = 0; i < arr1.size(); i++)
+            euclidean += Math.abs(arr1.get(i) - arr2.get(i)) * Math.abs(arr1.get(i) - arr2.get(i));
+
+        return Math.sqrt(euclidean);
+    }
+
+    public static double getCosineSimilarity(ArrayList<Integer> arr1, ArrayList<Integer> arr2){
+        double dotProduct = 0;
+        double lengthOfFirst = 0;
+        double lengthOfSecond = 0;
+
+        for(int i = 0; i < arr1.size(); i++) {
+            dotProduct += arr1.get(i) * arr2.get(i);
+            lengthOfFirst += arr1.get(i) * arr1.get(i);
+            lengthOfSecond += arr2.get(i) * arr2.get(i);
+        }
+
+        lengthOfFirst = Math.sqrt(lengthOfFirst);
+        lengthOfSecond = Math.sqrt(lengthOfSecond);
+
+        return dotProduct/(lengthOfFirst * lengthOfSecond);
+    }
+
+    public static void printArray(ArrayList<Integer> arr){
+        System.out.print("[");
+
+        for(int i = 0; i < arr.size(); i++){
+            if(i != arr.size() - 1)
+                System.out.print(arr.get(i) + ", ");
+            else
+                System.out.print(arr.get(i));
+        }
+
+        System.out.println("]");
     }
 }
