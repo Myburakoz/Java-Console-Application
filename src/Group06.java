@@ -1922,8 +1922,15 @@ public class Group06 {
         // 1. Get Game Mode
         String gameMode = getGameMode(input);
 
+        if(gameMode.isEmpty())
+            return;
+
         // 2. Get Board Size
         int[] boardSize = getBoardSize(input);
+
+        if(boardSize == null)
+            return;
+
         int rows = boardSize[0];
         int cols = boardSize[1];
 
@@ -1967,6 +1974,9 @@ public class Group06 {
 
             // 1. Get move
             int col = getPlayerMove(input, board, playerName, currentPlayerDisc);
+
+            if(col == -1)
+                return;
 
             // 2. Place disc
             placeDisc(board, col, currentPlayerDisc);
@@ -2246,6 +2256,10 @@ public class Group06 {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Error: Invalid input. Please enter a number.");
+            } catch (NoSuchElementException e){
+                System.out.println("EOF Detected!");
+                makeWait();
+                return -1;
             }
         } while (!isValidMove);
 
@@ -2391,6 +2405,10 @@ public class Group06 {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
+            } catch (NoSuchElementException e){
+                System.out.println("EOF Detected!");
+                makeWait();
+                return "";
             }
         } while (!isInputValid);
 
@@ -2432,6 +2450,10 @@ public class Group06 {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
+            } catch (RuntimeException e) {
+                System.out.println("EOF detected");
+                makeWait();
+                return null;
             }
         } while (!isInputValid);
 
@@ -2476,6 +2498,10 @@ public class Group06 {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("\nError: Invalid input. Please enter numbers only. Try again.");
+            } catch (NoSuchElementException e) {
+                System.out.println("EOF Detected!");
+                makeWait();
+                return "";
             }
         } while (!isInputValid);
 
