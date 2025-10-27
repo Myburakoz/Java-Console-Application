@@ -840,7 +840,80 @@ public class Group06 {
 
     public static void wordReverserMenu(Scanner input)
     {
+        final String wordReverser = """
+                __        __            _   ____                                  \s
+                \\ \\      / /__  _ __ __| | |  _ \\ _____   _____ _ __ ___  ___ _ __\s
+                 \\ \\ /\\ / / _ \\| '__/ _` | | |_) / _ \\ \\ / / _ \\ '__/ __|/ _ \\ '__|
+                  \\ V  V / (_) | | | (_| | |  _ <  __/\\ V /  __/ |  \\__ \\  __/ |  \s
+                   \\_/\\_/ \\___/|_|  \\__,_| |_| \\_\\___| \\_/ \\___|_|  |___/\\___|_|  \s
+                                          | |                                     \s
+                                          | |                                     \s
+                                          | |                                     \s
+                                        __| |__                                   \s
+                                        \\ \\_/ /                                   \s
+                     _        __        _\\ V /                               ____ \s
+                  __| |_ __ __\\ \\      / /\\_/ __ ___  ___ _ __ _____   _____|  _ \\\s
+                 / _` | '__/ _ \\ \\ /\\ / /  | '__/ _ \\/ __| '__/ _ \\ \\ / / _ \\ |_) |
+                | (_| | | | (_) \\ V  V /   | | |  __/\\__ \\ | |  __/\\ V /  __/  _ <\s
+                 \\__,_|_|  \\___/ \\_/\\_/    |_|  \\___||___/_|  \\___| \\_/ \\___|_| \\_\\""";
 
+        boolean isInputValid = false;
+        String str = "";
+        String message = "Enter a string: ";
+
+        do {
+            try {
+                System.out.println(wordReverser);
+                System.out.printf("%n%n");
+                System.out.print(message);
+                str = input.nextLine().trim();
+
+                isInputValid = true;
+
+                if(str.isEmpty()){
+                    isInputValid = false;
+                    message = "You entered an empty string or just spaces. Enter a valid string: ";
+                }
+            } catch (NoSuchElementException e) {
+                clearScreen();
+                System.out.println("EOF detected! Returning to the menu...");
+                makeWait();
+                clearScreen();
+                return;
+            }
+        }while (!isInputValid);
+
+        System.out.print("The result: ");
+        System.out.println(process(str));
+    }
+
+    public static String process(String text) {
+        StringBuilder result = new StringBuilder();
+        int i = 0;
+        while (i < text.length()) {
+            char c = text.charAt(i);
+            if (Character.isLetter(c)) {
+                int start = i;
+                while (i < text.length() && Character.isLetter(text.charAt(i))) {
+                    i++;
+                }
+                String word = text.substring(start, i);
+                if (word.length() >= 2)
+                    result.append(reverseRec(word));
+                else
+                    result.append(word);
+            } else {
+                result.append(c);
+                i++;
+            }
+
+        }
+        return result.toString();
+    }
+    private static String reverseRec(String s) {
+        if(s.length() <= 1)
+            return s;
+        return reverseRec(s.substring(1)) + s.charAt(0);
     }
 
     /*
@@ -849,10 +922,9 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void primeNumbersMenu(Scanner input)
-    {
+        public static void primeNumbersMenu(Scanner input) {
 
-    }
+        }
 
     /*
         Step by step Evaluation of Expression
@@ -860,10 +932,9 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void evalauteExpressionMenu(Scanner input)
-    {
+        public static void evalauteExpressionMenu(Scanner input) {
 
-    }
+        }
 
     /*
         Statistical Information about an Array
@@ -871,10 +942,9 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void statisticalInfoArrayMenu(Scanner input)
-    {
+        public static void statisticalInfoArrayMenu(Scanner input) {
 
-    }
+        }
 
     /*
         Distance between Two Arrays
@@ -882,8 +952,7 @@ public class Group06 {
         NOTE: If you want add an extra function. You can of course add. These are just menus.
      */
 
-    public static void distanceArrayMenu(Scanner input)
-    {
+        public static void distanceArrayMenu(Scanner input) {
 
+        }
     }
-}
