@@ -2440,7 +2440,7 @@ public class Group06 {
 
 
             try {
-                dimension = Integer.parseInt(input.nextLine());
+                dimension = Integer.parseInt(input.nextLine().trim());
 
                 if(dimension < 1) {
                     isInputValid = false;
@@ -2457,6 +2457,9 @@ public class Group06 {
                 return -1;
             } catch (IllegalStateException e) {
                 input = new Scanner(System.in);
+                isInputValid = false;
+                clearScreen();
+            } catch (NumberFormatException e){
                 isInputValid = false;
                 clearScreen();
             }
@@ -2496,7 +2499,7 @@ public class Group06 {
                     System.out.print("Enter a valid number between 0 and 9: ");
 
                 try{
-                    int element = Integer.parseInt(input.nextLine());
+                    int element = Integer.parseInt(input.nextLine().trim());
 
                     if(element < 0 || element > 9) {
                         isInputValid = false;
@@ -2515,8 +2518,10 @@ public class Group06 {
                     input = new Scanner(System.in);
                     isInputValid = false;
                     clearScreen();
+                } catch (NumberFormatException e){
+                    isInputValid = false;
+                    clearScreen();
                 }
-
             }while(!isInputValid);
         }
 
