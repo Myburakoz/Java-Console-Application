@@ -671,9 +671,7 @@ public class Group06 {
         }while(!isReturningMainMenu);
     }
 
-    /*
-     *  AGE AND ZODIAC DETECTOR MENU
-     */
+
 
     /**
      * Interactively collects a user's date of birth and prints their age and zodiac sign.
@@ -1115,9 +1113,7 @@ public class Group06 {
     }
 
 
-    /*
-        Reverse the Words
-     */
+
 
     /**
      * Displays the "Word Reverser" feature menu and prompts the user for a string input.
@@ -1249,11 +1245,6 @@ public class Group06 {
         return reverseRec(s.substring(1)) + s.charAt(0);
     }
 
-    /*
-        Prime Numbers
-
-        NOTE: If you want add an extra function. You can of course add. These are just menus.
-     */
 
     /**
      * Displays the "Prime Numbers" menu, validates the upper bound {@code n}, and
@@ -1501,11 +1492,6 @@ public class Group06 {
         return primes;
     }
 
-    /*
-        Step by step Evaluation of Expression
-
-        NOTE: If you want add an extra function. You can of course add. These are just menus.
-     */
 
     /**
      * Interactively reads a mathematical expression from the user and prints
@@ -2043,9 +2029,7 @@ public class Group06 {
         return end;
     }
 
-    /*
-        Statistical Information about an Array
-     */
+
 
     /**
      * Interactive menu that collects an array of doubles from the user,
@@ -2357,12 +2341,6 @@ public class Group06 {
 
 
 
-    /*
-        Distance between Two Arrays
-
-        NOTE: If you want add an extra function. You can of course add. These are just menus.
-     */
-
     /**
      * Interactive menu for computing distances/similarity between two equal-length integer arrays.
      * <p>
@@ -2594,11 +2572,7 @@ public class Group06 {
         return dotProduct/(lengthOfFirst * lengthOfSecond);
     }
 
-    /*
-        Connect4
 
-        NOTE: If you want add an extra function. You can of course add. These are just menus.
-     */
     public static final char PLAYER_ONE_DISC = 'X';
     public static final char PLAYER_TWO_DISC = 'O';
     public static final char EMPTY_CELL = ' ';
