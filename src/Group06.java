@@ -2801,7 +2801,7 @@ public class Group06 {
         if(validCols.isEmpty())
             return -1;
 
-        int center = board[0].length;
+        int center = board[0].length / 2;
         quickSortByCenter(validCols, 0, validCols.size() - 1, center);
 
         int bestCol = validCols.get(0);
