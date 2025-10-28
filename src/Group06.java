@@ -1636,7 +1636,7 @@ public class Group06 {
             System.out.println("Overflow/Underflow happened when finding geometric mean.");
         }
         try {
-            double harmonicMean = recursiveHarmonicSum(arr, 0);
+            double harmonicMean = harmonicMean(arr);
             System.out.println("Harmonic Mean: " + harmonicMean);
         } catch (ArithmeticException e) {
             System.out.println("Division by zero or underflow risk");
@@ -1792,15 +1792,23 @@ public class Group06 {
             throw new IllegalArgumentException("Harmonic mean undefined for negative numbers.");
         }
 
-        double mean = (1 / value) + recursiveHarmonicSum(arr, index + 1);
+        return (1 / value) + recursiveHarmonicSum(arr, index + 1);
+    }
 
-        double tolerance = 1e-9;
-        mean = Math.round(mean * 1e9) / 1e9;
-        if (Math.abs(mean - Math.round(mean * 10) / 10.0) < tolerance)
-            mean = Math.round(mean * 10) / 10.0;
+    public static double harmonicMean(ArrayList<Double> arr) {
+        if (arr == null || arr.isEmpty())
+            throw new IllegalArgumentException("Empty list: harmonic mean undefined.");
 
+        double reciprocalSum = recursiveHarmonicSum(arr, 0);
 
-        return mean;
+        if (reciprocalSum == 0.0)
+            throw new ArithmeticException("Sum of reciprocals is zero.");
+
+        double h = arr.size() / reciprocalSum;
+
+        h = Math.round(h * 1e9) / 1e9;
+
+        return h;
     }
 
 
