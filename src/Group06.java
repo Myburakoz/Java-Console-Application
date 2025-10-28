@@ -2904,19 +2904,88 @@ public class Group06 {
     }
 
     /**
-     * Places the player's disc in the lowest available spot in the chosen column.
-     * @author Suhan Arda Öner
-     * @param board The game board to modify.
-     * @param col The 0-based column index to place the disc in.
-     * @param playerDisc The disc character ('X' or 'O') to place.
+     * Places the player's disc in the lowest available cell within the specified column.
+     * If the column is not full, an animated falling effect is shown before the disc lands.
+     *
+     * <p>Behavior:
+     * <ul>
+     *   <li>Scans the column from bottom to top to find the lowest EMPTY cell.</li>
+     *   <li>If found, calls {@link #animateFall(char[][], int, int, char)} to render the drop.</li>
+     *   <li>Finally writes {@code playerDisc} to the computed final row.</li>
+     * </ul>
+     *
+     * <p>Notes:
+     * <ul>
+     *   <li>No-op if the column is full (i.e., no EMPTY cell is found).</li>
+     *   <li>Relies on {@code EMPTY_CELL}, {@link #clearScreen()}, and {@link #printBoard(char[][])}.</li>
+     * </ul>
+     *
+     * @param board      the game board matrix [rows][cols]; modified in place
+     * @param col        zero-based column index to drop into (must be within bounds)
+     * @param playerDisc the disc character to place (e.g., 'X' or 'O')
+     * @author Suhan Arda Öner and Burak Özevin
      */
     public static void placeDisc(char[][] board, int col, char playerDisc) {
-        int rows = board.length;
-        for (int r = rows - 1; r >= 0; r--) { // Start from the bottom row and go up
+        int finalRow = -1;
+        for (int r = board.length - 1; r >= 0; r--) { // Start from the bottom row and go up
             if (board[r][col] == EMPTY_CELL) {
-                board[r][col] = playerDisc;
-                return; // Disc placed, exit method
+                finalRow = r;
+                break;
             }
+        }
+
+        if (finalRow != -1) {
+            animateFall(board, col, finalRow, playerDisc);
+            board[finalRow][col] = playerDisc;
+        }
+    }
+
+    /**
+     * Animates a disc falling from the top of the column down to {@code finalRow}.
+     * At each intermediate step, the board is redrawn to create a falling effect.
+     *
+     * <p>Behavior:
+     * <ul>
+     *   <li>Temporarily places the disc at each row from 0 to {@code finalRow}.</li>
+     *   <li>Clears the screen and redraws the board at each step.</li>
+     *   <li>Removes the temporary disc unless it is the final position.</li>
+     *   <li>Waits ~100ms per frame to produce the animation.</li>
+     * </ul>
+     *
+     * <p>Notes:
+     * <ul>
+     *   <li>Handles {@link InterruptedException} by re-asserting the interrupted status.</li>
+     *   <li>Relies on {@code EMPTY_CELL}, {@link #clearScreen()}, and {@link #printBoard(char[][])}.</li>
+     *   <li>Does not perform bounds checks—callers must ensure valid {@code col} and {@code finalRow}.</li>
+     * </ul>
+     *
+     * @param board      the game board matrix [rows][cols]; temporarily modified for animation frames
+     * @param col        zero-based column index being animated
+     * @param finalRow   the landing row index (0 ≤ finalRow &lt; rows)
+     * @param playerDisc the disc character to animate (e.g., 'X' or 'O')
+     * @author Burak Özevin
+     */
+    public static void animateFall(char[][] board, int col, int finalRow, char playerDisc) {
+        try {
+            // Show the disc falling from top to final position
+            for (int row = 0; row <= finalRow; row++) {
+                // Temporarily place the token at current row
+                board[row][col] = playerDisc;
+
+                // Clear screen and redraw board
+                clearScreen();
+                printBoard(board);
+
+                // Remove token from current position (unless it's the final position)
+                if (row < finalRow) {
+                    board[row][col] = EMPTY_CELL;
+                }
+
+                // Delay for animation effect
+                Thread.sleep(100);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -3167,7 +3236,7 @@ public class Group06 {
      * @author Burak Özevin
      * @param board the game board as a matrix [rows][cols]
      * @param col   the column index to drop into
-     * @param disc  the player's disc character
+     * @param disc  the disc character of AI
      * @implNote No-op if the column is full (no available row).
      */
     public static void dropDisc(char[][] board, int col, char disc){
