@@ -1263,7 +1263,7 @@ public class Group06 {
             System.out.println("**************");
 
             try{
-                System.out.print("Please enter a number: ");
+                System.out.print("Please enter a number bigger or equal to 12: ");
 
                 if(!input.hasNextLine()){
                     System.out.println("EOF detected!");
@@ -1277,7 +1277,7 @@ public class Group06 {
 
                 if(n < 12)
                 {
-                    System.out.println("Please enter a number bigger than 12!");
+                    System.out.println("Please enter a number at least 12!");
                     isInputValid = false;
                     continue;
                 }
