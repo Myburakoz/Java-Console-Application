@@ -1,12 +1,7 @@
-import java.util.ArrayList;
+import java.util.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.security.SecureRandom;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.NoSuchElementException;
-import java.util.InputMismatchException;
-import java.util.Collections;
 
 public class Group06 {
     public static void main(String[] args) {
@@ -1122,11 +1117,14 @@ public class Group06 {
             ArrayList<Integer> eratosthenes = null;
             eratosthenes = sieveOfEratosthenes(n);
             long end = System.nanoTime();
+            //System.out.println(eratosthenes.toString());
             System.out.println("First 3 primes -------> " + eratosthenes.getFirst() + ", " + eratosthenes.get(1) + ", " + eratosthenes.get(2));
             System.out.println("Last 2 primes -------> " + eratosthenes.get(eratosthenes.size() - 2) + ", " + eratosthenes.getLast());
             System.out.println("Time -------> " + (double)((end - start))/1000000000);
         } catch (OutOfMemoryError e) {
-            System.out.println("The memory is not enough to process Eratosthenes Sieve. Returning to the menu...");
+            System.out.println("The memory is not enough to process Eratosthenes Sieve.");
+        } catch (NegativeArraySizeException e){
+            System.out.println("Overflow occured. Eratosthenes' Algorithm cannot proceed!");
         }
 
         System.out.printf("%n%n");
@@ -1136,11 +1134,14 @@ public class Group06 {
             ArrayList<Integer> sundaram = null;
             sundaram = sieveOfSundaram(n);
             long end = System.nanoTime();
+            //System.out.println(sundaram.toString());
             System.out.println("First 3 primes -------> " + sundaram.getFirst() + ", " + sundaram.get(1) + ", " + sundaram.get(2));
             System.out.println("Last 2 primes -------> " + sundaram.get(sundaram.size() - 2) + ", " + sundaram.getLast());
             System.out.println("Time -------> " + (double)((end - start))/1000000000);
         } catch (OutOfMemoryError e) {
-            System.out.println("The memory is not enough to process Sundaram Sieve. Returning to the menu...");
+            System.out.println("The memory is not enough to proceed Sundaram Sieve.");
+        } catch (NegativeArraySizeException e){
+            System.out.println("Overflow occured. Sundaram's Algorithm cannot be proceeded!");
         }
 
         System.out.printf("%n%n");
@@ -1150,148 +1151,103 @@ public class Group06 {
             ArrayList<Integer> atkin = null;
             atkin = sieveOfAtkin(n);
             long end = System.nanoTime();
+            //System.out.println(atkin.toString());
             System.out.println("First 3 primes -------> " + atkin.getFirst() + ", " + atkin.get(1) + ", " + atkin.get(2));
             System.out.println("Last 2 primes -------> " + atkin.get(atkin.size() - 2) + ", " + atkin.getLast());
             System.out.println("Time -------> " + (double)((end - start))/1000000000);
         } catch (OutOfMemoryError e) {
-            System.out.println("The memory is not enough to process Atkin Sieve. Returning to the menu...");
+            System.out.println("The memory is not enough to process Atkin Sieve.");
+        } catch (NegativeArraySizeException e){
+            System.out.println("Overflow occured. Atkin's Algorithm cannot proceed!");
         }
     }
 
     public static ArrayList<Integer> sieveOfEratosthenes(int n){
-        ArrayList<Integer> arr = new ArrayList<>();
+        boolean[] A = new boolean[n + 1];
+        Arrays.fill(A, true);
 
-        for(int i = 1; i <= n; i++)
-            arr.add(i);
-
-        arr.removeFirst();
-
-        for(int i = 0; i < arr.size(); i++){
-            for(int j = i + 1; j < arr.size(); j++){
-                if(arr.get(j) % 2 == 0){
-                    arr.remove(j);
-                    j--;
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (A[i]) {
+                int j = i * i;
+                while (j <= n) {
+                    A[j] = false;
+                    j += i;
                 }
             }
         }
 
-        return arr;
-    }
-
-    public static ArrayList<Integer> sieveOfSundaram(int n){
-        ArrayList<Integer> arr = new ArrayList<>();
-
-        int listSize = (n-2)/2;
-
-        for(int i = 1; i <= listSize; i++)
-            arr.add(i);
-
-        boolean isRepeated = false;
-        int repetition = 0;
-
-        for(int i = 1; i < listSize; i++){
-            repetition = 0;
-
-            for(int j = 1; j < listSize; j++){
-                int element = i + j + 2*i*j;
-
-                if(element > listSize) {
-                    if(j == repetition)
-                        isRepeated = true;
-
-                    break;
-                }
-
-                if(arr.contains(element))
-                    repetition++;
-
-                arr.remove(Integer.valueOf(element));
-            }
-
-            if (isRepeated)
-                break;
-        }
-
-        for(int i = 0; i < arr.size(); i++)
-            arr.set(i, 2*arr.get(i)+1);
-
-        return arr;
-    }
-
-    public static ArrayList<Integer> sieveOfAtkin(int n){
-        ArrayList<Integer> arr1 = new ArrayList<>();
-        ArrayList<Integer> arr2 = new ArrayList<>();
-        ArrayList<Integer> arr3 = new ArrayList<>();
         ArrayList<Integer> primes = new ArrayList<>();
-
-        primes.add(2);
-        primes.add(3);
-        primes.add(5);
-
-        int limit = (int) Math.sqrt(n);
-
-        for(int x = 1; x < limit; x++){
-            for(int y = 1; y < limit; y++){
-                int f1 = 4 * x * x + y * y;
-                int f2 = 3 * x * x + y * y;
-                int f3 = 3 * x * x - y * y;
-
-                boolean condition1 = f1 < n;
-                boolean condition2 = f2 < n;
-                boolean condition3 = f3 < n && f3 > 0;
-
-                if(condition1)
-                    arr1.add(f1);
-
-                if(condition2)
-                    arr2.add(f2);
-
-                if(condition3)
-                    arr3.add(f3);
+        for (int i = 2; i <= n; i++) {
+            if (A[i]) {
+                primes.add(i);
             }
         }
-
-        for(int i = 0; i < arr1.size(); i++)
-            if(arr1.get(i) % 4 != 1 || !isSquareFree(arr1.get(i)))
-                arr1.remove(i--);
-
-        for(int i = 0; i < arr2.size(); i++)
-            if(arr2.get(i) % 6 != 1 || !isSquareFree(arr2.get(i)))
-                arr2.remove(i--);
-
-        for(int i = 0; i < arr3.size(); i++)
-            if(arr3.get(i) % 12 != 11 || !isSquareFree(arr3.get(i)))
-                arr3.remove(i--);
-
-        ArrayList<Integer> merged = new ArrayList<>();
-        merged.addAll(arr1);
-        merged.addAll(arr2);
-        merged.addAll(arr3);
-
-        removeDuplicates(merged);
-
-        Collections.sort(merged);
-
-        for(int i = 0; i < merged.size(); i++)
-            if(merged.get(i) != 2 && merged.get(i) != 3 && merged.get(i) != 5)
-                primes.add(merged.get(i));
 
         return primes;
     }
 
-    public static boolean isSquareFree(int element){
-        for(int i = 2; i*i <= element; i++)
-            if(element % (i*i) == 0)
-                return false;
+    public static ArrayList<Integer> sieveOfSundaram(int n){
+        int k = (n - 1) / 2;
+        boolean[] A = new boolean[k + 1];
+        Arrays.fill(A, true);
 
-        return true;
+        for (int i = 1; i <= Math.sqrt(k); i++) {
+            int j = i;
+            while (i + j + 2 * i * j <= k) {
+                A[i + j + 2 * i * j] = false;
+                j++;
+            }
+        }
+
+        ArrayList<Integer> primes = new ArrayList<>();
+
+        for (int i = 1; i <= k; i++) {
+            if (A[i]) {
+                primes.add(2 * i + 1);
+            }
+        }
+
+        return primes;
     }
 
-    public static void removeDuplicates(ArrayList<Integer> arr){
-        for (int i = 0; i < arr.size(); i++)
-            for (int j = i + 1; j < arr.size(); j++)
-                if (arr.get(j).equals(arr.get(i)))
-                    arr.remove(j--);
+    public static ArrayList<Integer> sieveOfAtkin(int n){
+        boolean[] arr = new boolean[n + 1];
+        Arrays.fill(arr, false);
+
+        if (n > 2) arr[2] = true;
+        if (n > 3) arr[3] = true;
+
+        for (int x = 1; x * x <= n; x++) {
+            for (int y = 1; y * y <= n; y++) {
+
+                int condition = (4 * x * x) + (y * y);
+                if (condition <= n && (condition % 12 == 1 || condition % 12 == 5))
+                    arr[condition] = !arr[condition];
+
+                condition = (3 * x * x) + (y * y);
+                if (condition <= n && condition % 12 == 7)
+                    arr[condition] = !arr[condition];
+
+                condition = (3 * x * x) - (y * y);
+                if (x > y && condition <= n && condition % 12 == 11)
+                    arr[condition] = !arr[condition];
+            }
+        }
+
+        for (int i = 5; i * i <= n; i++) {
+            if (!arr[i])
+                continue;
+            for (int j = i * i; j <= n; j += i * i)
+                arr[j] = false;
+        }
+
+        ArrayList<Integer> primes = new ArrayList<>();
+        for (int i = 2; i <= n; i++) {
+            if (arr[i]) {
+                primes.add(i);
+            }
+        }
+        return primes;
     }
 
     /*
