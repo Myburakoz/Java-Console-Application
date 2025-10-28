@@ -1525,14 +1525,41 @@ public class Group06 {
         boolean isInputValid = true;
 
         do {
-            System.out.print("Enter a mathematical expression: ");
+            clearScreen();
 
-            if (!input.hasNextLine()) {
-                System.out.printf("%nRe-enter a valid expression.%n");
-                input = new Scanner(System.in);
-                isInputValid = false;
-                continue;
-            }
+            String asciiMathSymbols = """
+                       _            __  __  _\s
+                     _| |_   _____  \\ \\/ / (_)
+                    |_   _| |_____|  >  <   _\s
+                      |_|           /_/\\_\\ (_)
+                    """;
+
+            String evalauteExpression = """
+                     _____            _             _                              \s
+                    | ____|_   ____ _| |_   _  __ _| |_ ___                        \s
+                    |  _| \\ \\ / / _` | | | | |/ _` | __/ _ \\                       \s
+                    | |___ \\ V / (_| | | |_| | (_| | ||  __/                       \s
+                    |_____| \\_/ \\__,_|_|\\__,_|\\__,_|\\__\\___|                       \s
+                    | ____|_  ___ __  _ __ ___  ___ ___(_) ___  _ __               \s
+                    |  _| \\ \\/ / '_ \\| '__/ _ \\/ __/ __| |/ _ \\| '_ \\              \s
+                    | |___ >  <| |_) | | |  __/\\__ \\__ \\ | (_) | | | |             \s
+                    |_____/_/\\_\\ .__/|_|  \\___||___/___/_|\\___/|_|_|_|_            \s
+                    / ___|| |_ |_| _ __       | |__  _   _     / ___|| |_ ___ _ __ \s
+                    \\___ \\| __/ _ \\ '_ \\ _____| '_ \\| | | |____\\___ \\| __/ _ \\ '_ \\\s
+                     ___) | ||  __/ |_) |_____| |_) | |_| |_____|__) | ||  __/ |_) |
+                    |____/ \\__\\___| .__/      |_.__/ \\__, |    |____/ \\__\\___| .__/\s
+                                  |_|                |___/                   |_|   \s""";
+
+
+            System.out.println("\033[91m" +asciiMathSymbols + "\033[0m");
+            System.out.println("\033[93m" + evalauteExpression + "\033[0m");
+            System.out.println("\033[91m" + asciiMathSymbols + "\033[0m");
+            System.out.printf("%n%n");
+
+            if(!isInputValid)
+                System.out.println("Re-enter a valid expression.");
+
+            System.out.print("Enter a mathematical expression: ");
 
             String expression = input.nextLine().replace(" ", "");
 
@@ -1543,11 +1570,13 @@ public class Group06 {
                 evaluateExpression(expression);
                 isInputValid = true;
             } catch (IllegalArgumentException e) {
-                System.out.println("Re-enter a valid expression.");
                 isInputValid = false;
             } catch (ArithmeticException e) {
                 System.out.println("Error: Division by zero. " + e.getMessage());
                 isInputValid = true;
+            } catch (NoSuchElementException e){
+                System.out.print("EOF Detected!");
+                return;
             }
 
         }while(!isInputValid);
@@ -1959,6 +1988,11 @@ public class Group06 {
         String resultStr = (result == 0) ? "0" : String.valueOf(result);
         if (leftOperandStart > 0 && expression.charAt(leftOperandStart - 1) == '+' && result < 0)
             return expression.substring(0, leftOperandStart - 1) + resultStr + expression.substring(rightOperandEnd);
+
+        // Handle -- case: when result is negative and preceded by minus operator, convert to +
+        if (leftOperandStart > 0 && expression.charAt(leftOperandStart - 1) == '-' && result < 0) {
+            return expression.substring(0, leftOperandStart - 1) + "+" + (-result) + expression.substring(rightOperandEnd);
+        }
 
         return expression.substring(0, leftOperandStart) + resultStr + expression.substring(rightOperandEnd);
     }
