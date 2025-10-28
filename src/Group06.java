@@ -1603,6 +1603,14 @@ public class Group06 {
                 }
                 return false;
             }
+
+            // Check for invalid implicit multiplication: digit followed by '(' or ')' followed by digit or '('
+            if (Character.isDigit(current) && next == '(') {
+                return false;
+            }
+            if (current == ')' && (Character.isDigit(next) || next == '(')) {
+                return false;
+            }
         }
 
         return true;
@@ -1672,6 +1680,7 @@ public class Group06 {
     public static void evaluateExpression(String expression){
         if(expression.equals("-0")) {
             System.out.print(expression);
+            System.out.println();
             System.out.println("= 0");
             return;
         }
