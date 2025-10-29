@@ -2125,7 +2125,7 @@ public class Group06 {
             if (isInputValid)
                 System.out.print(message);
             else
-                System.out.print("Enter a valid value: ");
+                System.out.print("Enter a valid value for the size of the array: ");
 
 
             try {
@@ -2177,10 +2177,12 @@ public class Group06 {
                 System.out.println("== Statistical Information about an Array ==");
                 System.out.println();
 
+                System.out.println("The elements of the array until now: " + arr);
+
                 if (isInputValid)
                     System.out.print("Enter a number " + (i+1) + ". element of the array: ");
                 else
-                    System.out.print("Enter a valid number: ");
+                    System.out.print("Enter a valid number for" + (i+1) + ". element of the array: ");
 
                 try{
                     double element = Double.parseDouble(input.nextLine().trim());
@@ -2427,7 +2429,7 @@ public class Group06 {
             if (isInputValid)
                 System.out.print(prompt);
             else
-                System.out.print("Enter a valid value: ");
+                System.out.print("Enter a valid value for the dimension: ");
 
 
             try {
@@ -2487,7 +2489,7 @@ public class Group06 {
                 if (isInputValid)
                     System.out.print("Enter a number [0-9] for " + (i+1) + ". element of the " + arrName + " array: ");
                 else
-                    System.out.print("Enter a valid number between 0 and 9: ");
+                    System.out.print("Enter a valid number between 0 and 9 for " + (i+1) + ". element of the " + arrName + " array: ");
 
                 try{
                     int element = Integer.parseInt(input.nextLine().trim());
