@@ -1257,33 +1257,43 @@ public class Group06 {
     {
         boolean isInputValid = true;
         int n = 0;
+        String message = "Please enter a number: ";
 
         do {
-            System.out.println("PRIME NUMBERS");
-            System.out.println("**************");
+            String primeNumbersAsciiArt = """
+                     ________  ________  ___  _____ ______   _______           ________   ___  ___  _____ ______   ________  _______   ________  ________     \s
+                    |\\   __  \\|\\   __  \\|\\  \\|\\   _ \\  _   \\|\\  ___ \\         |\\   ___  \\|\\  \\|\\  \\|\\   _ \\  _   \\|\\   __  \\|\\  ___ \\ |\\   __  \\|\\   ____\\    \s
+                    \\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\ \\  \\\\\\__\\ \\  \\ \\   __/|        \\ \\  \\\\ \\  \\ \\  \\\\\\  \\ \\  \\\\\\__\\ \\  \\ \\  \\|\\ /\\ \\   __/|\\ \\  \\|\\  \\ \\  \\___|_   \s
+                     \\ \\   ____\\ \\   _  _\\ \\  \\ \\  \\\\|__| \\  \\ \\  \\_|/__       \\ \\  \\\\ \\  \\ \\  \\\\\\  \\ \\  \\\\|__| \\  \\ \\   __  \\ \\  \\_|/_\\ \\   _  _\\ \\_____  \\  \s
+                      \\ \\  \\___|\\ \\  \\\\  \\\\ \\  \\ \\  \\    \\ \\  \\ \\  \\_|\\ \\       \\ \\  \\\\ \\  \\ \\  \\\\\\  \\ \\  \\    \\ \\  \\ \\  \\|\\  \\ \\  \\_|\\ \\ \\  \\\\  \\\\|____|\\  \\ \s
+                       \\ \\__\\    \\ \\__\\\\ _\\\\ \\__\\ \\__\\    \\ \\__\\ \\_______\\       \\ \\__\\\\ \\__\\ \\_______\\ \\__\\    \\ \\__\\ \\_______\\ \\_______\\ \\__\\\\ _\\ ____\\_\\  \\\s
+                        \\|__|     \\|__|\\|__|\\|__|\\|__|     \\|__|\\|_______|        \\|__| \\|__|\\|_______|\\|__|     \\|__|\\|_______|\\|_______|\\|__|\\|__|\\_________\\
+                                                                                                                                                   \\|_________|
+                    """;
+
+            System.out.println("\033[92m" + primeNumbersAsciiArt + "\033[0m");
+            System.out.println("\033[36m" + "Welcome, this module computes primes up to a given n using three sieves:"
+                    + RESET);
+            System.out.println("• Sieve of Eratosthenes");
+            System.out.println("• Sieve of Sundaram");
+            System.out.println("• Sieve of Atkin");
+            System.out.println();
 
             try{
-                System.out.print("Please enter a number bigger or equal to 12: ");
-
-                if(!input.hasNextLine()){
-                    System.out.println("EOF detected!");
-                    input = new Scanner(System.in);
-                    isInputValid = false;
-                    clearScreen();
-                    continue;
-                }
+                System.out.print(message);
 
                 n = Integer.parseInt(input.nextLine().trim());
 
                 if(n < 12)
                 {
-                    System.out.println("Please enter a number at least 12!");
+                    clearScreen();
+                    message = "Please enter a number at least 12: ";
                     isInputValid = false;
                     continue;
                 }
 
             } catch (NumberFormatException e){
-                System.out.println("Please enter a number!");
+                message = "You entered invalid input. Please enter a valid number: ";
                 input = new Scanner(System.in);
                 isInputValid = false;
                 clearScreen();
@@ -1307,13 +1317,14 @@ public class Group06 {
             eratosthenes = sieveOfEratosthenes(n);
             long end = System.nanoTime();
             //System.out.println(eratosthenes.toString());
+            System.out.printf("Sieve of Eratosthenes: %n%n");
             System.out.println("First 3 primes -------> " + eratosthenes.getFirst() + ", " + eratosthenes.get(1) + ", " + eratosthenes.get(2));
             System.out.println("Last 2 primes -------> " + eratosthenes.get(eratosthenes.size() - 2) + ", " + eratosthenes.getLast());
             System.out.println("Time -------> " + (double)((end - start))/1000000000);
         } catch (OutOfMemoryError e) {
             System.out.println("The memory is not enough to process Eratosthenes Sieve.");
         } catch (NegativeArraySizeException e){
-            System.out.println("Overflow occured. Eratosthenes' Algorithm cannot proceed!");
+            System.out.println("Overflow occured. Eratosthenes' Algorithm cannot be proceeded!");
         }
 
         System.out.printf("%n%n");
@@ -1324,6 +1335,7 @@ public class Group06 {
             sundaram = sieveOfSundaram(n);
             long end = System.nanoTime();
             //System.out.println(sundaram.toString());
+            System.out.printf("Sieve of Sundaram: %n%n");
             System.out.println("First 3 primes -------> " + sundaram.getFirst() + ", " + sundaram.get(1) + ", " + sundaram.get(2));
             System.out.println("Last 2 primes -------> " + sundaram.get(sundaram.size() - 2) + ", " + sundaram.getLast());
             System.out.println("Time -------> " + (double)((end - start))/1000000000);
@@ -1341,13 +1353,14 @@ public class Group06 {
             atkin = sieveOfAtkin(n);
             long end = System.nanoTime();
             //System.out.println(atkin.toString());
+            System.out.printf("Sieve of Atkin: %n%n");
             System.out.println("First 3 primes -------> " + atkin.getFirst() + ", " + atkin.get(1) + ", " + atkin.get(2));
             System.out.println("Last 2 primes -------> " + atkin.get(atkin.size() - 2) + ", " + atkin.getLast());
             System.out.println("Time -------> " + (double)((end - start))/1000000000);
         } catch (OutOfMemoryError e) {
             System.out.println("The memory is not enough to process Atkin Sieve.");
         } catch (NegativeArraySizeException e){
-            System.out.println("Overflow occured. Atkin's Algorithm cannot proceed!");
+            System.out.println("Overflow occured. Atkin's Algorithm cannot be proceeded!");
         }
     }
 
@@ -2584,7 +2597,37 @@ public class Group06 {
      */
     public static void connect4(Scanner input)
     {
-        System.out.println("--- Welcome to Connect4 Game ---");
+        String connect4Ascii = """
+                ____    __    ____  _______  __        ______   ______   .___  ___.  _______              \s
+                \\   \\  /  \\  /   / |   ____||  |      /      | /  __  \\  |   \\/   | |   ____|             \s
+                 \\   \\/    \\/   /  |  |__   |  |     |  ,----'|  |  |  | |  \\  /  | |  |__                \s
+                  \\            /   |   __|  |  |     |  |     |  |  |  | |  |\\/|  | |   __|               \s
+                   \\    /\\    /    |  |____ |  `----.|  `----.|  `--'  | |  |  |  | |  |____              \s
+                    \\__/  \\__/     |_______||_______| \\______| \\______/  |__|  |__| |_______|             \s
+                
+                .___________.  ______      .___________. __    __   _______                               \s
+                |           | /  __  \\     |           ||  |  |  | |   ____|                              \s
+                `---|  |----`|  |  |  |    `---|  |----`|  |__|  | |  |__                                 \s
+                    |  |     |  |  |  |        |  |     |   __   | |   __|                                \s
+                    |  |     |  `--'  |        |  |     |  |  |  | |  |____                               \s
+                    |__|      \\______/         |__|     |__|  |__| |_______|                              \s
+                
+                  ______   ______   .__   __. .__   __.  _______   ______ .___________.                   \s
+                 /      | /  __  \\  |  \\ |  | |  \\ |  | |   ____| /      ||           |                   \s
+                |  ,----'|  |  |  | |   \\|  | |   \\|  | |  |__   |  ,----'`---|  |----`                   \s
+                |  |     |  |  |  | |  . `  | |  . `  | |   __|  |  |         |  |                        \s
+                |  `----.|  `--'  | |  |\\   | |  |\\   | |  |____ |  `----.    |  |                        \s
+                 \\______| \\______/  |__| \\__| |__| \\__| |_______| \\______|    |__|                        \s
+                
+                 _______   ______    __    __  .______           _______      ___      .___  ___.  _______\s
+                |   ____| /  __  \\  |  |  |  | |   _  \\         /  _____|    /   \\     |   \\/   | |   ____|
+                |  |__   |  |  |  | |  |  |  | |  |_)  |       |  |  __     /  ^  \\    |  \\  /  | |  |__  \s
+                |   __|  |  |  |  | |  |  |  | |      /        |  | |_ |   /  /_\\  \\   |  |\\/|  | |   __| \s
+                |  |     |  `--'  | |  `--'  | |  |\\  \\----.   |  |__| |  /  _____  \\  |  |  |  | |  |____\s
+                |__|      \\______/   \\______/  | _| `._____|    \\______| /__/     \\__\\ |__|  |__| |_______|""";
+
+        System.out.println("\033[36m" + connect4Ascii + "\033[0m");
+        System.out.printf("%n%n");
 
         // 1. Get Game Mode
         String gameMode = getGameMode(input);
@@ -2613,6 +2656,9 @@ public class Group06 {
         System.out.println("Board Size: " + rows + " rows x " + cols + " columns");
         System.out.println("Difficulty: " + difficulty);
         System.out.println("\nLet's start the game!");
+
+        makeWait();
+        clearScreen();
 
 
         // --- Start the selected game loop ---
@@ -2647,12 +2693,13 @@ public class Group06 {
 
             // 2. Place disc
             placeDisc(board, col, currentPlayerDisc);
+            clearScreen();
 
             // 3. Check for win
             if (checkWin(board, currentPlayerDisc)) {
                 printBoard(board);
                 System.out.println("\n--- GAME OVER ---");
-                System.out.println(playerName + " (" + currentPlayerDisc + ") wins!");
+                System.out.println(playerName + " (" + (currentPlayerDisc == PLAYER_ONE_DISC ? "Red":"Blue") + ") wins!");
                 break;
             }
 
@@ -2694,12 +2741,12 @@ public class Group06 {
                     clearScreen();
                     printBoard(board);
                     System.out.println("\n--- GAME OVER ---");
-                    System.out.println("Player 1 (" + PLAYER_ONE_DISC + ") wins!");
+                    System.out.println("Player wins!");
                     break;
                 }
             } else {
                 // --- AI's Turn ---
-                System.out.println("Computer's turn (" + PLAYER_TWO_DISC + ")...");
+                System.out.println("Computer's turn...");
 
                 int col = 0;
 
@@ -2730,7 +2777,7 @@ public class Group06 {
                     clearScreen();
                     printBoard(board);
                     System.out.println("\n--- GAME OVER ---");
-                    System.out.println("Computer (" + PLAYER_TWO_DISC + ") wins!");
+                    System.out.println("Computer wins!");
                     break;
                 }
             }
@@ -2878,7 +2925,7 @@ public class Group06 {
         boolean isValidMove = false;
 
         do {
-            System.out.print("\n" + playerName + " (" + playerDisc + "), enter column (1-" + cols + "): ");
+            System.out.print("\n" + playerName + " (" + (playerDisc == PLAYER_ONE_DISC ? "Red":"Blue") + "), enter column (1-" + cols + "): ");
             try {
                 String line = input.nextLine().trim();
                 col = Integer.parseInt(line);
