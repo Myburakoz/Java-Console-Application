@@ -2096,7 +2096,7 @@ public class Group06 {
             double harmonicMean = harmonicMean(arr);
             System.out.println("Harmonic Mean: " + harmonicMean);
         } catch (ArithmeticException e) {
-            System.out.println("Division by zero or underflow risk");
+            System.out.println("Division by zero or underflow risk when finding harmonic mean.");
         } catch (IllegalArgumentException e){
             System.out.println("Harmonic mean undefined for negative numbers.");
         }
