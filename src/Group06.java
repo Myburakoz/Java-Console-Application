@@ -2096,7 +2096,7 @@ public class Group06 {
             double harmonicMean = harmonicMean(arr);
             System.out.println("Harmonic Mean: " + harmonicMean);
         } catch (ArithmeticException e) {
-            System.out.println("Division by zero or underflow risk when finding harmonic mean.");
+            System.out.println("Division by zero or underflow risk when ");
         } catch (IllegalArgumentException e){
             System.out.println("Harmonic mean undefined for negative numbers.");
         }
@@ -2204,6 +2204,7 @@ public class Group06 {
 
             }while(!isInputValid);
         }
+        clearScreen();
 
         return arr;
     }
@@ -2246,9 +2247,7 @@ public class Group06 {
             mean += arr.get(i) / n;
         }
 
-        double tolerance = 1e-9;
-        mean = Math.round(mean * 1e9) / 1e9;
-        if (Math.abs(mean - Math.round(mean * 10) / 10.0) < tolerance)
+        if (Math.abs(mean * 10 - Math.round(mean * 10)) < 1e-9)
             mean = Math.round(mean * 10) / 10.0;
 
         return mean;
@@ -2277,11 +2276,6 @@ public class Group06 {
 
             mean *= Math.pow(arr.get(i), 1.0 / n);
         }
-
-        double tolerance = 1e-9;
-        mean = Math.round(mean * 1e9) / 1e9;
-        if (Math.abs(mean - Math.round(mean * 10) / 10.0) < tolerance)
-            mean = Math.round(mean * 10) / 10.0;
 
         return mean;
     }
@@ -2347,11 +2341,7 @@ public class Group06 {
         if (reciprocalSum == 0.0)
             throw new ArithmeticException("Sum of reciprocals is zero.");
 
-        double h = arr.size() / reciprocalSum;
-
-        h = Math.round(h * 1e9) / 1e9;
-
-        return h;
+        return arr.size() / reciprocalSum;
     }
 
 
