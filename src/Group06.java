@@ -1465,7 +1465,6 @@ public class Group06 {
      * @author Burak Özevib
      * @param n the inclusive upper bound (non-negative)
      * @return a list of odd primes in ascending order within {@code [3, n]} (2 is omitted by construction)
-     * @implNote If you need 2 included, add it manually when {@code n ≥ 2}.
      */
     public static ArrayList<Integer> sieveOfSundaram(int n){
         int k = (n - 1) / 2;
@@ -1509,7 +1508,6 @@ public class Group06 {
      * @author Burak Özevin
      * @param n the inclusive upper bound (non-negative)
      * @return a list of primes in ascending order within {@code [2, n]}
-     * @implNote For large {@code n}, memory usage is dominated by the boolean array of size {@code n + 1}.
      */
     public static ArrayList<Integer> sieveOfAtkin(int n){
         boolean[] arr = new boolean[n + 1];
@@ -1562,8 +1560,6 @@ public class Group06 {
      *
      * @author Burak Özevin
      * @param input a {@link java.util.Scanner} bound to standard input
-     * @implNote Supported operators: '+' (plus), '-' (minus or unary minus),
-     *           'x' (multiplication), ':' (division). Parentheses are supported.
      */
     public static void evaluateExpressionMenu(Scanner input)
     {
@@ -1788,8 +1784,6 @@ public class Group06 {
      * @author Burak Özevin
      * @param step the current expression state
      * @return the expression after applying exactly one reduction step (or the same string if none)
-     * @implNote Uses custom operators: 'x' for multiplication and ':' for division.
-     *           Unary minus is preserved where appropriate (e.g., "-(-3)" case).
      */
     public static String evaluateStep(String step){
         int indexOfCloseParenthesis = step.indexOf(')');
@@ -1941,7 +1935,6 @@ public class Group06 {
      * @author Burak Özevin
      * @param expression the expression to scan
      * @return the index of a binary '-' or {@code -1} if none found
-     * @implNote A leading '-' at index 0 is considered unary and skipped.
      */
     public static int findNonUnaryMinus(String expression){
         return expression.indexOf('-') == 0 ? expression.indexOf('-', 1):expression.indexOf('-');
@@ -1995,7 +1988,6 @@ public class Group06 {
      * @param operator one of {@code '+', '-', 'x', ':'}
      * @return the expression after applying exactly this one operation
      * @throws ArithmeticException if division by zero occurs for {@code ':'}
-     * @implNote Uses integer arithmetic throughout (including integer division for {@code ':'}).
      */
     public static String applyOperation(String expression, int operatorIndex, char operator){
         if(operatorIndex == -1)
@@ -2065,7 +2057,6 @@ public class Group06 {
      * @param expression the full expression
      * @param index the end position of the operand (typically {@code operatorIndex - 1})
      * @return the start index (inclusive) of the operand; {@code 0} if out of range
-     * @implNote Only decimal digits and an optional unary minus are considered part of the operand.
      */
     public static int findOperandStart(String expression, int index) {
         int start = index;
@@ -2088,7 +2079,6 @@ public class Group06 {
      * @param expression the full expression
      * @param index the start position of the operand (typically {@code operatorIndex + 1})
      * @return the end index (exclusive) immediately after the operand
-     * @implNote Only decimal digits are consumed after an optional leading sign.
      */
     public static int findOperandEnd(String expression, int index){
         int end = index;
@@ -2388,7 +2378,6 @@ public class Group06 {
      * @param arr a non-empty list of doubles
      * @return the geometric mean
      * @throws ArithmeticException if overflow/underflow is detected during accumulation
-     * @implNote Values ≤ 0 will produce {@code NaN} from {@code Math.pow}; caller should ensure inputs are valid if needed.
      */
     public static double geometricMean(ArrayList<Double> arr){
         double mean = 1;
@@ -2482,7 +2471,6 @@ public class Group06 {
      *
      * @author Burak Özevin
      * @param input a {@link java.util.Scanner} bound to standard input
-     * @implNote Elements are constrained to integers in [0, 9] in the input routine.
      */
     public static void distanceArrayMenu(Scanner input)
     {
@@ -2779,7 +2767,6 @@ public class Group06 {
      * @param arr1 the first vector
      * @param arr2 the second vector (same length as {@code arr1})
      * @return the cosine similarity in double precision
-     * @implNote No explicit guard is made for zero vectors; caller may check for zero norms if needed.
      */
     public static double getCosineSimilarity(ArrayList<Integer> arr1, ArrayList<Integer> arr2){
         double dotProduct = 0;
@@ -3554,7 +3541,6 @@ public class Group06 {
      * @param board the game board as a matrix [rows][cols]
      * @param col   the column index to drop into
      * @param disc  the disc character of AI
-     * @implNote No-op if the column is full (no available row).
      */
     public static void dropDisc(char[][] board, int col, char disc){
         int row = getOpenRowOfValidColumn(board, col);
@@ -3588,7 +3574,6 @@ public class Group06 {
      * @param AIDisc      the AI's disc character
      * @param playerDisc  the opponent's disc character
      * @return an integer score for the window
-     * @implNote Current weights: 4-in-row=±10000, 3+empty=+500/-550, 2+2empties=+100/-120.
      */
     public static int evaluateWindow(char[] window, char AIDisc, char playerDisc){
         int AIcount = 0, playerCount = 0, emptyCount = 0;
@@ -3628,7 +3613,6 @@ public class Group06 {
      * @param AIDisc     the AI's disc character
      * @param playerDisc the opponent's disc character
      * @return a heuristic score where higher is better for the AI
-     * @implNote Adds a small bonus/penalty for occupying the center column.
      */
     public static int evaluateBoard(char[][] board, char AIDisc, char playerDisc){
         int score = 0;
@@ -3684,7 +3668,6 @@ public class Group06 {
      * @author Burak Özevin
      * @param board the game board as a matrix [rows][cols]
      * @return {@code true} if terminal; {@code false} otherwise
-     * @implNote Relies on {@code checkWin(...)} and {@code isBoardFull(...)} helpers.
      */
     public static boolean isTerminalNode(char[][] board){
         return checkWin(board, PLAYER_ONE_DISC) || checkWin(board, PLAYER_TWO_DISC) || isBoardFull(board);
@@ -3703,8 +3686,6 @@ public class Group06 {
      * @param AIDisc      the AI's disc character
      * @param playerDisc  the opponent's disc character
      * @return the best heuristic value from this node's perspective
-     * @implNote Terminal checks: AI win=+10000, Opponent win=-10000, Full board=0.
-     *         Node ordering is improved by sorting columns by proximity to center.
      */
     public static int minimax(char[][] board, int depth, boolean maximizing, int alpha, int beta, char AIDisc, char playerDisc){
         if(isTerminalNode(board) || depth == 0){
@@ -3769,7 +3750,6 @@ public class Group06 {
      * @param AIDisc     the AI's disc character
      * @param playerDisc the opponent's disc character
      * @return the chosen column index, or {@code -1} if no valid move exists
-     * @implNote Tries columns ordered by closeness to center for better pruning.
      */
     public static int bestMove(char[][] board, int depth, char AIDisc, char playerDisc){
         ArrayList<Integer> validCols = getValidColumns(board);
@@ -3855,8 +3835,6 @@ public class Group06 {
 
     /**
      * Renders an animated ASCII donut in the terminal using ANSI escape codes.
-     * <p>
-     * Default configuration: 80x22 terminal area, speeds A=0.01, B=0.005, runs for roughly eight seconds.
      *
      * @author Burak Özevin
      */
