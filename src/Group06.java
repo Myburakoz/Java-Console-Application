@@ -417,7 +417,7 @@ public class Group06 {
                 case "E":
                     clearScreen();
                     isInputValid = true;
-                    //goodbye();
+                    runAsciiDonut();
                     isNotTerminated = false;
                     break;
                 default:
@@ -3603,5 +3603,120 @@ public class Group06 {
         list.set(high, temp);
 
         return i + 1;
+    }
+
+    /**
+     * Renders an animated ASCII donut in the terminal using ANSI escape codes.
+     * <p>
+     * Default configuration: 80x22 terminal area, speeds A=0.01, B=0.005, runs for roughly eight seconds.
+     */
+    public static void runAsciiDonut() {
+        runAsciiDonut(80, 22, 0.05, 0.005, 0);
+        clearScreen();
+
+        String goodbye = """
+                 ██████╗  ██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗███████╗
+                ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝██╔════╝
+                ██║  ███╗██║   ██║██║   ██║██║  ██║██████╔╝ ╚████╔╝ █████╗ \s
+                ██║   ██║██║   ██║██║   ██║██║  ██║██╔══██╗  ╚██╔╝  ██╔══╝ \s
+                ╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║   ███████╗
+                 ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚══════╝""";
+
+        System.out.print("\033[35m");
+        System.out.println(goodbye);
+        System.out.print("\033[0m");
+    }
+
+    /**
+     * Renders an animated ASCII donut in the terminal using ANSI escape codes.
+     *
+     * @param width     terminal character width (e.g., 80)
+     * @param height    terminal character height (e.g., 22)
+     * @param aSpeed    rotation speed for A (around x-axis), e.g., 0.01
+     * @param bSpeed    rotation speed for B (around y-axis), e.g., 0.005
+     * @param maxFrames number of frames to render; if ≤ 0, runs indefinitely
+     */
+    public static void runAsciiDonut(int width, int height, double aSpeed, double bSpeed, int maxFrames) {
+        // Rotation angles
+        double A = 0.0, B = 0.0;
+
+        // Buffers
+        final int size = width * height;
+        final double[] z = new double[size];
+        final char[] b = new char[size];
+
+        // Character ramp (from dim to bright)
+        final char[] ramp = {'.', ',', '-', '~', ':', ';', '=', '!', '*', '#', '$', '@'};
+
+        // Derived layout params (scaled from classic 80x22)
+        final int cx = width / 2;                  // center X
+        final int cy = height / 2;                 // center Y
+        final double sx = Math.max(1, width * 0.375);   // ~30 for width=80
+        final double sy = Math.max(1, height * 0.68);   // ~15 for height=22
+
+        System.out.print("\u001b[2J\u001b[H\u001b[?25l");
+
+        int frame = 0;
+        while (maxFrames <= 0 || frame++ < maxFrames) {
+            // Clear buffers
+            java.util.Arrays.fill(b, ' ');
+            java.util.Arrays.fill(z, 0.0);
+
+            // Sweep angles (classic steps)
+            for (double j = 0; j < 6.28; j += 0.07) {
+                for (double i = 0; i < 6.28; i += 0.02) {
+                    double c = Math.sin(i);
+                    double d = Math.cos(j);
+                    double e = Math.sin(A);
+                    double f = Math.sin(j);
+                    double g = Math.cos(A);
+                    double h = d + 2.0;
+                    double D = 1.0 / (c * h * e + f * g + 5.0);
+                    double l = Math.cos(i);
+                    double m = Math.cos(B);
+                    double n = Math.sin(B);
+                    double t = c * h * g - f * e;
+
+                    int x = (int) (cx + sx * D * (l * h * m - t * n));
+                    int y = (int) (cy + sy * D * (l * h * n + t * m));
+
+                    // Luminance index (clamped)
+                    int N = (int) (8 * ((f * e - c * d * g) * m - c * d * e - f * g - l * d * n));
+                    if (N < 0) N = 0;
+                    if (N >= ramp.length) N = ramp.length - 1;
+
+                    // Plot if inside screen and closer than previous pixel
+                    if (y > 0 && y < height && x > 0 && x < width) {
+                        int o = x + width * y;
+                        if (D > z[o]) {
+                            z[o] = D;
+                            b[o] = ramp[N];
+                        }
+                    }
+                }
+            }
+
+            // Move cursor to home and draw
+            StringBuilder frameBuffer = new StringBuilder(size + height);
+            for (int k = 0; k < size; k++) {
+                frameBuffer.append(b[k]);
+                if (k % width == width - 1) frameBuffer.append('\n');
+            }
+            System.out.print("\u001b[H");
+            System.out.print(frameBuffer);
+            System.out.flush();
+
+            A += aSpeed;
+            B += bSpeed;
+
+            try {
+                Thread.sleep(45);
+            } catch (InterruptedException interruptedException) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
+        System.out.print("\u001b[0m\u001b[?25h");
     }
 }
