@@ -356,14 +356,19 @@ public class Group06 {
         boolean isInputValid = true;
 
         do {
-            System.out.printf("%n**********************************%n");
-            System.out.println("Select an option:");
-            System.out.println("[A] Primary School");
-            System.out.println("[B] Secondary School");
-            System.out.println("[C] High School");
-            System.out.println("[D] University");
-            System.out.println("[E] Terminate");
-            System.out.println("**********************************");
+            System.out.print("\033[95m");
+            System.out.printf("%n═══════════════════════════════════════════════%n");
+            System.out.println("           ✦✦  SELECT AN OPTION  ✦✦");
+            System.out.println("═══════════════════════════════════════════════");
+            System.out.print("\033[96m");
+            System.out.println("[A] 🏫  Primary School");
+            System.out.println("[B] 📘  Secondary School");
+            System.out.println("[C] 🎓  High School");
+            System.out.println("[D] 🧠  University");
+            System.out.println("[E] ❌  Terminate");
+            System.out.print("\033[95m");
+            System.out.println("═══════════════════════════════════════════════");
+            System.out.print("\033[0m");
 
             if(isInputValid)
                 System.out.print("Your choice: ");
@@ -449,12 +454,17 @@ public class Group06 {
         boolean isInputValid = true;
 
         do {
-            System.out.printf("%n**********************************%n");
-            System.out.println("Select an option:");
-            System.out.println("[A] Age and Zodiac Sign Detection");
-            System.out.println("[B] Reverse the Words");
-            System.out.println("[C] Return to Main Menu");
-            System.out.println("**********************************");
+            System.out.print("\033[95m");
+            System.out.println("╔══════════════════════════════════════════════════════╗");
+            System.out.println("║             ✦ PRIMARY SCHOOL MENU ✦                  ║");
+            System.out.println("╠══════════════════════════════════════════════════════╣");
+            System.out.print("\033[96m");
+            System.out.println("║ [A] 🔮  Age and Zodiac Sign Detection                ║");
+            System.out.println("║ [B] 🔁  Reverse the Words                            ║");
+            System.out.println("║ [C] ↩️   Return to Main Menu                          ║");
+            System.out.print("\033[95m");
+            System.out.println("╚══════════════════════════════════════════════════════╝");
+            System.out.print("\033[0m");
 
             if(isInputValid)
                 System.out.print("Your choice: ");
@@ -530,13 +540,17 @@ public class Group06 {
         boolean isInputValid = true;
 
         do {
-            System.out.printf("%n**********************************%n");
-            System.out.println("Select an option:");
-            System.out.println("[A] Prime Numbers");
-            System.out.println("[B] Step-by-step Evaluation of Expression");
-            System.out.println("[C] Return to Main Menu");
-            System.out.println("**********************************");
-
+            System.out.print("\033[94m");
+            System.out.println("╔════════════════════════════════════════════════════════╗");
+            System.out.println("║             ⚙ SECONDARY SCHOOL MENU ⚙                  ║");
+            System.out.println("╠════════════════════════════════════════════════════════╣");
+            System.out.print("\033[96m");
+            System.out.println("║ [A] 🔢  Prime Numbers                                  ║");
+            System.out.println("║ [B] 🧮  Step-by-step Evaluation of Expression          ║");
+            System.out.println("║ [C] ↩️   Return to Main Menu                            ║");
+            System.out.print("\033[94m");
+            System.out.println("╚════════════════════════════════════════════════════════╝");
+            System.out.print("\033[0m");
             if(isInputValid)
                 System.out.print("Your choice: ");
             else
@@ -611,12 +625,17 @@ public class Group06 {
         boolean isInputValid = true;
 
         do {
-            System.out.printf("%n**********************************%n");
-            System.out.println("Select an option:");
-            System.out.println("[A] Statistical Information about an Array");
-            System.out.println("[B] Distance between Two Arrays");
-            System.out.println("[C] Return to Main Menu");
-            System.out.println("**********************************");
+            System.out.print("\033[93m");
+            System.out.println("╔══════════════════════════════════════════════════════════════════╗");
+            System.out.println("║                    📊 HIGH SCHOOL MENU 🧮                        ║");
+            System.out.println("╠══════════════════════════════════════════════════════════════════╣");
+            System.out.print("\033[96m");
+            System.out.println("║ [A] 📈  Statistical Information about an Array                   ║");
+            System.out.println("║ [B] 🔢  Distance between Two Arrays                              ║");
+            System.out.println("║ [C] ↩️   Return to Main Menu                                      ║");
+            System.out.print("\033[93m");
+            System.out.println("╚══════════════════════════════════════════════════════════════════╝");
+            System.out.print("\033[0m");
 
             if(isInputValid)
                 System.out.print("Your choice: ");
@@ -2097,7 +2116,25 @@ public class Group06 {
      */
     public static void statisticalInfoArrayMenu(Scanner input) {
 
-        System.out.println("== Statistical Information about an Array ==");
+        System.out.print("\033[0;36m");
+        System.out.println("""
+                 _____ _        _   _     _   _           _    ___                      \s
+                /  ___| |      | | (_)   | | (_)         | |  / _ \\                     \s
+                \\ `--.| |_ __ _| |_ _ ___| |_ _  ___ __ _| | / /_\\ \\_ __ _ __ __ _ _   _\s
+                 `--. \\ __/ _` | __| / __| __| |/ __/ _` | | |  _  | '__| '__/ _` | | | |
+                /\\__/ / || (_| | |_| \\__ \\ |_| | (_| (_| | | | | | | |  | | | (_| | |_| |
+                \\____/ \\__\\__,_|\\__|_|___/\\__|_|\\___\\__,_|_| \\_| |_/_|  |_|  \\__,_|\\__, |
+                                                                                    __/ |
+                                                                                   |___/\s
+                 _____       __                           _   _                         \s
+                |_   _|     / _|                         | | (_)                        \s
+                  | | _ __ | |_ ___  _ __ _ __ ___   __ _| |_ _  ___  _ __              \s
+                  | || '_ \\|  _/ _ \\| '__| '_ ` _ \\ / _` | __| |/ _ \\| '_ \\             \s
+                 _| || | | | || (_) | |  | | | | | | (_| | |_| | (_) | | | |            \s
+                 \\___/_| |_|_| \\___/|_|  |_| |_| |_|\\__,_|\\__|_|\\___/|_| |_|            \s""");
+        System.out.print("\033[0m");
+
+        System.out.printf("%n%n");
 
         int n = getArraySize(input, "Enter the size of the array or 'exit' to return the menu: ");
 
@@ -2159,7 +2196,23 @@ public class Group06 {
         clearScreen();
 
         do {
-            System.out.println("== Statistical Information about an Array ==");
+            System.out.print("\033[0;36m");
+            System.out.println("""
+                 _____ _        _   _     _   _           _    ___                      \s
+                /  ___| |      | | (_)   | | (_)         | |  / _ \\                     \s
+                \\ `--.| |_ __ _| |_ _ ___| |_ _  ___ __ _| | / /_\\ \\_ __ _ __ __ _ _   _\s
+                 `--. \\ __/ _` | __| / __| __| |/ __/ _` | | |  _  | '__| '__/ _` | | | |
+                /\\__/ / || (_| | |_| \\__ \\ |_| | (_| (_| | | | | | | |  | | | (_| | |_| |
+                \\____/ \\__\\__,_|\\__|_|___/\\__|_|\\___\\__,_|_| \\_| |_/_|  |_|  \\__,_|\\__, |
+                                                                                    __/ |
+                                                                                   |___/\s
+                 _____       __                           _   _                         \s
+                |_   _|     / _|                         | | (_)                        \s
+                  | | _ __ | |_ ___  _ __ _ __ ___   __ _| |_ _  ___  _ __              \s
+                  | || '_ \\|  _/ _ \\| '__| '_ ` _ \\ / _` | __| |/ _ \\| '_ \\             \s
+                 _| || | | | || (_) | |  | | | | | | (_| | |_| | (_) | | | |            \s
+                 \\___/_| |_|_| \\___/|_|  |_| |_| |_|\\__,_|\\__|_|\\___/|_| |_|            \s""");
+            System.out.print("\033[0m");
             System.out.println();
 
             if (isInputValid)
@@ -2221,8 +2274,25 @@ public class Group06 {
         {
             do {
                 clearScreen();
-                System.out.println("== Statistical Information about an Array ==");
-                System.out.println();
+                System.out.print("\033[0;36m");
+                System.out.println("""
+                 _____ _        _   _     _   _           _    ___                      \s
+                /  ___| |      | | (_)   | | (_)         | |  / _ \\                     \s
+                \\ `--.| |_ __ _| |_ _ ___| |_ _  ___ __ _| | / /_\\ \\_ __ _ __ __ _ _   _\s
+                 `--. \\ __/ _` | __| / __| __| |/ __/ _` | | |  _  | '__| '__/ _` | | | |
+                /\\__/ / || (_| | |_| \\__ \\ |_| | (_| (_| | | | | | | |  | | | (_| | |_| |
+                \\____/ \\__\\__,_|\\__|_|___/\\__|_|\\___\\__,_|_| \\_| |_/_|  |_|  \\__,_|\\__, |
+                                                                                    __/ |
+                                                                                   |___/\s
+                 _____       __                           _   _                         \s
+                |_   _|     / _|                         | | (_)                        \s
+                  | | _ __ | |_ ___  _ __ _ __ ___   __ _| |_ _  ___  _ __              \s
+                  | || '_ \\|  _/ _ \\| '__| '_ ` _ \\ / _` | __| |/ _ \\| '_ \\             \s
+                 _| || | | | || (_) | |  | | | | | | (_| | |_| | (_) | | | |            \s
+                 \\___/_| |_|_| \\___/|_|  |_| |_| |_|\\__,_|\\__|_|\\___/|_| |_|            \s""");
+                System.out.print("\033[0m");
+
+                System.out.printf("%n%n");
 
                 System.out.println("The elements of the array until now: " + arr);
 
@@ -2416,7 +2486,25 @@ public class Group06 {
      */
     public static void distanceArrayMenu(Scanner input)
     {
-        System.out.println("=== Distance between Two Arrays ===");
+        System.out.print("\033[0;33m");
+        System.out.println("""
+                ______ _     _                         _          _                          \s
+                |  _  (_)   | |                       | |        | |                         \s
+                | | | |_ ___| |_ __ _ _ __   ___ ___  | |__   ___| |___      _____  ___ _ __ \s
+                | | | | / __| __/ _` | '_ \\ / __/ _ \\ | '_ \\ / _ \\ __\\ \\ /\\ / / _ \\/ _ \\ '_ \\\s
+                | |/ /| \\__ \\ || (_| | | | | (_|  __/ | |_) |  __/ |_ \\ V  V /  __/  __/ | | |
+                |___/ |_|___/\\__\\__,_|_| |_|\\___\\___| |_.__/ \\___|\\__| \\_/\\_/ \\___|\\___|_| |_|
+                
+                
+                 _____                ___                                                    \s
+                |_   _|              / _ \\                                                   \s
+                  | |_      _____   / /_\\ \\_ __ _ __ __ _ _   _ ___                          \s
+                  | \\ \\ /\\ / / _ \\  |  _  | '__| '__/ _` | | | / __|                         \s
+                  | |\\ V  V / (_) | | | | | |  | | | (_| | |_| \\__ \\                         \s
+                  \\_/ \\_/\\_/ \\___/  \\_| |_/_|  |_|  \\__,_|\\__, |___/                         \s
+                                                           __/ |                             \s
+                                                          |___/                              \s""");
+        System.out.print("\033[0m");
         System.out.println();
 
         int dimension = checkDimension(input, "Enter the dimension of the arrays or 'exit' to return the menu: ");
@@ -2437,7 +2525,26 @@ public class Group06 {
         if(arr2 == null)
             return;
 
-        System.out.println("=== Distance between Two Arrays ===");
+        System.out.print("\033[0;33m");
+        System.out.println("""
+                ______ _     _                         _          _                          \s
+                |  _  (_)   | |                       | |        | |                         \s
+                | | | |_ ___| |_ __ _ _ __   ___ ___  | |__   ___| |___      _____  ___ _ __ \s
+                | | | | / __| __/ _` | '_ \\ / __/ _ \\ | '_ \\ / _ \\ __\\ \\ /\\ / / _ \\/ _ \\ '_ \\\s
+                | |/ /| \\__ \\ || (_| | | | | (_|  __/ | |_) |  __/ |_ \\ V  V /  __/  __/ | | |
+                |___/ |_|___/\\__\\__,_|_| |_|\\___\\___| |_.__/ \\___|\\__| \\_/\\_/ \\___|\\___|_| |_|
+                
+                
+                 _____                ___                                                    \s
+                |_   _|              / _ \\                                                   \s
+                  | |_      _____   / /_\\ \\_ __ _ __ __ _ _   _ ___                          \s
+                  | \\ \\ /\\ / / _ \\  |  _  | '__| '__/ _` | | | / __|                         \s
+                  | |\\ V  V / (_) | | | | | |  | | | (_| | |_| \\__ \\                         \s
+                  \\_/ \\_/\\_/ \\___/  \\_| |_/_|  |_|  \\__,_|\\__, |___/                         \s
+                                                           __/ |                             \s
+                                                          |___/                              \s""");
+        System.out.print("\033[0m");
+        System.out.println();
         System.out.println();
 
         int manhattan = getManhattanDistance(arr1, arr2);
@@ -2470,8 +2577,27 @@ public class Group06 {
 
         clearScreen();
 
-            do {
-            System.out.println("=== Distance between Two Arrays ===");
+        do {
+            System.out.print("\033[0;33m");
+            System.out.println("""
+                ______ _     _                         _          _                          \s
+                |  _  (_)   | |                       | |        | |                         \s
+                | | | |_ ___| |_ __ _ _ __   ___ ___  | |__   ___| |___      _____  ___ _ __ \s
+                | | | | / __| __/ _` | '_ \\ / __/ _ \\ | '_ \\ / _ \\ __\\ \\ /\\ / / _ \\/ _ \\ '_ \\\s
+                | |/ /| \\__ \\ || (_| | | | | (_|  __/ | |_) |  __/ |_ \\ V  V /  __/  __/ | | |
+                |___/ |_|___/\\__\\__,_|_| |_|\\___\\___| |_.__/ \\___|\\__| \\_/\\_/ \\___|\\___|_| |_|
+                
+                
+                 _____                ___                                                    \s
+                |_   _|              / _ \\                                                   \s
+                  | |_      _____   / /_\\ \\_ __ _ __ __ _ _   _ ___                          \s
+                  | \\ \\ /\\ / / _ \\  |  _  | '__| '__/ _` | | | / __|                         \s
+                  | |\\ V  V / (_) | | | | | |  | | | (_| | |_| \\__ \\                         \s
+                  \\_/ \\_/\\_/ \\___/  \\_| |_/_|  |_|  \\__,_|\\__, |___/                         \s
+                                                           __/ |                             \s
+                                                          |___/                              \s""");
+            System.out.print("\033[0m");
+            System.out.println();
             System.out.println();
 
             if (isInputValid)
@@ -2538,7 +2664,30 @@ public class Group06 {
         {
             do {
                 clearScreen();
-                System.out.println("=== Distance between Two Arrays ===");
+                System.out.print("\033[0;33m");
+                System.out.println("""
+                ______ _     _                         _          _                          \s
+                |  _  (_)   | |                       | |        | |                         \s
+                | | | |_ ___| |_ __ _ _ __   ___ ___  | |__   ___| |___      _____  ___ _ __ \s
+                | | | | / __| __/ _` | '_ \\ / __/ _ \\ | '_ \\ / _ \\ __\\ \\ /\\ / / _ \\/ _ \\ '_ \\\s
+                | |/ /| \\__ \\ || (_| | | | | (_|  __/ | |_) |  __/ |_ \\ V  V /  __/  __/ | | |
+                |___/ |_|___/\\__\\__,_|_| |_|\\___\\___| |_.__/ \\___|\\__| \\_/\\_/ \\___|\\___|_| |_|
+                
+                
+                 _____                ___                                                    \s
+                |_   _|              / _ \\                                                   \s
+                  | |_      _____   / /_\\ \\_ __ _ __ __ _ _   _ ___                          \s
+                  | \\ \\ /\\ / / _ \\  |  _  | '__| '__/ _` | | | / __|                         \s
+                  | |\\ V  V / (_) | | | | | |  | | | (_| | |_| \\__ \\                         \s
+                  \\_/ \\_/\\_/ \\___/  \\_| |_/_|  |_|  \\__,_|\\__, |___/                         \s
+                                                           __/ |                             \s
+                                                          |___/                              \s""");
+                System.out.print("\033[0m");
+                System.out.println();
+                System.out.println();
+
+                System.out.println("The elements of the array until now: " + arr);
+
                 System.out.println();
 
                 if (isInputValid)
@@ -3710,7 +3859,7 @@ public class Group06 {
      * Default configuration: 80x22 terminal area, speeds A=0.01, B=0.005, runs for roughly eight seconds.
      */
     public static void runAsciiDonut() {
-        runAsciiDonut(80, 22, 0.05, 0.005, 0);
+        runAsciiDonut(80, 22, 0.05, 0.005, 180);
         clearScreen();
 
         String goodbye = """
