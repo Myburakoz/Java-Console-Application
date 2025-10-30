@@ -766,9 +766,14 @@ public class Group06 {
                 System.out.printf("Note: The current date is set to %04d-%02d-%02d.%n", currentYear, currentMonth, currentDay);
 
                 System.out.printf(message);
-                System.out.print("Enter your birth year (1900-" + currentYear + "): ");
+                System.out.print("Enter your birth year (1900-" + currentYear + ") or 'Exit' to return: ");
+                String yearInput = input.nextLine().trim();
 
-                birthYear = Integer.parseInt(input.nextLine().trim());
+                if (yearInput.equalsIgnoreCase("Exit") || yearInput.equalsIgnoreCase("exit")) {
+                    clearScreen();
+                    return;
+                }
+                birthYear = Integer.parseInt(yearInput);
 
                 if(!isValidYear(birthYear, currentYear)){
                     isInputInvalid = true;
@@ -777,8 +782,13 @@ public class Group06 {
                     continue;
                 }
 
-                System.out.print("Enter your birth month (1-12): ");
-                birthMonth = Integer.parseInt(input.nextLine().trim());
+                System.out.print("Enter your birth month (1-12) or 'Exit' to return: ");
+                String monthInput = input.nextLine().trim();
+                if (monthInput.equalsIgnoreCase("Exit") || monthInput.equalsIgnoreCase("exit")) {
+                    clearScreen();
+                    return;
+                }
+                birthMonth = Integer.parseInt(monthInput);
 
                 if(!isValidMonth(birthMonth, currentMonth, birthYear, currentYear)){
                     isInputInvalid = true;
@@ -788,8 +798,13 @@ public class Group06 {
                 }
 
 
-                System.out.print("Enter your birth day (1-31): ");
-                birthDay = Integer.parseInt(input.nextLine().trim());
+                System.out.print("Enter your birth day (1-31) or 'Exit' to return: ");
+                String dayInput = input.nextLine().trim();
+                if (dayInput.equalsIgnoreCase("Exit") || dayInput.equalsIgnoreCase("exit")) {
+                    clearScreen();
+                    return;
+                }
+                birthDay = Integer.parseInt(dayInput);
 
                 if(!isValidDate(birthDay, birthMonth, birthYear, currentDay, currentMonth, currentYear)){
                     isInputInvalid = true;
@@ -1153,7 +1168,7 @@ public class Group06 {
 
         boolean isInputValid = false;
         String str = "";
-        String message = "Enter a string: ";
+        String message = "Enter a string (or 'exit' to return): ";
 
         do {
             try {
@@ -1161,6 +1176,11 @@ public class Group06 {
                 System.out.printf("%n%n");
                 System.out.print(message);
                 str = input.nextLine().trim();
+
+                if (str.equalsIgnoreCase("exit") || str.equalsIgnoreCase("Exit")) {
+                    clearScreen();
+                    return;
+                }
 
                 isInputValid = true;
 
@@ -1257,7 +1277,7 @@ public class Group06 {
     {
         boolean isInputValid = true;
         int n = 0;
-        String message = "Please enter a number: ";
+        String message = "Please enter a number or 'exit' to return the menu: ";
 
         do {
             String primeNumbersAsciiArt = """
@@ -1282,7 +1302,14 @@ public class Group06 {
             try{
                 System.out.print(message);
 
-                n = Integer.parseInt(input.nextLine().trim());
+                String str = input.nextLine().trim();
+
+                if (str.equalsIgnoreCase("exit") || str.equalsIgnoreCase("Exit")) {
+                    clearScreen();
+                    return;
+                }
+
+                n = Integer.parseInt(str);
 
                 if(n < 12)
                 {
@@ -1558,9 +1585,14 @@ public class Group06 {
             if(!isInputValid)
                 System.out.println("Re-enter a valid expression.");
 
-            System.out.print("Enter a mathematical expression: ");
+            System.out.print("Enter a mathematical expression or 'exit' to return the menu: ");
 
             String expression = input.nextLine().replace(" ", "");
+
+            if (expression.equalsIgnoreCase("exit") || expression.equalsIgnoreCase("Exit")) {
+                clearScreen();
+                return;
+            }
 
             try {
                 if (!isValidExpression(expression)) {
@@ -2067,7 +2099,7 @@ public class Group06 {
 
         System.out.println("== Statistical Information about an Array ==");
 
-        int n = getArraySize(input, "Enter the size of the array: ");
+        int n = getArraySize(input, "Enter the size of the array or 'exit' to return the menu: ");
 
         if(n == -1)
             return;
@@ -2137,7 +2169,14 @@ public class Group06 {
 
 
             try {
-                size = Integer.parseInt(input.nextLine().trim());
+                String str = input.nextLine().trim();
+
+                if (str.equalsIgnoreCase("exit") || str.equalsIgnoreCase("Exit")) {
+                    clearScreen();
+                    return -1;
+                }
+
+                size = Integer.parseInt(str);
 
                 if(size < 1) {
                     isInputValid = false;
@@ -2188,12 +2227,19 @@ public class Group06 {
                 System.out.println("The elements of the array until now: " + arr);
 
                 if (isInputValid)
-                    System.out.print("Enter a number " + (i+1) + ". element of the array: ");
+                    System.out.print("Enter a number " + (i+1) + ". element of the array or 'exit' to return the menu: ");
                 else
-                    System.out.print("Enter a valid number for" + (i+1) + ". element of the array: ");
+                    System.out.print("Enter a valid number for" + (i+1) + ". element of the array or 'exit' to return the menu: ");
 
                 try{
-                    double element = Double.parseDouble(input.nextLine().trim());
+                    String str = input.nextLine().trim();
+
+                    if (str.equalsIgnoreCase("exit") || str.equalsIgnoreCase("Exit")) {
+                        clearScreen();
+                        return null;
+                    }
+
+                    double element = Double.parseDouble(str);
                     arr.add(element);
                     isInputValid = true;
 
@@ -2229,7 +2275,7 @@ public class Group06 {
     public static double findMedian(ArrayList<Double> arr){
         int n = arr.size();
         if(n % 2 == 0)
-            return (arr.get(n/2 - 1) + arr.get(n/2)) / 2.0;
+            return arr.get(n/2 - 1) / 2.0 + arr.get(n/2) / 2.0;
 
         return arr.get(n/2);
     }
@@ -2373,7 +2419,7 @@ public class Group06 {
         System.out.println("=== Distance between Two Arrays ===");
         System.out.println();
 
-        int dimension = checkDimension(input, "Enter the dimension of the arrays: ");
+        int dimension = checkDimension(input, "Enter the dimension of the arrays or 'exit' to return the menu: ");
 
         if(dimension == -1)
             return;
@@ -2382,9 +2428,13 @@ public class Group06 {
         System.out.println();
 
         ArrayList<Integer> arr1 = getElementsOfTheArray(input, dimension, "first");
+
+        if(arr1 == null)
+            return;
+
         ArrayList<Integer> arr2 = getElementsOfTheArray(input, dimension, "second");
 
-        if(arr1 == null || arr2 == null)
+        if(arr2 == null)
             return;
 
         System.out.println("=== Distance between Two Arrays ===");
@@ -2431,7 +2481,14 @@ public class Group06 {
 
 
             try {
-                dimension = Integer.parseInt(input.nextLine().trim());
+                String str = input.nextLine().trim();
+
+                if (str.equalsIgnoreCase("exit") || str.equalsIgnoreCase("Exit")) {
+                    clearScreen();
+                    return -1;
+                }
+
+                dimension = Integer.parseInt(str);
 
                 if(dimension < 1) {
                     isInputValid = false;
@@ -2485,12 +2542,19 @@ public class Group06 {
                 System.out.println();
 
                 if (isInputValid)
-                    System.out.print("Enter a number [0-9] for " + (i+1) + ". element of the " + arrName + " array: ");
+                    System.out.print("Enter a number [0-9] for " + (i+1) + ". element of the " + arrName + " array or 'exit' to return the menu: ");
                 else
-                    System.out.print("Enter a valid number between 0 and 9 for " + (i+1) + ". element of the " + arrName + " array: ");
+                    System.out.print("Enter a valid number between 0 and 9 for " + (i+1) + ". element of the " + arrName + " array or 'exit' to return the menu: ");
 
                 try{
-                    int element = Integer.parseInt(input.nextLine().trim());
+                    String str = input.nextLine().trim();
+
+                    if (str.equalsIgnoreCase("exit") || str.equalsIgnoreCase("Exit")) {
+                        clearScreen();
+                        return null;
+                    }
+
+                    int element = Integer.parseInt(str);
 
                     if(element < 0 || element > 9) {
                         isInputValid = false;
@@ -2648,6 +2712,9 @@ public class Group06 {
         String difficulty = "N/A"; // Default for two-player
         if (gameMode.equals("AI")) {
             difficulty = getDifficulty(input);
+
+            if(difficulty.isEmpty())
+                return;
         }
 
         // --- Summary of Choices ---
@@ -2735,6 +2802,10 @@ public class Group06 {
             if (isPlayerTurn) {
                 // --- Player's Turn ---
                 int col = getPlayerMove(input, board, "Player 1", PLAYER_ONE_DISC);
+
+                if(col == -1)
+                    return;
+
                 placeDisc(board, col, PLAYER_ONE_DISC);
 
                 if (checkWin(board, PLAYER_ONE_DISC)) {
@@ -2925,9 +2996,16 @@ public class Group06 {
         boolean isValidMove = false;
 
         do {
-            System.out.print("\n" + playerName + " (" + (playerDisc == PLAYER_ONE_DISC ? "Red":"Blue") + "), enter column (1-" + cols + "): ");
+            System.out.print("\n" + playerName + " (" + (playerDisc == PLAYER_ONE_DISC ? "Red":"Blue") + "), enter column (1-" + cols + ") or 'exit' to quit the game: ");
+
             try {
                 String line = input.nextLine().trim();
+
+                if(line.equalsIgnoreCase("Exit") || line.equalsIgnoreCase("exit")){
+                    clearScreen();
+                    return -1;
+                }
+
                 col = Integer.parseInt(line);
 
                 // Check 1: Is it a valid column number?
@@ -3150,9 +3228,16 @@ public class Group06 {
                 System.out.println("\nPlease select the game mode:");
                 System.out.println("1. Two-Players");
                 System.out.println("2. Single-Player (vs. Computer)");
-                System.out.print("Your choice: ");
+                System.out.print("Your choice or enter 'exit' to return: ");
 
-                choice = Integer.parseInt(input.nextLine().trim());
+                String str = input.nextLine().trim();
+
+                if (str.equalsIgnoreCase("exit") || str.equalsIgnoreCase("Exit")) {
+                    clearScreen();
+                    return "";
+                }
+
+                choice = Integer.parseInt(str);
 
                 if (choice == 1 || choice == 2) {
                     isInputValid = true;
@@ -3188,9 +3273,16 @@ public class Group06 {
                 System.out.println("1. Small (5x4)");  // 5 rows, 4 columns
                 System.out.println("2. Medium (6x5)"); // 6 rows, 5 columns
                 System.out.println("3. Large (7x6)");  // 7 rows, 6 columns
-                System.out.print("Your choice: ");
+                System.out.print("Your choice or enter 'exit' to return: ");
 
-                choice = Integer.parseInt(input.nextLine().trim());
+                String str = input.nextLine().trim();
+
+                if (str.equalsIgnoreCase("exit") || str.equalsIgnoreCase("Exit")) {
+                    clearScreen();
+                    return null;
+                }
+
+                choice = Integer.parseInt(str);
 
                 if (choice >= 1 && choice <= 3) {
                     isInputValid = true;
@@ -3234,9 +3326,16 @@ public class Group06 {
                 System.out.println("2. Medium (4 Move Depth)");
                 System.out.println("3. Hard (6 Move Depth)");
                 System.out.println("4. Extra Hard (8 Move Depth)");
-                System.out.print("Your choice: ");
+                System.out.print("Your choice or enter 'exit' to return: ");
 
-                choice = Integer.parseInt(input.nextLine().trim());
+                String str = input.nextLine().trim();
+
+                if (str.equalsIgnoreCase("exit") || str.equalsIgnoreCase("Exit")) {
+                    clearScreen();
+                    return "";
+                }
+
+                choice = Integer.parseInt(str);
 
                 if (choice >= 1 && choice <= 4) {
                     isInputValid = true;
