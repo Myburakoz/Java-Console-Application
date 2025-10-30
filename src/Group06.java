@@ -1774,6 +1774,10 @@ public class Group06 {
                 }
 
                 String normalized = evaluatedSubstep.equals("-0") ? "0" : evaluatedSubstep;
+                // If the expression is of the form a+(-b), it should be converted to a-b to avoid "a+-b".
+                if (indexOfOpenParenthesis > 0 && step.charAt(indexOfOpenParenthesis - 1) == '+' && normalized.startsWith("-")) {
+                    return step.substring(0, indexOfOpenParenthesis - 1) + normalized + step.substring(indexOfCloseParenthesis + 1);
+                }
                 return step.substring(0, indexOfOpenParenthesis) + normalized + step.substring(indexOfCloseParenthesis + 1);
             }
 
@@ -1784,6 +1788,10 @@ public class Group06 {
                 }
                 // Otherwise, remove them.
                 String normalized = evaluatedSubstep.equals("-0") ? "0" : evaluatedSubstep;
+                // If the expression is of the form a+(-b), it should be converted to a-b to avoid "a+-b".
+                if (indexOfOpenParenthesis > 0 && step.charAt(indexOfOpenParenthesis - 1) == '+' && normalized.startsWith("-")) {
+                    return step.substring(0, indexOfOpenParenthesis - 1) + normalized + step.substring(indexOfCloseParenthesis + 1);
+                }
                 return step.substring(0, indexOfOpenParenthesis) + normalized + step.substring(indexOfCloseParenthesis + 1);
             } else {
                 // Case 3: The content evaluated to another expression (e.g. "(5*2-3)" -> "(10-3)").
