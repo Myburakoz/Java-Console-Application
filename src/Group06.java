@@ -3857,6 +3857,8 @@ public class Group06 {
      * Renders an animated ASCII donut in the terminal using ANSI escape codes.
      * <p>
      * Default configuration: 80x22 terminal area, speeds A=0.01, B=0.005, runs for roughly eight seconds.
+     *
+     * @author Burak Özevin
      */
     public static void runAsciiDonut() {
         runAsciiDonut(80, 22, 0.05, 0.005, 180);
@@ -3878,6 +3880,7 @@ public class Group06 {
     /**
      * Renders an animated ASCII donut in the terminal using ANSI escape codes.
      *
+     * @author Burak Özevin
      * @param width     terminal character width (e.g., 80)
      * @param height    terminal character height (e.g., 22)
      * @param aSpeed    rotation speed for A (around x-axis), e.g., 0.01
