@@ -1842,6 +1842,16 @@ public class Group06 {
                         if(!isWithinIntRange(leftVal) || !isWithinIntRange(rightVal))
                             return "Overflow/Underflow";
 
+                        if(rightVal < 0){
+                            long positiveRight = -rightVal;
+                            if(!isWithinIntRange(positiveRight))
+                                return "Overflow/Underflow";
+                            long result = leftVal - rightVal; // ensure the overall result still fits in range
+                            if(!isWithinIntRange(result))
+                                return "Overflow/Underflow";
+                            return step.substring(0, leftStart) + leftStr + "+" + positiveRight + step.substring(indexOfCloseParenthesis + 1);
+                        }
+
                         long result = leftVal - rightVal; // e.g. 2 - (-2) = 4
                         if(!isWithinIntRange(result))
                             return "Overflow/Underflow";
@@ -1995,6 +2005,27 @@ public class Group06 {
         }
     }
 
+    /**
+     * Checks whether the given string represents a valid plain integer number.
+     * <p>
+     * A valid plain number may start with an optional '+' or '-' sign,
+     * followed by one or more digits. Any other character (including spaces,
+     * decimal points, or letters) will cause the method to return {@code false}.
+     * </p>
+     *
+     * <p><b>Examples:</b></p>
+     * <ul>
+     *     <li>{@code "123"} → true</li>
+     *     <li>{@code "-45"} → true</li>
+     *     <li>{@code "+78"} → true</li>
+     *     <li>{@code "12.3"} → false</li>
+     *     <li>{@code "abc"} → false</li>
+     *     <li>{@code ""} → false</li>
+     * </ul>
+     *
+     * @param value the string to check
+     * @return {@code true} if the string is a valid plain integer representation; {@code false} otherwise
+     */
     private static boolean isPlainNumber(String value){
         if (value.isEmpty())
             return false;
@@ -2011,6 +2042,24 @@ public class Group06 {
         return true;
     }
 
+    /**
+     * Checks whether the given long value can safely fit into a 32-bit signed integer range.
+     * <p>
+     * This method verifies that the specified {@code long} value is between
+     * {@link Integer#MIN_VALUE} (-2,147,483,648) and {@link Integer#MAX_VALUE} (2,147,483,647), inclusive.
+     * It is useful for preventing integer overflow before casting a {@code long} to an {@code int}.
+     * </p>
+     *
+     * <p><b>Examples:</b></p>
+     * <ul>
+     *     <li>{@code isWithinIntRange(42L)} → true</li>
+     *     <li>{@code isWithinIntRange(2147483647L)} → true</li>
+     *     <li>{@code isWithinIntRange(2147483648L)} → false</li>
+     * </ul>
+     *
+     * @param value the long value to check
+     * @return {@code true} if the value fits within the integer range; {@code false} otherwise
+     */
     private static boolean isWithinIntRange(long value){
         return value >= Integer.MIN_VALUE && value <= Integer.MAX_VALUE;
     }
