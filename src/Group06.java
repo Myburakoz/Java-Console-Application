@@ -1371,6 +1371,8 @@ public class Group06 {
             System.out.println("The memory is not enough to process Eratosthenes Sieve.");
         } catch (NegativeArraySizeException e){
             System.out.println("Overflow occured. Eratosthenes' Algorithm cannot be proceeded!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("n is too large for this implementation");
         }
 
         System.out.printf("%n%n");
@@ -1389,6 +1391,8 @@ public class Group06 {
             System.out.println("The memory is not enough to proceed Sundaram Sieve.");
         } catch (NegativeArraySizeException e){
             System.out.println("Overflow occured. Sundaram's Algorithm cannot be proceeded!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("n is too large for this implementation");
         }
 
         System.out.printf("%n%n");
@@ -1407,6 +1411,8 @@ public class Group06 {
             System.out.println("The memory is not enough to process Atkin Sieve.");
         } catch (NegativeArraySizeException e){
             System.out.println("Overflow occured. Atkin's Algorithm cannot be proceeded!");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("n is too large for this implementation");
         }
     }
 
