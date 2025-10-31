@@ -1786,6 +1786,14 @@ public class Group06 {
      * @return the expression after applying exactly one reduction step (or the same string if none)
      */
     public static String evaluateStep(String step){
+        if (step.contains("Overflow/Underflow")) {
+            return "This numbers are too big to calculate or underflow/overflow happened!";
+        }
+
+        if (isPlainNumber(step)) {
+            return isSimpleNumber(step) ? step : "Overflow/Underflow";
+        }
+
         int indexOfCloseParenthesis = step.indexOf(')');
 
         if(indexOfCloseParenthesis != -1){
@@ -1799,8 +1807,16 @@ public class Group06 {
                     boolean isUnary = (indexOfOpenParenthesis - 1 == 0) || isOperator(step.charAt(indexOfOpenParenthesis - 2)) || step.charAt(indexOfOpenParenthesis - 2) == '(';
 
                     if(isUnary){
-                        int value = Integer.parseInt(evaluatedSubstep);
-                        int result = -value;
+                        long value;
+                        try{
+                            value = Long.parseLong(evaluatedSubstep);
+                        } catch (NumberFormatException e){
+                            return "Overflow/Underflow";
+                        }
+
+                        long result = -value;
+                        if(!isWithinIntRange(result))
+                            return "Overflow/Underflow";
                         String resultStr = (result == 0) ? "0" : String.valueOf(result);
                         return step.substring(0, indexOfOpenParenthesis - 1) + resultStr + step.substring(indexOfCloseParenthesis + 1);
                     } else {
@@ -1808,10 +1824,21 @@ public class Group06 {
                         int leftEnd = operatorIndex - 1;
                         int leftStart = findOperandStart(step, leftEnd);
                         String leftStr = step.substring(leftStart, leftEnd + 1);
-                        int leftVal = Integer.parseInt(leftStr);
-                        int rightVal = Integer.parseInt(evaluatedSubstep);
+                        long leftVal;
+                        long rightVal;
+                        try{
+                            leftVal = Long.parseLong(leftStr);
+                            rightVal = Long.parseLong(evaluatedSubstep);
+                        } catch (NumberFormatException e){
+                            return "Overflow/Underflow";
+                        }
 
-                        int result = leftVal - rightVal; // e.g. 2 - (-2) = 4
+                        if(!isWithinIntRange(leftVal) || !isWithinIntRange(rightVal))
+                            return "Overflow/Underflow";
+
+                        long result = leftVal - rightVal; // e.g. 2 - (-2) = 4
+                        if(!isWithinIntRange(result))
+                            return "Overflow/Underflow";
 
                         String resultStr = String.valueOf(result);
                         return step.substring(0, leftStart) + resultStr + step.substring(indexOfCloseParenthesis + 1);
@@ -1962,6 +1989,26 @@ public class Group06 {
         }
     }
 
+    private static boolean isPlainNumber(String value){
+        if (value.isEmpty())
+            return false;
+
+        int start = (value.charAt(0) == '-' || value.charAt(0) == '+') ? 1 : 0;
+        if (start == value.length())
+            return false;
+
+        for (int i = start; i < value.length(); i++) {
+            if (!Character.isDigit(value.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isWithinIntRange(long value){
+        return value >= Integer.MIN_VALUE && value <= Integer.MAX_VALUE;
+    }
+
     /**
      * Applies a single binary or unary operation at the specified operator index.
      * <p>
@@ -1998,8 +2045,16 @@ public class Group06 {
             int rightOperandStartIndex = 1;
             int rightOperandEndIndex = findOperandEnd(expression, rightOperandStartIndex);
             String rightOperandStr = expression.substring(rightOperandStartIndex, rightOperandEndIndex);
-            int rightOperand = Integer.parseInt(rightOperandStr);
-            int result = -rightOperand;
+            long rightOperand;
+            try{
+                rightOperand = Long.parseLong(rightOperandStr);
+            } catch (NumberFormatException e){
+                return "Overflow/Underflow";
+            }
+
+            long result = -rightOperand;
+            if(!isWithinIntRange(result))
+                return "Overflow/Underflow";
             // Normalize -0 to 0
             String resultStr = (result == 0) ? "0" : String.valueOf(result);
             return resultStr + expression.substring(rightOperandEndIndex);
@@ -2014,10 +2069,20 @@ public class Group06 {
         String leftOperandStr = expression.substring(leftOperandStart, leftOperandEnd + 1);
         String rightOperandStr = expression.substring(rightOperandStart, rightOperandEnd);
 
-        int leftOperand = Integer.parseInt(leftOperandStr);
-        int rightOperand = Integer.parseInt(rightOperandStr);
+        long leftOperand;
+        long rightOperand;
 
-        int result = 0;
+        try{
+            leftOperand = Long.parseLong(leftOperandStr);
+            rightOperand = Long.parseLong(rightOperandStr);
+        } catch (NumberFormatException e){
+            return "Overflow/Underflow";
+        }
+
+        if(!isWithinIntRange(leftOperand) || !isWithinIntRange(rightOperand))
+            return "Overflow/Underflow";
+
+        long result = 0;
         switch (operator){
             case 'x':
                 result = leftOperand * rightOperand;
@@ -2034,6 +2099,9 @@ public class Group06 {
                 result = leftOperand - rightOperand;
                 break;
         }
+
+        if(!isWithinIntRange(result))
+            return "Overflow/Underflow";
 
         String resultStr = (result == 0) ? "0" : String.valueOf(result);
         if (leftOperandStart > 0 && expression.charAt(leftOperandStart - 1) == '+' && result < 0)
