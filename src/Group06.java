@@ -2205,7 +2205,12 @@ public class Group06 {
         if(n == -1)
             return;
 
-        ArrayList<Double> arr = getTheElementsOfArrayDouble(input, n);
+        ArrayList<Double> arr = null;
+        try {
+            arr = getTheElementsOfArrayDouble(input, n);
+        } catch (OutOfMemoryError e) {
+            System.out.println("The size is too big!");
+        }
 
         if(arr == null)
             return;
@@ -2331,7 +2336,7 @@ public class Group06 {
      * @return an {@link ArrayList} of doubles, or {@code null} if EOF occurred
      */
     public static ArrayList<Double> getTheElementsOfArrayDouble(Scanner input, int size){
-        ArrayList<Double> arr = new ArrayList<>();
+        ArrayList<Double> arr = new ArrayList<>(size);
         boolean isInputValid = true;
 
         for(int i = 0; i < size; i++)
@@ -2577,12 +2582,22 @@ public class Group06 {
         System.out.println("=== Distance between Two Arrays ===");
         System.out.println();
 
-        ArrayList<Integer> arr1 = getElementsOfTheArray(input, dimension, "first");
+        ArrayList<Integer> arr1 = null;
+        try {
+            arr1 = getElementsOfTheArray(input, dimension, "first");
+        } catch (OutOfMemoryError e) {
+            System.out.println("The dimension is too big!");
+        }
 
         if(arr1 == null)
             return;
 
-        ArrayList<Integer> arr2 = getElementsOfTheArray(input, dimension, "second");
+        ArrayList<Integer> arr2 = null;
+        try {
+            arr2 = getElementsOfTheArray(input, dimension, "second");
+        } catch (OutOfMemoryError e) {
+            System.out.println("The dimension is too big!");
+        }
 
         if(arr2 == null)
             return;
@@ -2719,7 +2734,7 @@ public class Group06 {
      */
     public static ArrayList<Integer> getElementsOfTheArray(Scanner input, int dimension, String arrName)
     {
-        ArrayList<Integer> arr = new ArrayList<>();
+        ArrayList<Integer> arr = new ArrayList<>(dimension);
         boolean isInputValid = true;
 
         for(int i = 0; i < dimension; i++)
