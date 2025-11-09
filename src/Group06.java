@@ -102,7 +102,7 @@ public class Group06 {
      * @param random the Random instance used for generating random effects
      * @author Burak Özevin
      */
-    private static void displayEndScreen(int width, int height, Random random) {
+    public static void displayEndScreen(int width, int height, Random random) {
         String[] titleArt = {
                 " ____ __  __ ____  _____ _____ _  _  _____   ____            _           _ ",
                 " / ___|  \\/  |  _ \\| ____|___ /| || ||___ /  |  _ \\ _ __ ___ (_) ___  ___| |_",
@@ -256,7 +256,7 @@ public class Group06 {
      * @param random           Random instance for character generation
      * @author Burak Özevin
      */
-    private static void printFrame(int width, int height, int[] columnPositions,
+    public static void printFrame(int width, int height, int[] columnPositions,
                                    float[] columnSpeeds, float[] columnProgress, Random random) {
         for (int col = 0; col < width; col++) {
             columnProgress[col] += columnSpeeds[col];
@@ -304,7 +304,7 @@ public class Group06 {
      * @return a randomly chosen character for display
      * @author Burak Özevin
      */
-    private static char getRandomChar(Random random) {
+    public static char getRandomChar(Random random) {
         return CHARACTERS.charAt(random.nextInt(CHARACTERS.length()));
     }
 
@@ -984,29 +984,32 @@ public class Group06 {
      * @return true if the date is plausible, false otherwise.
      */
     public static boolean isValidDate(int day, int month, int year, int currentDay, int currentMonth, int currentYear) {
+
+        boolean flag = true;
+
         if (day < 1 || day > 31)
             return false;
 
         if (month == 2) {
             if (isLeapYear(year)) {
-                return day <= 29;
+                flag = day <= 29;
             } else {
-                return day <= 28;
+                flag = day <= 28;
             }
         }
 
         if (month == 4 || month == 6 || month == 9 || month == 11)
-            return day <= 30;
+            flag = day <= 30;
 
         // Check if the birthdate is in the future relative to the current date
         if (year == currentYear) {
-            if (month > currentMonth) {
-                return false;
-            }
-            return month != currentMonth || day <= currentDay;
+            if (month > currentMonth)
+                flag =  false;
+            else
+                flag =  month != currentMonth || day <= currentDay;
         }
 
-        return true;
+        return flag;
     }
 
     /**
@@ -1206,6 +1209,7 @@ public class Group06 {
                 if(str.isEmpty()){
                     isInputValid = false;
                     message = "You entered an empty string or just spaces. Enter a valid string: ";
+                    clearScreen();
                 }
             } catch (NoSuchElementException e) {
                 clearScreen();
@@ -1278,7 +1282,7 @@ public class Group06 {
      * @param s the string to reverse
      * @return the reversed version of {@code s}
      */
-    private static String reverseRec(String s) {
+    public static String reverseRec(String s) {
         if(s.length() <= 1)
             return s;
         return reverseRec(s.substring(1)) + s.charAt(0);
@@ -1728,7 +1732,7 @@ public class Group06 {
      * @param expression the expression to scan
      * @return {@code true} if an invalid character is found; {@code false} otherwise
      */
-    private static boolean hasInvalidCharacters(String expression) {
+    public static boolean hasInvalidCharacters(String expression) {
         for (char c : expression.toCharArray()) {
             if (!Character.isDigit(c) && !isOperator(c) && c != '(' && c != ')') {
                 return true;
@@ -2026,7 +2030,7 @@ public class Group06 {
      * @param value the string to check
      * @return {@code true} if the string is a valid plain integer representation; {@code false} otherwise
      */
-    private static boolean isPlainNumber(String value){
+    public static boolean isPlainNumber(String value){
         if (value.isEmpty())
             return false;
 
@@ -2924,9 +2928,9 @@ public class Group06 {
     }
 
 
-    public static final char PLAYER_ONE_DISC = 'X';
-    public static final char PLAYER_TWO_DISC = 'O';
-    public static final char EMPTY_CELL = ' ';
+    private static final char PLAYER_ONE_DISC = 'X';
+    private static final char PLAYER_TWO_DISC = 'O';
+    private static final char EMPTY_CELL = ' ';
 
     /**
      * Main controller method for setting up the Connect Four game.
